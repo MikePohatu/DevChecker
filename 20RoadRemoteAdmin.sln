@@ -5,6 +5,16 @@ VisualStudioVersion = 16.0.31313.79
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "20RoadRemoteAdmin", "20RoadRemoteAdmin\20RoadRemoteAdmin.csproj", "{C5C52FA2-71CB-4741-9CA4-131E3CE2CFE8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigMgrHelpers", "ConfigMgrHelpers\ConfigMgrHelpers.csproj", "{FDDCDCF7-35D0-4EFD-B300-3FAE9E10147B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diags", "Diags\Diags.csproj", "{B0AD195B-B60A-4083-9D62-6907381DDCB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsHelpers", "WindowsHelpers\WindowsHelpers.csproj", "{4CA8920A-B2C1-4726-9155-49F6FAE3DD5C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{C36BCDD4-F060-46EC-A9C4-C7634AFF2EB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomActions", "CustomActions\CustomActions.csproj", "{CAD21ED8-29A7-4423-A6CC-F2D7F45C51E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +25,26 @@ Global
 		{C5C52FA2-71CB-4741-9CA4-131E3CE2CFE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5C52FA2-71CB-4741-9CA4-131E3CE2CFE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5C52FA2-71CB-4741-9CA4-131E3CE2CFE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDDCDCF7-35D0-4EFD-B300-3FAE9E10147B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDDCDCF7-35D0-4EFD-B300-3FAE9E10147B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDDCDCF7-35D0-4EFD-B300-3FAE9E10147B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDDCDCF7-35D0-4EFD-B300-3FAE9E10147B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0AD195B-B60A-4083-9D62-6907381DDCB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0AD195B-B60A-4083-9D62-6907381DDCB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0AD195B-B60A-4083-9D62-6907381DDCB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0AD195B-B60A-4083-9D62-6907381DDCB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CA8920A-B2C1-4726-9155-49F6FAE3DD5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CA8920A-B2C1-4726-9155-49F6FAE3DD5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CA8920A-B2C1-4726-9155-49F6FAE3DD5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CA8920A-B2C1-4726-9155-49F6FAE3DD5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C36BCDD4-F060-46EC-A9C4-C7634AFF2EB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C36BCDD4-F060-46EC-A9C4-C7634AFF2EB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C36BCDD4-F060-46EC-A9C4-C7634AFF2EB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C36BCDD4-F060-46EC-A9C4-C7634AFF2EB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAD21ED8-29A7-4423-A6CC-F2D7F45C51E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAD21ED8-29A7-4423-A6CC-F2D7F45C51E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAD21ED8-29A7-4423-A6CC-F2D7F45C51E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAD21ED8-29A7-4423-A6CC-F2D7F45C51E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

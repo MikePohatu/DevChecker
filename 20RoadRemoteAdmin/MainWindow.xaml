@@ -4,9 +4,80 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_20RoadRemoteAdmin"
+        xmlns:tabs="clr-namespace:_20RoadRemoteAdmin.Tabs"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Remote Admin" Height="600" Width="800" MinWidth="800" MinHeight="500"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Closing="onWindowClosing">
+    <Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="200*" />
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="_connect_Pane" Orientation="Horizontal" IsEnabled="{Binding ConnectEnabled}" Margin="5,2">
+
+            <GroupBox Header="Device" Width="340">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="{Binding RemoteComputer, UpdateSourceTrigger=PropertyChanged}" Width="270" Padding="5,3,5,3" Margin="2" AcceptsReturn="False" KeyUp="onConnectionKeyup" />
+                    <CheckBox Margin="5,3,5,3" IsChecked="{Binding ClientSSL}" VerticalAlignment="Center">
+                        <TextBlock Text="SSL" Margin="0,1,0,0"/>
+                    </CheckBox>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Server" Width="340">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="{Binding ConfigMgrServer,UpdateSourceTrigger=PropertyChanged}" Width="270" Padding="5,3,5,3" Margin="2"  AcceptsReturn="False" KeyUp="onConnectionKeyup" />
+                    <CheckBox Margin="5,3,5,3" IsChecked="{Binding ServerSSL}" VerticalAlignment="Center">
+                        <TextBlock Text="SSL" Margin="0,1,0,0"/>
+                    </CheckBox>
+                </StackPanel>
+            </GroupBox>
+            <Button Width="75" Padding="5,3,5,3" Margin="10,14,0,5" Click="onConnectClick" Height="35">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Content" Value="Connect"></Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ConnectEnabled}" Value="false">
+                                <Setter Property="Content" Value="Connecting"></Setter>
+                                <Setter Property="FontSize" Value="9" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+        <TabControl Name="tabsCtrl" Grid.Row="1" MinHeight="250" BorderBrush="{x:Null}" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}" >
+            <TabItem Header="Overview">
+                <tabs:ClientTab DataContext="{Binding RemoteSystem}" />
+            </TabItem>
+            <TabItem Header="CM Client" DataContext="{Binding CmClient}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                <tabs:CmClientTab />
+            </TabItem>
+
+            <TabItem Header="Custom Actions">
+                <tabs:CustomActionTab />
+            </TabItem>
+        </TabControl>
+
+        <Grid Grid.Row="1" Width="Auto" Height="Auto" Visibility="{Binding SpinnerVisibility}" >
+            <local:Spinner VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
         
+        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="5,5,5,0" TextWrapping="Wrap" Text="Output" 
+                   FontSize="10" VerticalAlignment="Bottom"/>
+        <Border Grid.Row="3" BorderBrush="LightGray" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Margin="5" >
+            <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+                <TextBlock x:Name="outputTb" HorizontalAlignment="Stretch" Margin="5,1,2,5" FontSize="10" TextWrapping="Wrap" />
+            </ScrollViewer>
+        </Border>
+        <StackPanel Grid.Row="4" Orientation="Horizontal" >
+            <Label Content="Log Trace/Verbose Messages" VerticalAlignment="Center" />
+            <CheckBox IsChecked="{Binding LogVerbose}" VerticalAlignment="Center" />
+            <Label Content="   Log Progress"  VerticalAlignment="Center" />
+            <CheckBox IsChecked="{Binding LogProgress}" VerticalAlignment="Center" />
+        </StackPanel>
     </Grid>
 </Window>

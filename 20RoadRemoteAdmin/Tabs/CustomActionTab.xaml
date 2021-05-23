@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="_20RoadRemoteAdmin.Tabs.CustomActionTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:_20RoadRemoteAdmin.Tabs"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Margin="10" MinWidth="300">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0"  Orientation="Horizontal">
+            <TextBlock Text="Custom actions" FontWeight="Bold" Margin="0,0,0,5" />
+            <TextBlock Margin="10,0,0,0" >
+                <Hyperlink Click="onRefreshClicked" TextDecorations="None">
+                    <TextBlock Text="Refresh" />
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+        <DataGrid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" ItemsSource="{Binding CustomActions}"
+                  Width="Auto" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0" GridLinesVisibility="None" >
+
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="BorderThickness" Value="0" />
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.Columns>
+                <!-- Action run -->
+                <DataGridHyperlinkColumn Width="150" ContentBinding="{Binding DisplayName}">
+                    <DataGridHyperlinkColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <EventSetter Event="Hyperlink.Click" Handler="onRunActionClicked" />
+                        </Style>
+                    </DataGridHyperlinkColumn.ElementStyle>
+                </DataGridHyperlinkColumn>
+                <DataGridTextColumn Width="250" Binding="{Binding Settings.Description}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

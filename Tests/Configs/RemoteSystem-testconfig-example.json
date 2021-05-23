@@ -1,0 +1,9 @@
+{
+  "remoteConnecctionTests": [
+    {
+      "device": "testPC.demo.local",
+      "minMem": 4096,
+      "useSSL": true
+    }
+  ]
+}
