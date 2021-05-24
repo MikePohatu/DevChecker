@@ -36,6 +36,7 @@ namespace CustomActions
         public string DisplayName { get; set; }
         public string Description { get; set; }
         public bool RunOnConnect { get; set; } = false;
+        public bool LogScriptContent { get; set; } = false;
 
         public static CustomActionSettings Create(string json)
         {

@@ -87,10 +87,10 @@ namespace _20RoadRemoteAdmin
         }
 
         private bool _connectEnabled = true;
-        public bool ConnectEnabled
+        public bool ControlsEnabled
         {
             get { return this._connectEnabled; }
-            set { this._connectEnabled = value; this.OnPropertyChanged(this, "ConnectEnabled"); }
+            set { this._connectEnabled = value; this.OnPropertyChanged(this, "ControlsEnabled"); }
         }
 
         private string _remoteComputer;
@@ -168,7 +168,6 @@ namespace _20RoadRemoteAdmin
                 this.RemoteComputer = Configuration.Instance.LastDevice;
                 this.ClientSSL = Configuration.Instance.ClientSSL;
                 this.ServerSSL = Configuration.Instance.ServerSSL;
-                //this.UseSSL = Configuration.Instance.UseSSL;
             }
             await ActionLibrary.RefreshAsync();
         }
@@ -198,7 +197,7 @@ namespace _20RoadRemoteAdmin
             else
             {
                 //reset and prep
-                this.ConnectEnabled = false;
+                this.ControlsEnabled = false;
                 this.RemoteSystem = null;
                 this.CmClient = null;
                 this.CmServer = null;
@@ -206,22 +205,25 @@ namespace _20RoadRemoteAdmin
                 this._connect_Pane.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
 
                 //update
-                CmServer.Create(this.ConfigMgrServerName).ConnectWmi();
+                await CmServer.Create(this.ConfigMgrServerName, this.ServerSSL).ConnectPoshAsync();
                 RemoteSystem.New(this._remoteComputer, this._clientssl);
                 LoggerFacade.Info("Connecting to device: " + RemoteSystem.Current.ComputerName);
 
                 await RemoteSystem.Current.ConnectAsync();
+
                 this.RemoteSystem = RemoteSystem.Current;
-                if (RemoteSystem.Current != null)
+
+                var cmclient = new CmClient(RemoteSystem.Current.ComputerName, RemoteSystem.Current.UseSSL);
+                    
+                if (RemoteSystem.Current.ConfigMgrClientStatus != "NotInstalled" && RemoteSystem.Current.ConfigMgrClientStatus != "Unknown")
                 {
-                    if (RemoteSystem.Current.ConfigMgrClientStatus != "NotInstalled")
-                    {
-                        this.CmClient = new CmClient(RemoteSystem.Current.ComputerName, RemoteSystem.Current.UseSSL);
-                    }
+                    cmclient.ClientInstalled = true;
                 }
+                await cmclient.QueryServerAsync();
+                this.CmClient = cmclient;
 
                 //release
-                this.ConnectEnabled = true;
+                this.ControlsEnabled = true;
                 this.SpinnerVisibility = Visibility.Collapsed;
             }
         }

@@ -26,6 +26,7 @@ using System.IO;
 using Diags.Logging;
 using System.Collections;
 using Diags;
+using System.Text;
 
 namespace WindowsHelpers
 {
@@ -41,6 +42,7 @@ namespace WindowsHelpers
             if (string.IsNullOrWhiteSpace(computerName) || computerName == "." || computerName == "localhost" || computerName == "127.0.0.1")
             {
                 runspace = RunspaceFactory.CreateRunspace();
+                runspace.Open();
             }
             else { 
                 string shellUri = "http://schemas.microsoft.com/powershell/Microsoft.PowerShell";
@@ -49,6 +51,7 @@ namespace WindowsHelpers
                 WSManConnectionInfo connectioninfo = new WSManConnectionInfo(useSSL, computerName, port, "/wsman", shellUri, currentCred);
 
                 runspace = RunspaceFactory.CreateRunspace(connectioninfo);
+                runspace.Open();
             }
                 
             runspace.CreatePipeline();
@@ -63,10 +66,23 @@ namespace WindowsHelpers
 
         public async static Task<PSDataCollection<PSObject>> InvokeRunnerAsync(PowerShell posh)
         {
+            return await InvokeRunnerAsync(posh, false);
+        }
+
+        public async static Task<PSDataCollection<PSObject>> InvokeRunnerAsync(PowerShell posh, bool hideScript)
+        {
             PSDataCollection<PSObject> result = null;
             try
             {
-                posh.Runspace.Open();
+                if (!hideScript) 
+                {
+                    StringBuilder builder = new StringBuilder();
+                    foreach (Command command in posh.Commands.Commands)
+                    {
+                        builder.AppendLine(command.CommandText);
+                    }
+                    LoggerFacade.Info(builder.ToString().Trim()); 
+                }
                 result = await Task.Factory.FromAsync(posh.BeginInvoke(), asyncResult => posh.EndInvoke(asyncResult));
             }
             catch (Exception e)
@@ -191,6 +207,23 @@ namespace WindowsHelpers
             {
                 return default(T);
             }
+        }
+
+        public static T GetFirstPropertyValue<T>(PSDataCollection<PSObject> objList, string valueName)
+        {
+            if (objList != null)
+            {
+                foreach (PSObject obj in objList)
+                {
+                    object newobj = obj.Properties[valueName]?.Value;
+                    if (newobj != null)
+                    {
+                        return (T)Convert.ChangeType(newobj, typeof(T));
+                    }
+                }
+            }
+
+            return default(T);
         }
 
         public static List<T> GetPropertyValues<T>(PSDataCollection<PSObject> objList, string valueName)

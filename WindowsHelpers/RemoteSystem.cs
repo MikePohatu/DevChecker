@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using Diags.Logging;
 using WindowsHelpers;
 using System.Management.Automation;
+using System.IO;
 
 namespace WindowsHelpers
 {
@@ -41,6 +42,11 @@ namespace WindowsHelpers
         /// Is the current RemoteSystem connected
         /// </summary>
         public bool IsConnected { get; set; } = false;
+
+        /// <summary>
+        /// Is the \\device\c$ share accessible
+        /// </summary>
+        public bool CDollarAccessible { get; set; } = false;
 
         /// <summary>
         /// The computer name supplied by the user
@@ -64,7 +70,7 @@ namespace WindowsHelpers
 
         public string IPv4Address { get; private set; }
         public string IPv6Address { get; private set; }
-        public string ConfigMgrClientStatus { get; private set; }
+        public string ConfigMgrClientStatus { get; private set; } = "Unknown";
         public SortedDictionary<string, string> Properties { get; private set; }
 
         /// <summary>
@@ -107,10 +113,11 @@ namespace WindowsHelpers
 
                 using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL))
                 {
-                    PSDataCollection<PSObject> results = await PoshHandler.InvokeRunnerAsync(posh);
+                    PSDataCollection<PSObject> results = await PoshHandler.InvokeRunnerAsync(posh, true);
                     if (results != null)
                     {
                         this.IsConnected = true;
+                        this.CDollarAccessible = true;
                         this.SystemPendingReboot = PoshHandler.GetFirstHashTableValue<bool>(results, "pendingReboot");
                         this.SystemMemory = PoshHandler.GetFirstHashTableValue<ulong>(results, "memorySize");
                         this.InstalledOSType = PoshHandler.GetFirstHashTableString(results, "type");
@@ -125,13 +132,23 @@ namespace WindowsHelpers
                     }
                     else
                     {
-                        LoggerFacade.Error("Error connecting to remote system " + this.ComputerName);
+                        LoggerFacade.Error("Couldn't gather device information for " + this.ComputerName);
                     }
                 }             
             }
             catch (Exception e)
             {
-                LoggerFacade.Error("Error connecting to remote system " + this.ComputerName + ": " + e.Message);
+                var cdollar = new DirectoryInfo(@"\\" + this.ComputerName + @"\c$");
+
+                if (cdollar.Exists)
+                {
+                    this.CDollarAccessible = true;
+                    LoggerFacade.Error("Error connecting to remote system using WinRM, but device appears to be up");
+                }
+                else
+                {
+                    LoggerFacade.Error("Error connecting to remote system " + this.ComputerName + ": " + e.Message);
+                }                
             }
         }
 

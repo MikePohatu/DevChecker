@@ -27,16 +27,29 @@ using WindowsHelpers;
 namespace ConfigMgrHelpers
 {
     public class CmClient
-	{
-		public bool IsConnected { get; set; } = true;
+	{ 
+		public bool ClientInstalled { get; set; } = false;
 		public string ConnectString { get; private set; }
-		public bool ConnectSSL { get; private set; }
+
+		/// <summary>
+		/// The name reported by the ConfigMgrServer
+		/// </summary>
+		public string ReportedName { get; private set; }
+
+		/// <summary>
+		/// The IPs address recorded in ConfigMgr
+		/// </summary>
+		public string IPs { get; private set; }
+
+		/// <summary>
+		/// The Active Directory Organisational Unit
+		/// </summary>
+		public string OU { get; private set; }
 		public List<CmClientAction> ClientActions { get; private set; }
 
 		public CmClient(string connectstring, bool usessl)
         {
 			this.ConnectString = connectstring;
-			this.ConnectSSL = usessl;
 			this.ClientActions = new List<CmClientAction>() {
 				new CmClientAction( "MachinePolicy", "{00000000-0000-0000-0000-000000000021}", "Machine Policy", this),
 				new CmClientAction( "DiscoveryData", "{00000000-0000-0000-0000-000000000003}","Discovery Data", this ),
@@ -47,6 +60,31 @@ namespace ConfigMgrHelpers
 				new CmClientAction( "UpdateScan", "{00000000-0000-0000-0000-000000000113}","Update Scan", this),
 				new CmClientAction( "SoftwareInventory", "{00000000-0000-0000-0000-000000000002}","Software Inventory", this)
 			};
+		}
+
+		public async Task QueryServerAsync()
+        {
+			if (string.IsNullOrWhiteSpace(this.ConnectString) || this.ConnectString.ToLower() == "localhost" || this.ConnectString == "127.0.0.1")
+            {
+				LoggerFacade.Info("Skipping ConfigMgr check for localhost client");
+            } 
+			else
+            {
+				LoggerFacade.Info("Gathering ConfigMgr data client");
+				string command = "(Get-WmiObject -Class SMS_R_SYSTEM -Namespace \"" + CmServer.Current.SiteWmiNamespace + "\" -ComputerName " + CmServer.Current.ServerName + " | where {$_.Name -eq \"" + this.ConnectString + "\"})";
+
+				var posh = PoshHandler.GetRunner(command);
+				var result = await PoshHandler.InvokeRunnerAsync(posh);
+
+				if (result.Count > 0)
+                {
+					this.IPs = string.Join(", ", PoshHandler.GetFirstPropertyValue<string[]>(result, "IPAddresses"));
+					this.OU = PoshHandler.GetFirstPropertyValue<string[]>(result, "SystemOUName").Last();
+					this.ReportedName = PoshHandler.GetFirstPropertyValue<string>(result, "Name");
+
+					LoggerFacade.Info("Finished gathering ConfigMgr data for client");
+				}
+			}
 		}
 	}
 }

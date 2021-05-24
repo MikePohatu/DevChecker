@@ -52,7 +52,7 @@ namespace _20RoadRemoteAdmin.Tabs
             CmClient client = this.DataContext as CmClient;
             if (client != null)
             {
-                await ServiceHelpers.RestartService("ccmexec", client.ConnectString, client.ConnectSSL);
+                await ServiceHelpers.RestartService("ccmexec", client.ConnectString, true);
             }
         }
 

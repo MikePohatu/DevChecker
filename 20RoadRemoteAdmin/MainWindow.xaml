@@ -17,8 +17,7 @@
             <RowDefinition Height="200*" />
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <StackPanel x:Name="_connect_Pane" Orientation="Horizontal" IsEnabled="{Binding ConnectEnabled}" Margin="5,2">
-
+        <StackPanel x:Name="_connect_Pane" Orientation="Horizontal" IsEnabled="{Binding ControlsEnabled}" Margin="5,2">
             <GroupBox Header="Device" Width="340">
                 <StackPanel Orientation="Horizontal">
                     <TextBox Text="{Binding RemoteComputer, UpdateSourceTrigger=PropertyChanged}" Width="270" Padding="5,3,5,3" Margin="2" AcceptsReturn="False" KeyUp="onConnectionKeyup" />
@@ -40,7 +39,7 @@
                     <Style TargetType="Button">
                         <Setter Property="Content" Value="Connect"></Setter>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding ConnectEnabled}" Value="false">
+                            <DataTrigger Binding="{Binding ControlsEnabled}" Value="false">
                                 <Setter Property="Content" Value="Connecting"></Setter>
                                 <Setter Property="FontSize" Value="9" />
                             </DataTrigger>
@@ -49,15 +48,15 @@
                 </Button.Style>
             </Button>
         </StackPanel>
-        <TabControl Name="tabsCtrl" Grid.Row="1" MinHeight="250" BorderBrush="{x:Null}" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}" >
+        <TabControl Name="tabsCtrl" Grid.Row="1" MinHeight="250" BorderBrush="{x:Null}" >
             <TabItem Header="Overview">
-                <tabs:ClientTab DataContext="{Binding RemoteSystem}" />
+                <tabs:ClientTab />
             </TabItem>
-            <TabItem Header="CM Client" DataContext="{Binding CmClient}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+            <TabItem Header="CM Client" DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
                 <tabs:CmClientTab />
             </TabItem>
 
-            <TabItem Header="Custom Actions">
+            <TabItem Header="Custom Actions" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}" >
                 <tabs:CustomActionTab />
             </TabItem>
         </TabControl>

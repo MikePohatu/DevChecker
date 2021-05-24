@@ -14,5 +14,4 @@ Function Run-CMAction {
     } catch {
         Write-Error "Error running action: $($_.Exception.Message)"
     }
-
 }

@@ -39,7 +39,7 @@ namespace WindowsHelpers
                 using (PowerShell posh = PoshHandler.GetRunner(script, computername, useSSL))
                 {
                     posh.AddStatement().AddCommand("Restart").AddParameter("ServiceName", servicename);
-                    await PoshHandler.InvokeRunnerAsync(posh);
+                    await PoshHandler.InvokeRunnerAsync(posh, true);
                 }
             }
             catch (Exception e)

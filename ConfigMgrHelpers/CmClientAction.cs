@@ -51,7 +51,7 @@ namespace ConfigMgrHelpers
             PowerShell posh = PoshHandler.GetRunner(script, RemoteSystem.Current.ComputerName, RemoteSystem.Current.UseSSL);
             posh.AddStatement().AddCommand("Run-CMAction").AddParameter("ClientAction", this.ID);
     
-            await PoshHandler.InvokeRunnerAsync(posh);
+            await PoshHandler.InvokeRunnerAsync(posh, true);
         }
     }
 }

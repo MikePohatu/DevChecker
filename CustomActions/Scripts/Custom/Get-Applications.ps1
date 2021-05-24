@@ -33,8 +33,8 @@ $InstalledSoftware64 | ForEach-Object {
     }
 }
 
-[string]$output = "Applications found on $($env:ComputerName): `nVendor, Name, Version, BitDepth`n"
-$AllInstalledSoftware | Sort-Object -Property Vendor | Foreach-Object { $output += "$($_.Vendor), $($_.Name), $($_.Version), $($_.BitDepth)`n" }
+[string]$output = "Applications found on $($env:ComputerName): `nVendor, Name, Version, BitDepth"
+$AllInstalledSoftware | Sort-Object -Property Vendor | Foreach-Object { $output += "`n$($_.Vendor), $($_.Name), $($_.Version), $($_.BitDepth)" }
 
 Write-Information $output
 Write-Information "Done"
@@ -44,6 +44,7 @@ Write-Information "Done"
     DisplayName: "Get Applications",
     OutputType: "None",
     Description: "List installed applications recorded in registry",
-    RunOnConnect: false
+    RunOnConnect: false,
+    LogScriptContent: false
 }
 ActionSettings#>

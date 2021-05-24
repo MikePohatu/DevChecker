@@ -23,6 +23,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Management;
 using WindowsHelpers;
+using Diags.Logging;
 
 namespace ConfigMgrHelpers
 {
@@ -32,7 +33,9 @@ namespace ConfigMgrHelpers
         /// <summary>
         /// ** Not currently supported. Use WMI as opposed to Administration Service
         /// </summary>
-        public bool UseWMI { get; set; } = true;
+        public bool UseWMI { get; set; } = false;
+
+        public bool UseSSL { get; set; } = true;
 
         /// <summary>
         /// Path of the WMI namespace for the SMS_Provider
@@ -40,34 +43,54 @@ namespace ConfigMgrHelpers
         public string WmiNamespacePath { get; private set; }
 
         /// <summary>
+        /// Path of the WMI namespace for the SMS_Provider
+        /// </summary>
+        public string SiteWmiNamespace { get; private set; }
+
+        /// <summary>
         /// The ConfigMgr site code
         /// </summary>
         public string SiteCode { get; private set; }
 
         /// <summary>
-        /// The server name of the configmgr server
+        /// The server name of the configmgr server to connect to
         /// </summary>
         public string ServerName { get; set; } = string.Empty;
 
+        /// <summary>
+        /// The version of the ConfigMgr site
+        /// </summary>
+        public string Version { get; set; } = string.Empty;
+
+        /// <summary>
+        /// The server name reported by ConfigMgr
+        /// </summary>
+        public string ReportedServerName { get; set; } = string.Empty;
         public static CmServer Current { get; private set; }
         private CmServer(string ServerName)
         {
             this.ServerName = ServerName;
         }
 
-        public static CmServer Create(string ServerName)
+        public static CmServer Create(string ServerName, bool useSSL)
         {
             Current = new CmServer(ServerName);
+            Current.UseSSL = useSSL;
             return Current;
         }
 
-        public void ConnectWmi()
+        public async Task ConnectPoshAsync()
         {
-            string query = "SELECT * FROM SMS_ProviderLocation";
+            string command = "Get-WmiObject -Namespace \"ROOT\\SMS\" -Query \"SELECT * FROM SMS_ProviderLocation\" -ComputerName " + this.ServerName;
 
-            var results = WmiQuery.Create("ROOT\\SMS", query, this.ServerName).Run();
-            this.WmiNamespacePath = WmiQuery.GetWmiProperty<string>(results, "NamespacePath");
-            this.SiteCode = WmiQuery.GetWmiProperty<string>(results, "SiteCode");
+            var posh = PoshHandler.GetRunner(command);
+            var result = await PoshHandler.InvokeRunnerAsync(posh);
+
+            this.WmiNamespacePath = PoshHandler.GetFirstPropertyValue<string>(result, "NamespacePath");
+            this.SiteCode = PoshHandler.GetFirstPropertyValue<string>(result, "SiteCode");
+            this.ReportedServerName = PoshHandler.GetFirstPropertyValue<string>(result, "Machine");
+            this.SiteWmiNamespace = @"root\sms\site_" + this.SiteCode;
+            LoggerFacade.Info("Connected to ConfigMgr server "+this.ServerName +", site code: " + this.SiteCode);
         }
     }
 }
