@@ -48,20 +48,23 @@
                 </Button.Style>
             </Button>
         </StackPanel>
-        <TabControl Name="tabsCtrl" Grid.Row="1" MinHeight="250" BorderBrush="{x:Null}" >
+        <TabControl Grid.Row="1" MinHeight="250" BorderBrush="{x:Null}" >
             <TabItem Header="Overview">
                 <tabs:OverviewTab />
             </TabItem>
-            <TabItem Header="CM Client" DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
-                <tabs:CmClientTab />
+            <TabItem Header="Client Side" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
+                <TabControl Grid.Row="1" MinHeight="250" BorderBrush="{x:Null}" >
+                    <TabItem Header="ConfigMgr Client" DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
+                        <tabs:CmClientTab />
+                    </TabItem>
+                    <TabItem Header="Custom Actions">
+                        <tabs:CustomActionTab />
+                    </TabItem>
+                </TabControl>
             </TabItem>
 
-            <TabItem Header="CM Server" DataContext="{Binding CmServer}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+            <TabItem Header="Server Side" DataContext="{Binding CmServer}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
                 <tabs:CmServerTab />
-            </TabItem>
-
-            <TabItem Header="Custom Actions" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}" >
-                <tabs:CustomActionTab />
             </TabItem>
         </TabControl>
 
