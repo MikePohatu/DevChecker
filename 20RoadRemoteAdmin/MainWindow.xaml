@@ -29,7 +29,7 @@
             </GroupBox>
             <GroupBox Header="Server" Width="340">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox Text="{Binding ConfigMgrServer,UpdateSourceTrigger=PropertyChanged}" Width="270" Padding="5,3,5,3" Margin="2"  AcceptsReturn="False" KeyUp="onConnectionKeyup" />
+                    <TextBox Text="{Binding ConfigMgrServerName,UpdateSourceTrigger=PropertyChanged}" Width="270" Padding="5,3,5,3" Margin="2"  AcceptsReturn="False" KeyUp="onConnectionKeyup" />
                     <CheckBox Margin="5,3,5,3" IsChecked="{Binding ServerSSL}" VerticalAlignment="Center">
                         <TextBlock Text="SSL" Margin="0,1,0,0"/>
                     </CheckBox>

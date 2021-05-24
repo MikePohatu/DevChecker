@@ -54,7 +54,7 @@
     <Compile Include="ServiceHelpers.cs" />
     <Compile Include="LocalSystemConnector.cs" />
     <Compile Include="RemoteSystem.cs" />
-    <Compile Include="WmiLocalQuery.cs" />
+    <Compile Include="WmiQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

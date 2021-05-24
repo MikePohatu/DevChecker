@@ -57,43 +57,10 @@ namespace WindowsHelpers
         /// </summary>
         /// <param name="WmiQuery"></param>
         /// <returns></returns>
-        public static async Task<string> GetWmiStringAsync(string WmiQuery)
+        public static async Task<string> GetWmiStringAsync(string query)
         {
-            return await GetWmiStringAsync(@"root\CIMV2", WmiQuery);
-        }
-
-
-        /// <summary>
-        /// /get a value from WMI, specifying the desired namespace
-        /// </summary>
-        /// <param name="NameSpace"></param>
-        /// <param name="WmiQuery"></param>
-        /// <returns></returns>
-        public static async Task<string> GetWmiStringAsync(string NameSpace, string WmiQuery)
-        {
-            string s = null;
-            try
-            {
-                WmiLocalQuery query = new WmiLocalQuery(NameSpace, WmiQuery);
-                List<ManagementBaseObject> results = await query.RunAsync();
-
-                foreach (ManagementBaseObject m in results)
-                {
-                    foreach (PropertyData propdata in m.Properties)
-                    {
-                        s = s + propdata.Value;
-                    }
-                }
-
-                if (String.IsNullOrEmpty(s)) { return null; }
-                else { return s; }
-            }
-            catch (Exception e)
-            {
-                LoggerFacade.Error(e, "Error running query against namespace " + NameSpace + ": " + WmiQuery);
-                return null;
-            }
-
+            var results = await WmiQuery.Create(WmiQuery.DefaultNamespace, query).RunLocalAsync();
+            return WmiQuery.GetWmiResultsAsString(results);
         }
 
         /// <summary>
@@ -101,12 +68,12 @@ namespace WindowsHelpers
         /// </summary>
         /// <param name="NameSpace"></param>
         /// <param name="WmiQuery"></param>
-        public static async Task<List<ManagementBaseObject>> GetWmiManagementObjectListAsync(string NameSpace, string WmiQuery)
+        public static async Task<IEnumerable<ManagementBaseObject>> GetWmiManagementObjectListAsync(string NameSpace, string WmiQuery)
         {
             try
             {
-                WmiLocalQuery query = new WmiLocalQuery(NameSpace, WmiQuery);
-                var results = await query.RunAsync();
+                WmiQuery query = new WmiQuery(NameSpace, WmiQuery);
+                var results = await query.RunLocalAsync();
                 return results;
             }
             catch (Exception e)

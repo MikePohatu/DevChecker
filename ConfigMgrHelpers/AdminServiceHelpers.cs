@@ -16,33 +16,38 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using NUnit.Framework;
+using Diags.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using WindowsHelpers;
 
-namespace Tests
+namespace ConfigMgrHelpers
 {
-    [TestFixture]
-    public class SystemInfoTests
+    public static class AdminServiceHelpers
     {
-        [Test]
-        public async Task RemoteSysTest(string Computer, bool useSSL, string ostype, bool rebootPending, ulong memAtLeast)
+        private static readonly HttpClient _client = new HttpClient(new HttpClientHandler() {
+            UseDefaultCredentials = true
+        });
+
+        public static async Task ConnectAsync(string server)
         {
-            RemoteSystem.New(Computer);
-            RemoteSystem.Current.UseSSL = useSSL;
+            string url = @"https://" + server + @"/AdminService/wmi/SMS_Site";
 
-            await RemoteSystem.Current.ConnectAsync();
-
-            Assert.Multiple(() =>
+            try
             {
-                Assert.AreEqual(RemoteSystem.Current.InstalledOSType, ostype);
-                Assert.GreaterOrEqual(RemoteSystem.Current.SystemMemoryMB, memAtLeast);
-                Assert.IsTrue(RemoteSystem.Current.SystemPendingReboot == rebootPending);
-            });
+                HttpResponseMessage response = await _client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                LoggerFacade.Info("Connected to server  " + server);
+            }
+            catch (Exception e)
+            {
+                LoggerFacade.Error(e, "Error accessing admin server, url: " + url);
+            }
         }
     }
 }

@@ -79,11 +79,11 @@ namespace _20RoadRemoteAdmin
             set { this._serverssl = value; this.OnPropertyChanged(this, "ServerSSL"); }
         }
 
-        private string _configmgrServer;
-        public string ConfigMgrServer
+        private string _configmgrServerName;
+        public string ConfigMgrServerName
         {
-            get { return this._configmgrServer; }
-            set { this._configmgrServer = value; this.OnPropertyChanged(this, "ConfigMgrServer"); }
+            get { return this._configmgrServerName; }
+            set { this._configmgrServerName = value; this.OnPropertyChanged(this, "ConfigMgrServerName"); }
         }
 
         private bool _connectEnabled = true;
@@ -113,6 +113,14 @@ namespace _20RoadRemoteAdmin
             get { return this._cmclient; }
             set { this._cmclient = value; this.OnPropertyChanged(this, "CmClient"); }
         }
+
+        private CmServer _cmserver;
+        public CmServer CmServer
+        {
+            get { return this._cmserver; }
+            set { this._cmserver = value; this.OnPropertyChanged(this, "CmServer"); }
+        }
+
         public ObservableCollection<CustomActionScript> CustomActions
         {
             get { return ActionLibrary.PoshScripts; }
@@ -156,7 +164,7 @@ namespace _20RoadRemoteAdmin
             if (File.Exists(this._configFilePath))
             {
                 await Configuration.LoadAsync(this._configFilePath);
-                this.ConfigMgrServer = Configuration.Instance.ConfigMgrServer;
+                this.ConfigMgrServerName = Configuration.Instance.ConfigMgrServer;
                 this.RemoteComputer = Configuration.Instance.LastDevice;
                 this.ClientSSL = Configuration.Instance.ClientSSL;
                 this.ServerSSL = Configuration.Instance.ServerSSL;
@@ -193,10 +201,12 @@ namespace _20RoadRemoteAdmin
                 this.ConnectEnabled = false;
                 this.RemoteSystem = null;
                 this.CmClient = null;
+                this.CmServer = null;
                 this.SpinnerVisibility = Visibility.Visible;
                 this._connect_Pane.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
 
                 //update
+                CmServer.Create(this.ConfigMgrServerName).ConnectWmi();
                 RemoteSystem.New(this._remoteComputer, this._clientssl);
                 LoggerFacade.Info("Connecting to device: " + RemoteSystem.Current.ComputerName);
 
@@ -254,7 +264,7 @@ namespace _20RoadRemoteAdmin
 
         private async void onWindowClosing(object sender, CancelEventArgs e)
         {
-            Configuration.Instance.ConfigMgrServer = this.ConfigMgrServer;
+            Configuration.Instance.ConfigMgrServer = this.ConfigMgrServerName;
             Configuration.Instance.LastDevice = this.RemoteComputer;
             Configuration.Instance.ClientSSL = this.ClientSSL;
             Configuration.Instance.ServerSSL = this.ServerSSL;
