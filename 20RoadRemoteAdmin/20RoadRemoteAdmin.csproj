@@ -75,11 +75,14 @@
     <Compile Include="Tabs\CmActions.xaml.cs">
       <DependentUpon>CmActions.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\CmServerTab.xaml.cs">
+      <DependentUpon>CmServerTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\CmClientTab.xaml.cs">
       <DependentUpon>CmClientTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\ClientTab.xaml.cs">
-      <DependentUpon>ClientTab.xaml</DependentUpon>
+    <Compile Include="Tabs\OverviewTab.xaml.cs">
+      <DependentUpon>OverviewTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tabs\CmSystemActions.xaml.cs">
       <DependentUpon>CmSystemActions.xaml</DependentUpon>
@@ -108,11 +111,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Tabs\CmServerTab.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Tabs\CmClientTab.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Tabs\ClientTab.xaml">
+    <Page Include="Tabs\OverviewTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

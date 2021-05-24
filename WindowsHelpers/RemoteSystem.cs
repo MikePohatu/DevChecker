@@ -54,6 +54,11 @@ namespace WindowsHelpers
         public string ComputerName { get; set; }
 
         /// <summary>
+        /// The computer name supplied by the user with any domain prefixes removed
+        /// </summary>
+        public string BareComputerName { get { return this.ComputerName?.Split('.')[0]; } }
+
+        /// <summary>
         /// The computer name reported by the device on connection
         /// </summary>
         public string ReportedComputerName { get; set; }

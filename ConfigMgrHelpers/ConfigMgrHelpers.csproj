@@ -48,6 +48,7 @@
     <Compile Include="AdminServiceHelpers.cs" />
     <Compile Include="CmClient.cs" />
     <Compile Include="CmClientAction.cs" />
+    <Compile Include="CmCollection.cs" />
     <Compile Include="CmServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

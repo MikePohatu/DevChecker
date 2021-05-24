@@ -24,9 +24,14 @@ using System.Threading.Tasks;
 using System.Management;
 using WindowsHelpers;
 using Diags.Logging;
+using System.Collections.ObjectModel;
+using System.Management.Automation;
 
 namespace ConfigMgrHelpers
 {
+    /// <summary>
+    /// Server side information for the device from ConfigMgr
+    /// </summary>
     public class CmServer
     {
         //private Microsoft.ConfigurationManagement.Messaging.Framework. _connector;
@@ -53,6 +58,16 @@ namespace ConfigMgrHelpers
         public string SiteCode { get; private set; }
 
         /// <summary>
+        /// Whether the connection to the ConfigMgr server is successful
+        /// </summary>
+        public bool IsConnected { get; private set; } = false;
+
+        /// <summary>
+        /// Has a localhost name or IP been specified
+        /// </summary>
+        public bool IsLocalhostClient { get; private set; } = false;
+
+        /// <summary>
         /// The server name of the configmgr server to connect to
         /// </summary>
         public string ServerName { get; set; } = string.Empty;
@@ -66,31 +81,111 @@ namespace ConfigMgrHelpers
         /// The server name reported by ConfigMgr
         /// </summary>
         public string ReportedServerName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// The name of the client to be queried in ConfigMgr
+        /// </summary>
+        public string ClientName { get; private set; }
+
+        /// <summary>
+		/// The IPs address recorded in ConfigMgr for the client
+		/// </summary>
+		public string ClientIPs { get; private set; }
+
+        /// <summary>
+        /// The Active Directory Organisational Unit of the client
+        /// </summary>
+        public string ClientOU { get; private set; }
+
+        /// <summary>
+        /// List of collections assigned to the device
+        /// </summary>
+        public ObservableCollection<CmCollection> Collections { get; private set; } = new ObservableCollection<CmCollection>();
+
         public static CmServer Current { get; private set; }
         private CmServer(string ServerName)
         {
             this.ServerName = ServerName;
         }
 
-        public static CmServer Create(string ServerName, bool useSSL)
+        public static CmServer Create(string serverName, bool useSSL, string clientName)
         {
-            Current = new CmServer(ServerName);
+            Current = new CmServer(serverName);
             Current.UseSSL = useSSL;
+            Current.ClientName = clientName;
+            if (string.IsNullOrWhiteSpace(clientName) || clientName.ToLower() == "localhost" || clientName == "127.0.0.1")
+            {
+                Current.IsLocalhostClient = true;
+                LoggerFacade.Info("Skipping ConfigMgr check for localhost client");
+            }
             return Current;
         }
 
-        public async Task ConnectPoshAsync()
+        public async Task ConnectAsync()
         {
             string command = "Get-WmiObject -Namespace \"ROOT\\SMS\" -Query \"SELECT * FROM SMS_ProviderLocation\" -ComputerName " + this.ServerName;
 
             var posh = PoshHandler.GetRunner(command);
             var result = await PoshHandler.InvokeRunnerAsync(posh);
 
-            this.WmiNamespacePath = PoshHandler.GetFirstPropertyValue<string>(result, "NamespacePath");
-            this.SiteCode = PoshHandler.GetFirstPropertyValue<string>(result, "SiteCode");
-            this.ReportedServerName = PoshHandler.GetFirstPropertyValue<string>(result, "Machine");
-            this.SiteWmiNamespace = @"root\sms\site_" + this.SiteCode;
-            LoggerFacade.Info("Connected to ConfigMgr server "+this.ServerName +", site code: " + this.SiteCode);
+            if (result != null)
+            {
+                this.IsConnected = true;
+                this.WmiNamespacePath = PoshHandler.GetFirstPropertyValue<string>(result, "NamespacePath");
+                this.SiteCode = PoshHandler.GetFirstPropertyValue<string>(result, "SiteCode");
+                this.ReportedServerName = PoshHandler.GetFirstPropertyValue<string>(result, "Machine");
+                this.SiteWmiNamespace = @"root\sms\site_" + this.SiteCode;
+                LoggerFacade.Info("Connected to ConfigMgr server " + this.ServerName + ", site code: " + this.SiteCode);
+
+                await this.QueryClientAsync();
+            }
+        }
+
+        public async Task QueryClientAsync()
+        {
+            if (!this.IsLocalhostClient)
+            {
+                LoggerFacade.Info("Gathering ConfigMgr data client");
+                string command = "(Get-WmiObject -Class SMS_R_SYSTEM -Namespace \"" + CmServer.Current.SiteWmiNamespace + "\" -ComputerName " + CmServer.Current.ServerName + " | where {$_.Name -eq \"" + this.ClientName + "\"})";
+
+                var posh = PoshHandler.GetRunner(command);
+                var result = await PoshHandler.InvokeRunnerAsync(posh);
+
+                if (result.Count > 0)
+                {
+                    this.ClientIPs = string.Join(", ", PoshHandler.GetFirstPropertyValue<string[]>(result, "IPAddresses"));
+                    this.ClientOU = PoshHandler.GetFirstPropertyValue<string[]>(result, "SystemOUName").Last();
+
+                    LoggerFacade.Info("Finished gathering ConfigMgr data for client");
+                }
+            }
+        }
+
+        public async Task QueryCollectionsAsync()
+        {
+            if (!this.IsLocalhostClient)
+            {
+                LoggerFacade.Info("Gathering collections");
+                string command = "Get-WmiObject -ComputerName " + CmServer.Current.ServerName + " -Namespace \"" + CmServer.Current.SiteWmiNamespace + "\"  -Query \"SELECT SMS_Collection.* FROM SMS_FullCollectionMembership, SMS_Collection where name = '" + this.ClientName + "' and SMS_FullCollectionMembership.CollectionID = SMS_Collection.CollectionID\"";
+                
+                var posh = PoshHandler.GetRunner(command);
+                var result = await PoshHandler.InvokeRunnerAsync(posh);
+
+                if (result.Count > 0)
+                {
+                    foreach (PSObject obj in result)
+                    {
+                        string colname = PoshHandler.GetPropertyValue<string>(obj, "Name");
+                        string colid = PoshHandler.GetPropertyValue<string>(obj, "CollectionID");
+                        this.Collections.Add(new CmCollection(colname, colid));
+                    }
+
+                    //this.ClientIPs = string.Join(", ", PoshHandler.GetFirstPropertyValue<string[]>(result, "IPAddresses"));
+                    //this.ClientOU = PoshHandler.GetFirstPropertyValue<string[]>(result, "SystemOUName").Last();
+
+                    LoggerFacade.Info("Finished gathering collections");
+                }
+            }
         }
     }
 }

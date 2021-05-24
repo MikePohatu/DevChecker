@@ -26,6 +26,9 @@ using WindowsHelpers;
 
 namespace ConfigMgrHelpers
 {
+	/// <summary>
+	/// Client side information for the ConfigMgr client
+	/// </summary>
     public class CmClient
 	{ 
 		public bool ClientInstalled { get; set; } = false;
@@ -36,18 +39,16 @@ namespace ConfigMgrHelpers
 		/// </summary>
 		public string ReportedName { get; private set; }
 
-		/// <summary>
-		/// The IPs address recorded in ConfigMgr
-		/// </summary>
-		public string IPs { get; private set; }
-
-		/// <summary>
-		/// The Active Directory Organisational Unit
-		/// </summary>
-		public string OU { get; private set; }
 		public List<CmClientAction> ClientActions { get; private set; }
 
-		public CmClient(string connectstring, bool usessl)
+		public static CmClient Current;
+		public static CmClient New(string connectstring, bool usessl)
+        {
+			Current = new CmClient(connectstring, usessl);
+			return Current;
+        }
+
+		private CmClient(string connectstring, bool usessl)
         {
 			this.ConnectString = connectstring;
 			this.ClientActions = new List<CmClientAction>() {
@@ -62,29 +63,6 @@ namespace ConfigMgrHelpers
 			};
 		}
 
-		public async Task QueryServerAsync()
-        {
-			if (string.IsNullOrWhiteSpace(this.ConnectString) || this.ConnectString.ToLower() == "localhost" || this.ConnectString == "127.0.0.1")
-            {
-				LoggerFacade.Info("Skipping ConfigMgr check for localhost client");
-            } 
-			else
-            {
-				LoggerFacade.Info("Gathering ConfigMgr data client");
-				string command = "(Get-WmiObject -Class SMS_R_SYSTEM -Namespace \"" + CmServer.Current.SiteWmiNamespace + "\" -ComputerName " + CmServer.Current.ServerName + " | where {$_.Name -eq \"" + this.ConnectString + "\"})";
-
-				var posh = PoshHandler.GetRunner(command);
-				var result = await PoshHandler.InvokeRunnerAsync(posh);
-
-				if (result.Count > 0)
-                {
-					this.IPs = string.Join(", ", PoshHandler.GetFirstPropertyValue<string[]>(result, "IPAddresses"));
-					this.OU = PoshHandler.GetFirstPropertyValue<string[]>(result, "SystemOUName").Last();
-					this.ReportedName = PoshHandler.GetFirstPropertyValue<string>(result, "Name");
-
-					LoggerFacade.Info("Finished gathering ConfigMgr data for client");
-				}
-			}
-		}
+		
 	}
 }

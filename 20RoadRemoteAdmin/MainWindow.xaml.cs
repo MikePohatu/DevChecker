@@ -205,26 +205,36 @@ namespace _20RoadRemoteAdmin
                 this._connect_Pane.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
 
                 //update
-                await CmServer.Create(this.ConfigMgrServerName, this.ServerSSL).ConnectPoshAsync();
                 RemoteSystem.New(this._remoteComputer, this._clientssl);
                 LoggerFacade.Info("Connecting to device: " + RemoteSystem.Current.ComputerName);
 
-                await RemoteSystem.Current.ConnectAsync();
+                List<Task> connectTasks = new List<Task>();
+                connectTasks.Add(CmServer.Create(this.ConfigMgrServerName, this.ServerSSL, RemoteSystem.Current.BareComputerName).ConnectAsync());
+                connectTasks.Add(RemoteSystem.Current.ConnectAsync());
+                await Task.WhenAll(connectTasks);
+
+                
 
                 this.RemoteSystem = RemoteSystem.Current;
 
-                var cmclient = new CmClient(RemoteSystem.Current.ComputerName, RemoteSystem.Current.UseSSL);
+                var cmclient = CmClient.New(RemoteSystem.Current.ComputerName, RemoteSystem.Current.UseSSL);
                     
                 if (RemoteSystem.Current.ConfigMgrClientStatus != "NotInstalled" && RemoteSystem.Current.ConfigMgrClientStatus != "Unknown")
                 {
                     cmclient.ClientInstalled = true;
                 }
-                await cmclient.QueryServerAsync();
+
                 this.CmClient = cmclient;
+                this.CmServer = CmServer.Current;
 
                 //release
                 this.ControlsEnabled = true;
                 this.SpinnerVisibility = Visibility.Collapsed;
+
+                //further updates
+                List<Task> postconnectTasks = new List<Task>();
+                postconnectTasks.Add(CmServer.QueryCollectionsAsync());
+                await Task.WhenAll(postconnectTasks);
             }
         }
 

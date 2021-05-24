@@ -18,6 +18,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,17 +31,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WindowsHelpers;
 
 namespace _20RoadRemoteAdmin.Tabs
 {
     /// <summary>
-    /// Interaction logic for CmClientTab.xaml
+    /// Interaction logic for OverviewTab.xaml
     /// </summary>
-    public partial class CmClientTab : UserControl
+    public partial class OverviewTab : UserControl
     {
-        public CmClientTab()
+        public OverviewTab()
         {
             InitializeComponent();
+        }
+
+        public void onCDollorClicked(object sender, RoutedEventArgs e)
+        {
+            Process.Start(@"\\" + RemoteSystem.Current.ComputerName + @"\c$");
         }
     }
 }

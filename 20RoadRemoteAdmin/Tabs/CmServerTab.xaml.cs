@@ -34,11 +34,11 @@ using System.Windows.Shapes;
 namespace _20RoadRemoteAdmin.Tabs
 {
     /// <summary>
-    /// Interaction logic for CmClientTab.xaml
+    /// Interaction logic for CmServerTab.xaml
     /// </summary>
-    public partial class CmClientTab : UserControl
+    public partial class CmServerTab : UserControl
     {
-        public CmClientTab()
+        public CmServerTab()
         {
             InitializeComponent();
         }

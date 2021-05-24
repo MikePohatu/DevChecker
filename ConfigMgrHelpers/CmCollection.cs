@@ -18,36 +18,21 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using WindowsHelpers;
 
-namespace _20RoadRemoteAdmin.Tabs
+namespace ConfigMgrHelpers
 {
-    /// <summary>
-    /// Interaction logic for ClientTab.xaml
-    /// </summary>
-    public partial class ClientTab : UserControl
+    public class CmCollection
     {
-        public ClientTab()
-        {
-            InitializeComponent();
-        }
+        public string DisplayName { get; set; }
+        public string ID { get; set; }
 
-        public void onCDollorClicked(object sender, RoutedEventArgs e)
+        public CmCollection(string name, string id)
         {
-            Process.Start(@"\\" + RemoteSystem.Current.ComputerName + @"\c$");
+            this.DisplayName = name;
+            this.ID = id;
         }
     }
 }
