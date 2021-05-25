@@ -23,7 +23,7 @@ using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
 using WindowsHelpers;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System.Reflection;
 
 namespace Tests
@@ -34,7 +34,7 @@ namespace Tests
         public static List<RemoteSystemDetails> RemoteSystemConfig()
         {
             string json = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "Configs\\RemoteSystem-testconfig.json");
-            return JsonConvert.DeserializeObject<RemoteSystemConfig>(json).RemoteConnecctionTests;
+            return JsonSerializer.Deserialize<RemoteSystemConfig>(json).RemoteConnecctionTests;
         }
 
         [Test, TestCaseSource("RemoteSystemConfig")]

@@ -16,8 +16,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,31 +23,53 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WindowsHelpers;
+using System.Text.Json;
+using Diags.Logging;
 
 namespace _20RoadRemoteAdmin.Config
 {
     public class Configuration
     {
+        private static JsonSerializerOptions _jsonOptions = new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true,
+            WriteIndented = true
+        };
+
         public string ConfigMgrServer { get; set; }
         public string LastDevice { get; set; }
 
-        public bool ClientSSL { get; set; }
-        public bool ServerSSL { get; set; }
+        public bool ClientSSL { get; set; } = false;
+        public bool ServerSSL { get; set; } = true;
+        public static Configuration Instance { get; private set; }
+        
+        // This should be a singleton, but this works around limitation in System.Text.Json that doesn't support
+        // private constructors
+        public Configuration() {
+            if (Instance != null) { throw new InvalidOperationException("Multiple Configurations created"); }
+            Instance = this;
+        }
 
-        public bool UseSSL { get; set; } = false;
-
-        public static Configuration Instance { get; private set; } = new Configuration();
-        private Configuration() { }
-
-        public static async Task LoadAsync(string filePath)
+        public static async Task<Configuration> LoadAsync(string filePath)
         {
             string json = await IOHelpers.ReadFileAsync(filePath);
-            Instance = JsonConvert.DeserializeObject<Configuration>(json);
+            Configuration config = null;
+            try
+            {
+                config = JsonSerializer.Deserialize<Configuration>(json, _jsonOptions);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error loading configuration file: " + filePath);
+            }
+            
+            Instance = config;
+            return config;
         }
 
         public async Task WriteAsync(string filePath)
         {
-            string json = JsonConvert.SerializeObject(this);
+            string json = JsonSerializer.Serialize(this, _jsonOptions);
             await IOHelpers.WriteTextFileAsync(filePath, json);
         }
     }

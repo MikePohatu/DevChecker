@@ -161,14 +161,18 @@ namespace _20RoadRemoteAdmin
 
         private async Task StartUpAsync()
         {
+            Configuration config;
             if (File.Exists(this._configFilePath))
             {
-                await Configuration.LoadAsync(this._configFilePath);
-                this.ConfigMgrServerName = Configuration.Instance.ConfigMgrServer;
-                this.RemoteComputer = Configuration.Instance.LastDevice;
-                this.ClientSSL = Configuration.Instance.ClientSSL;
-                this.ServerSSL = Configuration.Instance.ServerSSL;
+                config = await Configuration.LoadAsync(this._configFilePath);
             }
+            else { config = new Configuration(); }
+
+            this.ConfigMgrServerName = config.ConfigMgrServer;
+            this.RemoteComputer = config.LastDevice;
+            this.ClientSSL = config.ClientSSL;
+            this.ServerSSL = config.ServerSSL;
+
             await ActionLibrary.RefreshAsync();
         }
 

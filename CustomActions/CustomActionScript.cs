@@ -25,7 +25,7 @@ using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 using WindowsHelpers;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace CustomActions
 {

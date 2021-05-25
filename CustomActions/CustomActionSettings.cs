@@ -17,13 +17,13 @@
 //
 #endregion
 using Diags.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WindowsHelpers;
+using System.Text.Json;
 
 namespace CustomActions
 {
@@ -42,7 +42,7 @@ namespace CustomActions
         {
             try
             {
-                CustomActionSettings settings = JsonConvert.DeserializeObject<CustomActionSettings>(json);
+                CustomActionSettings settings = JsonSerializer.Deserialize<CustomActionSettings>(json);
                 return settings;
             }
             catch (Exception e)
