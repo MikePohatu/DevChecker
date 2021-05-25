@@ -61,7 +61,7 @@ namespace _20RoadRemoteAdmin
         {
             InitializeComponent();
             LoggingHelpers.AddLoggingHandler(this.OnNewLogMessage);
-            LoggerFacade.Debug("20Road Remote Admin started");
+            Log.Debug("20Road Remote Admin started");
             this.StartUpAsync().ConfigureAwait(false);
         }
 
@@ -192,7 +192,7 @@ namespace _20RoadRemoteAdmin
             {
                 this.RemoteSystem = null;
                 this.CmClient = null;
-                LoggerFacade.Error("No remote computer specified");
+                Log.Error("No remote computer specified");
             }
             else
             {
@@ -206,7 +206,7 @@ namespace _20RoadRemoteAdmin
 
                 //update
                 RemoteSystem.New(this._remoteComputer, this._clientssl);
-                LoggerFacade.Info("Connecting to device: " + RemoteSystem.Current.ComputerName);
+                Log.Info(Log.Highlight("Connecting to device: " + RemoteSystem.Current.ComputerName));
 
                 List<Task> connectTasks = new List<Task>();
                 connectTasks.Add(CmServer.Create(this.ConfigMgrServerName, this.ServerSSL, RemoteSystem.Current.BareComputerName).ConnectAsync());

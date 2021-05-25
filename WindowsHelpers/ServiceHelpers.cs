@@ -44,7 +44,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Error restarting service: " + servicename);
+                Log.Error(e, "Error restarting service: " + servicename);
             }
         }
     }

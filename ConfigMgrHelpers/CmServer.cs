@@ -116,7 +116,7 @@ namespace ConfigMgrHelpers
             if (string.IsNullOrWhiteSpace(clientName) || clientName.ToLower() == "localhost" || clientName == "127.0.0.1")
             {
                 Current.IsLocalhostClient = true;
-                LoggerFacade.Info("Skipping ConfigMgr check for localhost client");
+                Log.Info("Skipping ConfigMgr check for localhost client");
             }
             return Current;
         }
@@ -135,7 +135,7 @@ namespace ConfigMgrHelpers
                 this.SiteCode = PoshHandler.GetFirstPropertyValue<string>(result, "SiteCode");
                 this.ReportedServerName = PoshHandler.GetFirstPropertyValue<string>(result, "Machine");
                 this.SiteWmiNamespace = @"root\sms\site_" + this.SiteCode;
-                LoggerFacade.Info("Connected to ConfigMgr server " + this.ServerName + ", site code: " + this.SiteCode);
+                Log.Info("Connected to ConfigMgr server " + this.ServerName + ", site code: " + this.SiteCode);
 
                 await this.QueryClientAsync();
             }
@@ -145,7 +145,7 @@ namespace ConfigMgrHelpers
         {
             if (!this.IsLocalhostClient)
             {
-                LoggerFacade.Info("Gathering ConfigMgr data client");
+                Log.Info("Gathering ConfigMgr server data for client");
                 string command = "(Get-WmiObject -Class SMS_R_SYSTEM -Namespace \"" + CmServer.Current.SiteWmiNamespace + "\" -ComputerName " + CmServer.Current.ServerName + " | where {$_.Name -eq \"" + this.ClientName + "\"})";
 
                 var posh = PoshHandler.GetRunner(command);
@@ -156,7 +156,7 @@ namespace ConfigMgrHelpers
                     this.ClientIPs = string.Join(", ", PoshHandler.GetFirstPropertyValue<string[]>(result, "IPAddresses"));
                     this.ClientOU = PoshHandler.GetFirstPropertyValue<string[]>(result, "SystemOUName").Last();
 
-                    LoggerFacade.Info("Finished gathering ConfigMgr data for client");
+                    Log.Info("Finished gathering ConfigMgr server data for client");
                 }
             }
         }
@@ -165,7 +165,7 @@ namespace ConfigMgrHelpers
         {
             if (!this.IsLocalhostClient)
             {
-                LoggerFacade.Info("Gathering collections");
+                Log.Info("Gathering collections");
                 string command = "Get-WmiObject -ComputerName " + CmServer.Current.ServerName + " -Namespace \"" + CmServer.Current.SiteWmiNamespace + "\"  -Query \"SELECT SMS_Collection.* FROM SMS_FullCollectionMembership, SMS_Collection where name = '" + this.ClientName + "' and SMS_FullCollectionMembership.CollectionID = SMS_Collection.CollectionID\"";
                 
                 var posh = PoshHandler.GetRunner(command);
@@ -183,7 +183,7 @@ namespace ConfigMgrHelpers
                     //this.ClientIPs = string.Join(", ", PoshHandler.GetFirstPropertyValue<string[]>(result, "IPAddresses"));
                     //this.ClientOU = PoshHandler.GetFirstPropertyValue<string[]>(result, "SystemOUName").Last();
 
-                    LoggerFacade.Info("Finished gathering collections");
+                    Log.Info("Finished gathering collections");
                 }
             }
         }

@@ -67,7 +67,7 @@ namespace ConfigMgrHelpers
 		{
 			if (this.ClientInstalled)
 			{
-				LoggerFacade.Info("Gathering ConfigMgr client info");
+				Log.Info("Gathering ConfigMgr client info");
 				string command = @"Get-WmiObject -Namespace root\ccm -Query 'SELECT * FROM SMS_Client'"; 
 
 				var posh = PoshHandler.GetRunner(command, RemoteSystem.Current.ComputerName, RemoteSystem.Current.UseSSL);
@@ -77,7 +77,7 @@ namespace ConfigMgrHelpers
 				{
 					this.ClientVersion = PoshHandler.GetFirstPropertyValue<string>(result, "ClientVersion");
 					this.ReportedName = PoshHandler.GetFirstPropertyValue<string>(result, "PSComputerName");
-					LoggerFacade.Info("Finished gathering ConfigMgr client info");
+					Log.Info("Finished gathering ConfigMgr client info");
 				}
 			}
 		}

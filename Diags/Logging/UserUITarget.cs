@@ -41,7 +41,7 @@ namespace Diags.Logging
             //if (logEvent.Message.StartsWith(Notifications.AlertPrefix)) { return; }
 
             string trimmedmessage;
-            bool ishighlighted = LoggingHelpers.IsHighlighted(this.Layout.Render(logEvent), out trimmedmessage);
+            bool ishighlighted = Log.IsHighlighted(this.Layout.Render(logEvent), out trimmedmessage);
             this.LastMessage = trimmedmessage;
             this.NewLogMessage?.Invoke(logEvent.Level, this.LastMessage, ishighlighted);
         }

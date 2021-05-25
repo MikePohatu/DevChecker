@@ -25,8 +25,6 @@ namespace Diags.Logging
 
     public static class LoggingHelpers
     {
-        private static string _highlightprefix = "**";
-
         public static void AddLoggingHandler(NewLog handler)
         {
             if (handler == null) { return; }
@@ -46,26 +44,6 @@ namespace Diags.Logging
             LoggingRule rule = LogManager.Configuration.FindRuleByName("outputPane");
             rule?.SetLoggingLevels(loglevel, LogLevel.Fatal);
             LogManager.ReconfigExistingLoggers();
-        }
-
-        public static string Highlight(string message)
-        {
-            return _highlightprefix + message;
-        }
-
-        public static bool IsHighlighted(string message, out string unhighlighted)
-        {
-            if (message.StartsWith(_highlightprefix))
-            {
-                if (message.Length == _highlightprefix.Length) { unhighlighted = string.Empty; }
-                else { unhighlighted = message.Substring(_highlightprefix.Length); }
-                return true;
-            }
-            else
-            {
-                unhighlighted = message;
-                return false;
-            }
         }
     }
 }

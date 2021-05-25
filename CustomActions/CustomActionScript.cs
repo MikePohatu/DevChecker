@@ -123,7 +123,7 @@ namespace CustomActions
         {
             if (this._loaded == true && string.IsNullOrWhiteSpace(this._script) == false)
             {
-                LoggerFacade.Info("Running custom action: " + this.DisplayName);
+                Log.Info("Running custom action: " + this.DisplayName);
 
                 PowerShell posh = PoshHandler.GetRunner(this._script, RemoteSystem.Current.ComputerName, RemoteSystem.Current.UseSSL);
 
@@ -131,7 +131,7 @@ namespace CustomActions
             }
             else
             {
-                LoggerFacade.Warn("Script hasn't finished loading yet. Please try again soon. Script: " + this._scriptpath);
+                Log.Warn("Script hasn't finished loading yet. Please try again soon. Script: " + this._scriptpath);
             }
         }
     }

@@ -78,7 +78,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Error running query against namespace " + NameSpace + ": " + WmiQuery);
+                Log.Error(e, "Error running query against namespace " + NameSpace + ": " + WmiQuery);
                 throw e;
             }
         }

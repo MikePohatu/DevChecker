@@ -110,7 +110,7 @@ namespace WindowsHelpers
             if (this.Completed)
             {
                 string message = "Query has already been run: \\\\.\\" + this.NameSpace + " : " + this.QueryString;
-                LoggerFacade.Error(message);
+                Log.Error(message);
                 throw new KnownException(message, "");
             }
 
@@ -142,13 +142,13 @@ namespace WindowsHelpers
             catch (UnauthorizedAccessException e)
             {
                 this.Completed = true;
-                LoggerFacade.Error("Access denied to computer. " + e.Message);
+                Log.Error("Access denied to computer. " + e.Message);
                 throw e;
             }
             catch (Exception e)
             {
                 this.Completed = true;
-                LoggerFacade.Error("Failed to run query: " + e.Message);
+                Log.Error("Failed to run query: " + e.Message);
                 throw e;
             }
         }
@@ -173,7 +173,7 @@ namespace WindowsHelpers
             if (this.Completed)
             {
                 string message = "Query has already been run: \\\\" + this.ComputerName + "\\" + this.NameSpace + " : " + this.QueryString;
-                LoggerFacade.Error(message);
+                Log.Error(message);
                 throw new KnownException(message, "");
             }
 
@@ -191,13 +191,13 @@ namespace WindowsHelpers
             catch (UnauthorizedAccessException e)
             {
                 this.Completed = true;
-                LoggerFacade.Error("Access denied to computer. " + e.Message);
+                Log.Error("Access denied to computer. " + e.Message);
                 throw e;
             }
             catch (Exception e)
             {
                 this.Completed = true;
-                LoggerFacade.Error("Failed to run query: " + e.Message);
+                Log.Error("Failed to run query: " + e.Message);
                 throw e;
             }
         }
@@ -226,7 +226,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Error converting WMI results to string");
+                Log.Error(e, "Error converting WMI results to string");
                 return null;
             }
 
@@ -255,7 +255,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Error getting WMI results for property: " + propertyName);
+                Log.Error(e, "Error getting WMI results for property: " + propertyName);
                 return null;
             }
         }
@@ -279,7 +279,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Error getting WMI result for property: " + propertyName);  
+                Log.Error(e, "Error getting WMI result for property: " + propertyName);  
             }
             return default(T);
         }

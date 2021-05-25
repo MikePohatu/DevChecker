@@ -17,14 +17,14 @@
 //
 #endregion
 
-// LoggerFacade.cs - Facade class for the main logging framework 
+// Log.cs - Facade class for the main logging framework 
 
 using NLog;
 using System;
 
 namespace Diags.Logging
 {
-    public static class LoggerFacade
+    public static class Log
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -86,6 +86,27 @@ namespace Diags.Logging
         public static void Debug(Exception e, string message)
         {
             _logger.Debug(e, message);
+        }
+
+        private static string _highlightprefix = "**";
+        public static string Highlight(string message)
+        {
+            return _highlightprefix + message;
+        }
+
+        public static bool IsHighlighted(string message, out string unhighlighted)
+        {
+            if (message.StartsWith(_highlightprefix))
+            {
+                if (message.Length == _highlightprefix.Length) { unhighlighted = string.Empty; }
+                else { unhighlighted = message.Substring(_highlightprefix.Length); }
+                return true;
+            }
+            else
+            {
+                unhighlighted = message;
+                return false;
+            }
         }
     }
 }

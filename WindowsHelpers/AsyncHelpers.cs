@@ -58,12 +58,12 @@ namespace WindowsHelpers
 
             process.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =>
             {
-                LoggerFacade.Error(e.Data);
+                Log.Error(e.Data);
             };
 
             process.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
             {
-                LoggerFacade.Info(e.Data);
+                Log.Info(e.Data);
             };
 
             return process;

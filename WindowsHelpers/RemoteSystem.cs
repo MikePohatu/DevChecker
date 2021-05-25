@@ -132,12 +132,12 @@ namespace WindowsHelpers
                         this.ConfigMgrClientStatus = PoshHandler.GetFirstHashTableString(results, "configMgrClientStatus");
                         this.Properties = PoshHandler.GetHashTableAsOrderedDictionary(results);
 
-                        LoggerFacade.Info(LoggingHelpers.Highlight("Connected to " + this.ReportedComputerName));
+                        Log.Info(Log.Highlight("Connected to " + this.ReportedComputerName));
                         Connected?.Invoke(this, new EventArgs());
                     }
                     else
                     {
-                        LoggerFacade.Error("Couldn't gather device information for " + this.ComputerName);
+                        Log.Error("Couldn't gather device information for " + this.ComputerName);
                     }
                 }             
             }
@@ -148,11 +148,11 @@ namespace WindowsHelpers
                 if (cdollar.Exists)
                 {
                     this.CDollarAccessible = true;
-                    LoggerFacade.Error("Error connecting to remote system using WinRM, but device appears to be up");
+                    Log.Error("Error connecting to remote system using WinRM, but device appears to be up");
                 }
                 else
                 {
-                    LoggerFacade.Error("Error connecting to remote system " + this.ComputerName + ": " + e.Message);
+                    Log.Error("Error connecting to remote system " + this.ComputerName + ": " + e.Message);
                 }                
             }
         }

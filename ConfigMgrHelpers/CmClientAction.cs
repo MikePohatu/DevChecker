@@ -42,7 +42,7 @@ namespace ConfigMgrHelpers
 
         public async Task RunActionAsync()
         {
-            LoggerFacade.Info("Running client action: " + this.DisplayName);
+            Log.Info("Running client action: " + this.DisplayName);
             string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\CMRunClientAction.ps1";
             string script = await IOHelpers.ReadFileAsync(scriptPath);
             Dictionary<string, object> parameters = new Dictionary<string, object>();

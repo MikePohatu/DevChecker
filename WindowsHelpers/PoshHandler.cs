@@ -81,13 +81,13 @@ namespace WindowsHelpers
                     {
                         builder.AppendLine(command.CommandText);
                     }
-                    LoggerFacade.Info(builder.ToString().Trim()); 
+                    Log.Info(builder.ToString().Trim()); 
                 }
                 result = await Task.Factory.FromAsync(posh.BeginInvoke(), asyncResult => posh.EndInvoke(asyncResult));
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Error running PowerShell script");
+                Log.Error(e, "Error running PowerShell script");
             }
             return result;
         }
@@ -247,13 +247,13 @@ namespace WindowsHelpers
         public static void InfoEventHandler(object sender, DataAddedEventArgs e)
         {
             InformationRecord newRecord = ((PSDataCollection<InformationRecord>)sender)[e.Index];
-            LoggerFacade.Info(newRecord.MessageData.ToString());
+            Log.Info(newRecord.MessageData.ToString());
         }
 
         public static void WarnEventHandler(object sender, DataAddedEventArgs e)
         {
             WarningRecord newRecord = ((PSDataCollection<WarningRecord>)sender)[e.Index];
-            LoggerFacade.Warn(newRecord.Message);
+            Log.Warn(newRecord.Message);
         }
 
         public static void ProgressEventHandler(object sender, DataAddedEventArgs e)
@@ -263,7 +263,7 @@ namespace WindowsHelpers
                 ProgressRecord newRecord = ((PSDataCollection<ProgressRecord>)sender)[e.Index];
                 if (newRecord.PercentComplete != -1)
                 {
-                    LoggerFacade.Info(newRecord.PercentComplete);
+                    Log.Info(newRecord.PercentComplete);
                 }
             }
         }
@@ -271,13 +271,13 @@ namespace WindowsHelpers
         public static void ErrorEventHandler(object sender, DataAddedEventArgs e)
         {
             ErrorRecord newRecord = ((PSDataCollection<ErrorRecord>)sender)[e.Index];
-            LoggerFacade.Error(newRecord.Exception, newRecord.Exception.Message);
+            Log.Error(newRecord.Exception, newRecord.Exception.Message);
         }
 
         public static void DebugEventHandler(object sender, DataAddedEventArgs e)
         {
             DebugRecord newRecord = ((PSDataCollection<DebugRecord>)sender)[e.Index];
-            LoggerFacade.Debug(newRecord.Message);
+            Log.Debug(newRecord.Message);
         }
 
         public static void VerboseEventHandler(object sender, DataAddedEventArgs e)
@@ -285,7 +285,7 @@ namespace WindowsHelpers
             if (LogVerbose)
             {
                 VerboseRecord newRecord = ((PSDataCollection<VerboseRecord>)sender)[e.Index];
-                LoggerFacade.Trace(newRecord.Message);
+                Log.Trace(newRecord.Message);
             }
         }
 
@@ -307,7 +307,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, $"Failed to load {scriptResource}");
+                Log.Error(e, $"Failed to load {scriptResource}");
             }
 
             return script;
@@ -325,7 +325,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Error running script: " + scriptPath);
+                Log.Error(e, "Error running script: " + scriptPath);
             }
         }
     }

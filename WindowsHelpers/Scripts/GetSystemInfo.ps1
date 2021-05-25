@@ -52,10 +52,16 @@ Function Get-MemorySize {
 }
 
 function Get-ConfigMgrClientStatus {
-    $service = Get-Service -Name 'ccmexec' -ErrorAction SilentlyContinue
-    if ($service) {
-        return $service.Status.ToString()
-    } else {
+    $client =  Get-WmiObject -NameSpace Root\CCM -Class Sms_Client -Property ClientVersion -ErrorAction SilentlyContinue
+    if ($client) {
+        $service = Get-Service -Name 'ccmexec' -ErrorAction SilentlyContinue
+        if ($service) {
+            return $service.Status.ToString()
+        } else {
+            return 'ServiceError'
+        }
+    }
+    else {
         return 'NotInstalled'
     }
 }

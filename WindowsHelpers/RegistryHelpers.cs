@@ -37,7 +37,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Error getting registry value");
+                Log.Error(e, "Error getting registry value");
             }
             
             return o == null ? false : true;
@@ -52,7 +52,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Error getting registry key");
+                Log.Error(e, "Error getting registry key");
             }
 
             return o == null ? false : true;
@@ -69,7 +69,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Debug(e, ("Error getting registry value "+ key +"\\"+value));
+                Log.Debug(e, ("Error getting registry value "+ key +"\\"+value));
             }
             return reg;
         }
@@ -85,7 +85,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Debug(e, "Error getting registry value "+key+"\\"+value);
+                Log.Debug(e, "Error getting registry value "+key+"\\"+value);
             }
             return reg;
         }
@@ -98,7 +98,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Debug(e, "Error setting registry SZ value "+key+"\\"+valueName +"to "+value);
+                Log.Debug(e, "Error setting registry SZ value "+key+"\\"+valueName +"to "+value);
             }
         }
 
@@ -110,7 +110,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Debug(e, "Error setting registry DWORD value " + key + "\\" + valueName + "to " + value);
+                Log.Debug(e, "Error setting registry DWORD value " + key + "\\" + valueName + "to " + value);
             }
         }
     }

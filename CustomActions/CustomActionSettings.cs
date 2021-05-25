@@ -47,7 +47,7 @@ namespace CustomActions
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Error loading ActionSettings");
+                Log.Error(e, "Error loading ActionSettings");
                 return null;
             }
         }

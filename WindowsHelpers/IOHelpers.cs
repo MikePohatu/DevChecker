@@ -52,7 +52,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Failed to load file: " + path);
+                Log.Error(e, "Failed to load file: " + path);
             }
 
             return script;
@@ -78,7 +78,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Failed to write file: " + path);
+                Log.Error(e, "Failed to write file: " + path);
             }
         }
     }

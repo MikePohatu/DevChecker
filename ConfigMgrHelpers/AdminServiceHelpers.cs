@@ -42,11 +42,11 @@ namespace ConfigMgrHelpers
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
 
-                LoggerFacade.Info("Connected to server  " + server);
+                Log.Info("Connected to server  " + server);
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Error accessing admin server, url: " + url);
+                Log.Error(e, "Error accessing admin server, url: " + url);
             }
         }
     }

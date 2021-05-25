@@ -47,12 +47,12 @@ namespace _20RoadRemoteAdmin
             args.Handled = true;
             if (args.Exception is System.IO.FileNotFoundException)
             {
-                LoggerFacade.Error("System.IO.FileNotFoundException logged. This is a known issue with DragDrop");
+                Log.Error("System.IO.FileNotFoundException logged. This is a known issue with DragDrop");
             }
             else
             {
-                LoggerFacade.Fatal("OnDispatcherUnhandledException:" + args.Exception.ToString());
-                LoggerFacade.Fatal("OnDispatcherUnhandledException:" + args.Exception.Message);
+                Log.Fatal("OnDispatcherUnhandledException:" + args.Exception.ToString());
+                Log.Fatal("OnDispatcherUnhandledException:" + args.Exception.Message);
                 this.HandleException(sender, args.Exception, args.Exception.StackTrace);
             }
         }
@@ -60,7 +60,7 @@ namespace _20RoadRemoteAdmin
         public void OnUnhandledException(object sender, UnhandledExceptionEventArgs args)
         {
             Exception e = (Exception)args.ExceptionObject;
-            LoggerFacade.Fatal("OnUnhandledException:" + e.Message);
+            Log.Fatal("OnUnhandledException:" + e.Message);
             this.HandleException(sender, e, e.StackTrace);
         }
 
@@ -86,7 +86,7 @@ namespace _20RoadRemoteAdmin
 
         private void ShowErrorMessageAndClose(string Message)
         {
-            LoggerFacade.Fatal("Closing TsGui. Error message: " + Message);
+            Log.Fatal("Closing TsGui. Error message: " + Message);
             string msg = Message;
             //Director.Instance.CloseWithError("Application Runtime Exception", msg);
         }

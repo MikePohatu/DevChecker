@@ -52,7 +52,7 @@
     <Compile Include="DiagnosticsEnums.cs" />
     <Compile Include="DiagnosticsHelper.cs" />
     <Compile Include="Logging\ILoggingReceiver.cs" />
-    <Compile Include="Logging\LoggerFacade.cs" />
+    <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\LoggingDelegates.cs" />
     <Compile Include="Logging\LoggingHelpers.cs" />
     <Compile Include="Logging\UserUITarget.cs" />

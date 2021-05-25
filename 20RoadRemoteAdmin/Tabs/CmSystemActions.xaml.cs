@@ -64,7 +64,7 @@ namespace _20RoadRemoteAdmin.Tabs
             }
             catch (Exception ex)
             {
-                LoggerFacade.Error(ex, "Error opening path: " + path);
+                Log.Error(ex, "Error opening path: " + path);
             }
         }
     }
