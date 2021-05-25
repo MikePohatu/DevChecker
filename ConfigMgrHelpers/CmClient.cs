@@ -32,7 +32,8 @@ namespace ConfigMgrHelpers
     public class CmClient
 	{ 
 		public bool ClientInstalled { get; set; } = false;
-		public string ConnectString { get; private set; }
+
+		public string ClientVersion { get; private set; }
 
 		/// <summary>
 		/// The name reported by the ConfigMgrServer
@@ -42,15 +43,14 @@ namespace ConfigMgrHelpers
 		public List<CmClientAction> ClientActions { get; private set; }
 
 		public static CmClient Current;
-		public static CmClient New(string connectstring, bool usessl)
+		public static CmClient New()
         {
-			Current = new CmClient(connectstring, usessl);
+			Current = new CmClient();
 			return Current;
         }
 
-		private CmClient(string connectstring, bool usessl)
+		private CmClient()
         {
-			this.ConnectString = connectstring;
 			this.ClientActions = new List<CmClientAction>() {
 				new CmClientAction( "MachinePolicy", "{00000000-0000-0000-0000-000000000021}", "Machine Policy", this),
 				new CmClientAction( "DiscoveryData", "{00000000-0000-0000-0000-000000000003}","Discovery Data", this ),
@@ -63,6 +63,23 @@ namespace ConfigMgrHelpers
 			};
 		}
 
-		
+		public async Task QueryClientAsync()
+		{
+			if (this.ClientInstalled)
+			{
+				LoggerFacade.Info("Gathering ConfigMgr client info");
+				string command = @"Get-WmiObject -Namespace root\ccm -Query 'SELECT * FROM SMS_Client'"; 
+
+				var posh = PoshHandler.GetRunner(command, RemoteSystem.Current.ComputerName, RemoteSystem.Current.UseSSL);
+				var result = await PoshHandler.InvokeRunnerAsync(posh);
+
+				if (result.Count > 0)
+				{
+					this.ClientVersion = PoshHandler.GetFirstPropertyValue<string>(result, "ClientVersion");
+					this.ReportedName = PoshHandler.GetFirstPropertyValue<string>(result, "PSComputerName");
+					LoggerFacade.Info("Finished gathering ConfigMgr client info");
+				}
+			}
+		}
 	}
 }

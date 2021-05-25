@@ -83,7 +83,7 @@
                     <ColumnDefinition Width="120"></ColumnDefinition>
                     <ColumnDefinition Width="230" MinWidth="45"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                
+
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Computer name:" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ClientName}" VerticalAlignment="Top" TextWrapping="Wrap" />
 
@@ -91,13 +91,13 @@
                 <Viewbox Grid.Row="1" Grid.Column="1" StretchDirection="DownOnly" Stretch="Uniform" HorizontalAlignment="Left">
                     <TextBlock Text="{Binding ClientIPs}" VerticalAlignment="Top" />
                 </Viewbox>
-                
+
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="OU:" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
                 <Viewbox Grid.Row="2" Grid.Column="1" StretchDirection="DownOnly" Stretch="Uniform" HorizontalAlignment="Left">
                     <TextBlock Text="{Binding ClientOU}" VerticalAlignment="Top" />
                 </Viewbox>
-                    
-                
+
+
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
                 <TextBlock Grid.Row="3" Grid.Column="1" Text="" VerticalAlignment="Top" TextWrapping="Wrap" />
 
@@ -105,7 +105,5 @@
                 <TextBlock Grid.Row="4" Grid.Column="1" Text="" VerticalAlignment="Top" TextWrapping="Wrap" />
             </Grid>
         </GroupBox>
-
-        
     </Grid>
 </UserControl>

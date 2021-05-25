@@ -50,6 +50,7 @@
     <Compile Include="CmClientAction.cs" />
     <Compile Include="CmCollection.cs" />
     <Compile Include="CmServer.cs" />
+    <Compile Include="Deploy\SoftwareCenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

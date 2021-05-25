@@ -49,17 +49,15 @@ namespace _20RoadRemoteAdmin.Tabs
 
         private async void onRestartClicked(object sender, RoutedEventArgs e)
         {
-            CmClient client = this.DataContext as CmClient;
-            if (client != null)
+            if (RemoteSystem.Current != null)
             {
-                await ServiceHelpers.RestartService("ccmexec", client.ConnectString, true);
+                await ServiceHelpers.RestartService("ccmexec", RemoteSystem.Current.ComputerName, true);
             }
         }
 
         public void onLogsClicked(object sender, RoutedEventArgs e)
         {
-            CmClient client = this.DataContext as CmClient;
-            string path = @"\\" + client.ConnectString + @"\c$\Windows\ccm\Logs";
+            string path = @"\\" + RemoteSystem.Current.ComputerName + @"\c$\Windows\ccm\Logs";
             try
             {
                 Process.Start(path);

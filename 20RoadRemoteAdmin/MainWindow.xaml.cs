@@ -213,19 +213,8 @@ namespace _20RoadRemoteAdmin
                 connectTasks.Add(RemoteSystem.Current.ConnectAsync());
                 await Task.WhenAll(connectTasks);
 
-                
-
-                this.RemoteSystem = RemoteSystem.Current;
-
-                var cmclient = CmClient.New(RemoteSystem.Current.ComputerName, RemoteSystem.Current.UseSSL);
-                    
-                if (RemoteSystem.Current.ConfigMgrClientStatus != "NotInstalled" && RemoteSystem.Current.ConfigMgrClientStatus != "Unknown")
-                {
-                    cmclient.ClientInstalled = true;
-                }
-
-                this.CmClient = cmclient;
                 this.CmServer = CmServer.Current;
+                this.RemoteSystem = RemoteSystem.Current;
 
                 //release
                 this.ControlsEnabled = true;
@@ -233,9 +222,24 @@ namespace _20RoadRemoteAdmin
 
                 //further updates
                 List<Task> postconnectTasks = new List<Task>();
-                postconnectTasks.Add(CmServer.QueryCollectionsAsync());
+                postconnectTasks.Add(this.PostConnectCmClient());
+                if (CmServer.Current.IsConnected) { postconnectTasks.Add(CmServer.Current.QueryCollectionsAsync()); }
+
                 await Task.WhenAll(postconnectTasks);
             }
+        }
+
+        private async Task PostConnectCmClient()
+        {
+            var cmclient = CmClient.New();
+
+            if (RemoteSystem.Current.ConfigMgrClientStatus != "NotInstalled" && RemoteSystem.Current.ConfigMgrClientStatus != "Unknown")
+            {
+                cmclient.ClientInstalled = true;
+                await cmclient.QueryClientAsync();
+            }
+
+            this.CmClient = cmclient;
         }
 
         public void OnNewLogMessage(LogLevel loglevel, string message, bool ishighlighted)
