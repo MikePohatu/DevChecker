@@ -18,50 +18,37 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0" Text="Collections" FontWeight="Bold" Margin="0,0,0,5" />
-        <DataGrid Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" ItemsSource="{Binding Collections}"
-                  Width="Auto" AutoGenerateColumns="False" HeadersVisibility="Column" BorderThickness="0" GridLinesVisibility="None" IsReadOnly="True" >
+        <DataGrid Grid.Row="1" Grid.Column="0" Width="370" VerticalAlignment="Top" HorizontalAlignment="Stretch" 
+                  ItemsSource="{Binding Collections}" AutoGenerateColumns="False" HeadersVisibility="Column" BorderThickness="0" 
+                  GridLinesVisibility="None" IsReadOnly="True">
 
             <DataGrid.Resources>
-                <Style TargetType="{x:Type DataGridCell}">
+                <Style TargetType="DataGridCell">
                     <Setter Property="Background" Value="Transparent" />
                     <Setter Property="Foreground" Value="Black" />
                     <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                    <Setter Property="Margin" Value="2,1" />
+                    <Style.Triggers>
+                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="Black" />
+                            <Setter Property="BorderThickness" Value="0" />
+                        </Trigger>
+                    </Style.Triggers>
+                    <!--<Setter Property="ToolTip" Value="{Binding ToolTip.CompiledToolTip}" />-->
                 </Style>
             </DataGrid.Resources>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding DisplayName}" MinWidth="150">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Style.Triggers>
-                                <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Setter Property="Foreground" Value="Black" />
-                                    <Setter Property="BorderThickness" Value="0" />
-                                </Trigger>
-                            </Style.Triggers>
-                            <!--<Setter Property="ToolTip" Value="{Binding ToolTip.CompiledToolTip}" />-->
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
+                <DataGridTextColumn Binding="{Binding DisplayName}" Width="250">
                     <DataGridTextColumn.HeaderTemplate>
                         <DataTemplate>
                             <TextBlock Text="Collection Name"/>
                         </DataTemplate>
                     </DataGridTextColumn.HeaderTemplate>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding ID}" MinWidth="150">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Style.Triggers>
-                                <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Setter Property="Foreground" Value="Black" />
-                                    <Setter Property="BorderThickness" Value="0" />
-                                </Trigger>
-                            </Style.Triggers>
-                            <!--<Setter Property="ToolTip" Value="{Binding ToolTip.CompiledToolTip}" />-->
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
+                <DataGridTextColumn Binding="{Binding ID}" Width="120">
                     <DataGridTextColumn.HeaderTemplate>
                         <DataTemplate>
                             <TextBlock Text="Collection ID"/>
