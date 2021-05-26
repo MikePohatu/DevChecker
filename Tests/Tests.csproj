@@ -30,7 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ConfigMgrHelpers\ConfigMgrHelpers.csproj" />
-    <ProjectReference Include="..\Diags\Diags.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\WindowsHelpers\WindowsHelpers.csproj" />
   </ItemGroup>
 

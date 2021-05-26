@@ -17,13 +17,20 @@
 //
 #endregion
 
-// ILoggingReceiver.cs - interface for abstracting the logging receivers for logging frameworks
+// KnownException - class for recording known exceptions to pass up the tree
 
-namespace Diags.Logging
+
+using System;
+
+namespace Core.Diagnostics
 {
-    public interface ILoggingReceiver
+    public class KnownException: Exception
     {
-        event NewLog NewLogMessage;
-        string LastMessage { get; set; }
+        public string CustomMessage { get; set; }
+
+        public KnownException(string CustomMessage, string SystemMessage):base(SystemMessage)
+        {
+            this.CustomMessage = CustomMessage;
+        }
     }
 }

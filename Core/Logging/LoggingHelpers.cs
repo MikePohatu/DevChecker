@@ -20,7 +20,7 @@ using NLog;
 using NLog.Config;
 using System.Linq;
 
-namespace Diags.Logging
+namespace Core.Logging
 {
 
     public static class LoggingHelpers

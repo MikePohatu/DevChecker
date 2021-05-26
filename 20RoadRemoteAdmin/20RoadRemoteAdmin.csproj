@@ -171,13 +171,13 @@
       <Project>{fddcdcf7-35d0-4efd-b300-3fae9e10147b}</Project>
       <Name>ConfigMgrHelpers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{b0ad195b-b60a-4083-9d62-6907381ddcb9}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CustomActions\CustomActions.csproj">
       <Project>{cad21ed8-29a7-4423-a6cc-f2d7f45c51e3}</Project>
       <Name>CustomActions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Diags\Diags.csproj">
-      <Project>{b0ad195b-b60a-4083-9d62-6907381ddcb9}</Project>
-      <Name>Diags</Name>
     </ProjectReference>
     <ProjectReference Include="..\WindowsHelpers\WindowsHelpers.csproj">
       <Project>{4ca8920a-b2c1-4726-9155-49f6fae3dd5c}</Project>

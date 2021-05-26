@@ -23,7 +23,7 @@
 using System;
 using System.Management;
 using System.Collections.Generic;
-using Diags.Logging;
+using Core.Logging;
 using System.Threading.Tasks;
 
 namespace WindowsHelpers

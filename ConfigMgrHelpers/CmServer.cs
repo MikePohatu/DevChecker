@@ -23,7 +23,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Management;
 using WindowsHelpers;
-using Diags.Logging;
+using Core.Logging;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
 

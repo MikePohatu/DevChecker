@@ -22,7 +22,7 @@
 using NLog;
 using System;
 
-namespace Diags.Logging
+namespace Core.Logging
 {
     public static class Log
     {

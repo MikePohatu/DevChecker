@@ -17,20 +17,21 @@
 //
 #endregion
 
-// KnownException - class for recording known exceptions to pass up the tree
+// ViewModelBase.cs - base class for view model classes i.e. sets up 
+// INotifyPropertyChanged
 
+using System.ComponentModel;
 
-using System;
-
-namespace Diags
+namespace Core
 {
-    public class KnownException: Exception
+    public class ViewModelBase : INotifyPropertyChanged
     {
-        public string CustomMessage { get; set; }
+        //Setup the INotifyPropertyChanged interface 
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public KnownException(string CustomMessage, string SystemMessage):base(SystemMessage)
+        protected void OnPropertyChanged(object sender, string name)
         {
-            this.CustomMessage = CustomMessage;
+            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
         }
     }
 }

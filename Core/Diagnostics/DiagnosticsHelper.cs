@@ -21,7 +21,7 @@
 
 using System.Windows;
 
-namespace Diags
+namespace Core.Diagnostics
 {
     public static class DiagnosticsHelper
     {

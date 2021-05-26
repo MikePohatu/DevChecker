@@ -7,8 +7,8 @@
     <ProjectGuid>{B0AD195B-B60A-4083-9D62-6907381DDCB9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Diags</RootNamespace>
-    <AssemblyName>Diags</AssemblyName>
+    <RootNamespace>Core</RootNamespace>
+    <AssemblyName>Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -49,15 +49,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiagnosticsEnums.cs" />
-    <Compile Include="DiagnosticsHelper.cs" />
+    <Compile Include="Diagnostics\DiagnosticsEnums.cs" />
+    <Compile Include="Diagnostics\DiagnosticsHelper.cs" />
     <Compile Include="Logging\ILoggingReceiver.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\LoggingDelegates.cs" />
     <Compile Include="Logging\LoggingHelpers.cs" />
     <Compile Include="Logging\UserUITarget.cs" />
+    <Compile Include="Overflower.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="KnownException.cs" />
+    <Compile Include="Diagnostics\KnownException.cs" />
+    <Compile Include="ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="NLog.config">

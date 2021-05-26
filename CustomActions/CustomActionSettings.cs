@@ -16,7 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using Diags.Logging;
+using Core.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

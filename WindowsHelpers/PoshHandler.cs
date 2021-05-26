@@ -23,9 +23,8 @@ using System.Management.Automation.Runspaces;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.IO;
-using Diags.Logging;
+using Core.Logging;
 using System.Collections;
-using Diags;
 using System.Text;
 
 namespace WindowsHelpers

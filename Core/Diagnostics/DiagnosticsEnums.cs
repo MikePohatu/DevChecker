@@ -16,10 +16,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using NLog;
-using System;
 
-namespace Diags.Logging
+// DiagnosticsEnums.cs - Enums for the Diagnostics namespace
+
+namespace Core.Diagnostics
 {
-    public delegate void NewLog(LogLevel loglevel, string message, bool ishighlighted);
+    //public enum LoggingLevel { Information,Warning,Error,Debug }
 }

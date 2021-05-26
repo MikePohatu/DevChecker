@@ -25,7 +25,7 @@ using NLog;
 using NLog.Targets;
 using NLog.Config;
 
-namespace Diags.Logging
+namespace Core.Logging
 {
     [Target("UserUITarget")]
     public class UserUITarget : TargetWithLayout

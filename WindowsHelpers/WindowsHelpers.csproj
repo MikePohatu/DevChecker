@@ -69,9 +69,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Diags\Diags.csproj">
+    <ProjectReference Include="..\Core\Core.csproj">
       <Project>{b0ad195b-b60a-4083-9d62-6907381ddcb9}</Project>
-      <Name>Diags</Name>
+      <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

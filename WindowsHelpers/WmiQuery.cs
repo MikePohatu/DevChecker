@@ -19,8 +19,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Diags;
-using Diags.Logging;
+using Core.Logging;
+using Core.Diagnostics;
 using System.Management;
 
 namespace WindowsHelpers
