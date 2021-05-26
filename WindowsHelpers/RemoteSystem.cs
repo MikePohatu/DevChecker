@@ -76,7 +76,11 @@ namespace WindowsHelpers
         public string IPv4Address { get; private set; }
         public string IPv6Address { get; private set; }
         public string ConfigMgrClientStatus { get; private set; } = "Unknown";
+
         public SortedDictionary<string, string> Properties { get; private set; }
+
+
+
 
         /// <summary>
         /// The current RemoteSystem instance. Behaves like a singleton
@@ -130,6 +134,7 @@ namespace WindowsHelpers
                         this.IPv6Address = PoshHandler.GetFirstHashTableString(results, "ipv6Addresses");
                         this.ReportedComputerName = PoshHandler.GetFirstHashTableString(results, "name");
                         this.ConfigMgrClientStatus = PoshHandler.GetFirstHashTableString(results, "configMgrClientStatus");
+
                         this.Properties = PoshHandler.GetHashTableAsOrderedDictionary(results);
 
                         Log.Info(Log.Highlight("Connected to " + this.ReportedComputerName));

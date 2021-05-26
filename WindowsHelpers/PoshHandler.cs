@@ -187,7 +187,7 @@ namespace WindowsHelpers
                     Hashtable hash = obj.BaseObject as Hashtable;
                     foreach (string key in hash.Keys)
                     {
-                        string val = hash[key].ToString();
+                        string val = hash[key] == null ? string.Empty : hash[key].ToString();
                         if (vals.ContainsKey(key)) { vals[key] = val; }
                         else { vals.Add(key, val); }
                     }

@@ -90,6 +90,9 @@
     <Compile Include="Tabs\CustomActionTab.xaml.cs">
       <DependentUpon>CustomActionTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\WindowsClientTab.xaml.cs">
+      <DependentUpon>WindowsClientTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -128,6 +131,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Tabs\CustomActionTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tabs\WindowsClientTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

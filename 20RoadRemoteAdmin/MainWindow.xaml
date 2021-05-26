@@ -54,6 +54,9 @@
             </TabItem>
             <TabItem Header="Client Side" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
                 <TabControl Grid.Row="1" MinHeight="250" BorderBrush="{x:Null}" >
+                    <TabItem Header="Windows Client" DataContext="{Binding RemoteSystem}">
+                        <tabs:WindowsClientTab />
+                    </TabItem>
                     <TabItem Header="ConfigMgr Client" DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
                         <tabs:CmClientTab />
                     </TabItem>

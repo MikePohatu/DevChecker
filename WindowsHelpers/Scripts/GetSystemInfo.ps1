@@ -66,6 +66,37 @@ function Get-ConfigMgrClientStatus {
     }
 }
 
+Function Get-PowerInfo {
+    $batt = Get-WmiObject -Query 'SELECT * FROM Win32_Battery'
+    #BatteryStatus -eq means power is plugged in. Null means no battery
+    if ($batt.BatteryStatus) {
+        $charge = "$($batt.EstimatedChargeRemaining)%"
+        if ($batt.Status -eq $null) {
+            $status = "Unknown"
+        } else {
+            $status = $batt.Status
+        }
+
+        if ($batt.BatteryStatus -eq 2) {
+            $connected = $true
+        }
+        else {
+            $connected = $false
+        }
+    }
+    else {
+        $charge = "N/A"
+        $status = "N/A"
+        $connected = $true
+    }
+
+    return @{
+        Connected = $connected
+        Status = $status
+        Charge = $charge
+    }
+}
+
 function Get-ProductType {
     $product = (Get-WmiObject -Query 'SELECT ProductType FROM Win32_OperatingSystem').ProductType
     if ($product -eq 1) { return "Client" }
@@ -73,33 +104,34 @@ function Get-ProductType {
     elseif ($product -eq 3) { return "Server" }
 }
 
-function Get-CompInfo {
-    return Get-ComputerInfo -Property WindowsProductName, WindowsEditionId, WindowsInstallationType, 
-        OsVersion, OsBuildNumber, OsArchitecture, OsUptime, OsLastBootUpTime, 
-        BiosName, BiosFirmwareType, BiosSeralNumber, CsModel, CsManufacturer
-}
-
 $ipv4s = Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceIndex -ne 1} | Select IPAddress
 $ipv6s = Get-NetIPAddress -AddressFamily IPv6 | Where-Object {$_.InterfaceIndex -ne 1} | Select IPAddress
-$compInfo = Get-CompInfo
+$compSys = Get-WmiObject -Query 'SELECT * FROM Win32_ComputerSystem' | Select Manufacturer, Model, SystemType, TotalPhysicalMemory
+$compOS = Get-WmiObject -Query 'SELECT * FROM Win32_OperatingSystem' | Select BuildNumber, Caption, LastBootUpTime, OSArchitecture, Version, WindowsDirectory
+$compBIOS = Get-WmiObject -Query 'SELECT * FROM Win32_BIOS' | Select SerialNumber, SMBIOSBIOSVersion
+
+$power = Get-PowerInfo
+
 $systemInfo = @{
     pendingReboot = IsRebootPending
-    type = $compInfo.WindowsInstallationType
-    memorySize = Get-MemorySize
+    type = $compOS.OSArchitecture
+    memorySize = $compSys.TotalPhysicalMemory
     ipv4Addresses = [string]::Join(", ", $ipv4s.IPAddress)
     ipv6Addresses = [string]::Join(", ", $ipv6s.IPAddress)
-    model = $compInfo.CsModel
-    serial = $compInfo.BiosSeralNumber
-    manufacturer = $compInfo.CsManufacturer
-    architecture = $compInfo.OsArchitecture
-    version = $compInfo.OsVersion
-    build = $compInfo.OsBuildNumber
-    edition = $compInfo.WindowsEditionId
-    uptime = $compInfo.OsUptime
-    lastBoot = $compInfo.OsLastBootUpTime
-    os = $compInfo.WindowsProductName
+    model = $compSys.Model
+    biosVersion = $compBIOS.SMBIOSBIOSVersion
+    serial = $compBIOS.SerialNumber
+    manufacturer = $compSys.Manufacturer
+    architecture = $compOS.OSArchitecture
+    version = $compOS.Version
+    build = $compOS.BuildNumber
+    lastBoot = ([System.Management.ManagementDateTimeConverter]::ToDateTime($compOS.LastBootUpTime).ToUniversalTime()).ToString("dd-MMM-yyyy HH:mm:ss")
+    os = $compOS.Caption
     name = $env:COMPUTERNAME
     configMgrClientStatus = Get-ConfigMgrClientStatus
+    batteryCharge = $power.Charge
+    batteryStatus = $power.Status
+    powerConnected = $power.Connected
 }
 
 $systemInfo
