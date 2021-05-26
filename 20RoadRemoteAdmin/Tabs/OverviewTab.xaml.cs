@@ -47,7 +47,7 @@ namespace _20RoadRemoteAdmin.Tabs
 
         public void onCDollorClicked(object sender, RoutedEventArgs e)
         {
-            Process.Start(@"\\" + RemoteSystem.Current.ComputerName + @"\c$");
+            RemoteSystem.Current?.OpenCDollar();
         }
     }
 }

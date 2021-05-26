@@ -6,6 +6,14 @@
              xmlns:local="clr-namespace:_20RoadRemoteAdmin.Tabs"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type DataGridCell}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontSize" Value="10" />
+        </Style>
+    </UserControl.Resources>
     <Grid Width="Auto">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -15,34 +23,58 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <GroupBox Grid.Column="0" Grid.Row="0" Header="Client Info" Margin="5" Padding="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
-            <GroupBox Grid.Column="0" Grid.Row="0" Header="Client Info" Margin="5" Padding="5">
-                <Grid Width="450" >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="450"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-
-                    <DataGrid Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" ItemsSource="{Binding Properties}"
-                        Width="Auto" AutoGenerateColumns="True" HeadersVisibility="None" BorderThickness="0" GridLinesVisibility="None" >
-
-                        <DataGrid.Resources>
-                            <Style TargetType="{x:Type DataGridCell}">
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="Foreground" Value="Black" />
-                                <Setter Property="BorderThickness" Value="0" />
-                                <Setter Property="FontSize" Value="10" />
-                            </Style>
-                        </DataGrid.Resources>
-                    </DataGrid>
-
-                </Grid>
-            </GroupBox>
-        </StackPanel>
+                <ItemsControl Grid.Column="0" Grid.Row="0" ItemsSource="{Binding PropertyBlocks}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <DataGrid VerticalAlignment="Top" HorizontalAlignment="Stretch" AutoGenerateColumns="False"
+                                    HeadersVisibility="None" BorderThickness="0" GridLinesVisibility="None" ItemsSource="{Binding}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Key, StringFormat={}{0}:}" FontWeight="Bold" />
+                                    <DataGridTemplateColumn MaxWidth="485">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Viewbox StretchDirection="DownOnly" Stretch="Uniform" HorizontalAlignment="Left">
+                                                    <TextBlock Text="{Binding Value}" VerticalAlignment="Top" />
+                                                </Viewbox>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel MaxWidth="600"></WrapPanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Tools" Grid.Column="1" Grid.Row="0" Margin="5" Padding="5" HorizontalAlignment="Stretch">
+            <StackPanel >
+                <TextBlock IsEnabled="{Binding CDollarAccessible, FallbackValue=false}">
+                    <Hyperlink Click="onCDollorClicked" TextDecorations="None">
+                        <TextBlock Text="Open c$" Margin="0" />
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Click="onGPUpdateClicked" TextDecorations="None">
+                        <TextBlock Text="Run GPUpdate" Margin="0" />
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </UserControl>

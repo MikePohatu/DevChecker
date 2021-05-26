@@ -30,6 +30,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WindowsHelpers;
 
 namespace _20RoadRemoteAdmin.Tabs
 {
@@ -41,6 +42,16 @@ namespace _20RoadRemoteAdmin.Tabs
         public WindowsClientTab()
         {
             InitializeComponent();
+        }
+
+        public void onCDollorClicked(object sender, RoutedEventArgs e)
+        {
+            RemoteSystem.Current?.OpenCDollar();
+        }
+
+        public async void onGPUpdateClicked(object sender, RoutedEventArgs e)
+        {
+            await RemoteSystem.Current?.GpUpdateAsync();
         }
     }
 }

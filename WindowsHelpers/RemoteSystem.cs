@@ -24,10 +24,12 @@ using System.Management;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using Diags.Logging;
+using Core.Logging;
+using Core;
 using WindowsHelpers;
 using System.Management.Automation;
 using System.IO;
+using System.Diagnostics;
 
 namespace WindowsHelpers
 {
@@ -79,6 +81,10 @@ namespace WindowsHelpers
 
         public SortedDictionary<string, string> Properties { get; private set; }
 
+        /// <summary>
+        /// HorizontalOverflowEnumerable is the properties dictionary split into blocks of 15
+        /// </summary>
+        public List<IDictionary<string, string>> PropertyBlocks { get; private set; }
 
 
 
@@ -137,6 +143,9 @@ namespace WindowsHelpers
 
                         this.Properties = PoshHandler.GetHashTableAsOrderedDictionary(results);
 
+                        this.PropertyBlocks = Overflow.CreateFromDictionary(this.Properties, 15);
+                        
+
                         Log.Info(Log.Highlight("Connected to " + this.ReportedComputerName));
                         Connected?.Invoke(this, new EventArgs());
                     }
@@ -181,6 +190,28 @@ namespace WindowsHelpers
 
             //not found. return null
             return null;
+        }
+
+        public void OpenCDollar()
+        {
+            Process.Start(@"\\" + RemoteSystem.Current.ComputerName + @"\c$");
+        }
+
+        public async Task GpUpdateAsync()
+        {
+            try
+            {
+                string script = "Invoke-GPUpdate -Force";
+
+                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL))
+                {
+                    await PoshHandler.InvokeRunnerAsync(posh);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error running gpupdate");
+            }
         }
     }
 }

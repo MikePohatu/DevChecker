@@ -54,14 +54,14 @@
             </TabItem>
             <TabItem Header="Client Side" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
                 <TabControl Grid.Row="1" MinHeight="250" BorderBrush="{x:Null}" >
-                    <TabItem Header="Windows Client" DataContext="{Binding RemoteSystem}">
-                        <tabs:WindowsClientTab />
+                    <TabItem Header="Windows Client" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <tabs:WindowsClientTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
                     </TabItem>
                     <TabItem Header="ConfigMgr Client" DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
-                        <tabs:CmClientTab />
+                        <tabs:CmClientTab IsEnabled="{Binding ClientInstalled, FallbackValue=false}"/>
                     </TabItem>
-                    <TabItem Header="Custom Actions">
-                        <tabs:CustomActionTab />
+                    <TabItem Header="Custom Actions" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
+                        <tabs:CustomActionTab IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}"/>
                     </TabItem>
                 </TabControl>
             </TabItem>

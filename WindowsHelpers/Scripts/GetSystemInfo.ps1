@@ -104,12 +104,42 @@ function Get-ProductType {
     elseif ($product -eq 3) { return "Server" }
 }
 
+Function Get-LoggedOnUsers {
+    $users = ((quser) -replace '^>', '' -replace '\s{20}', ',' -replace '\s{2,}', ',') | ConvertFrom-Csv
+
+    $active = $users | Where {$_.STATE -eq 'Active'}
+    $disconnected = $users | Where {$_.STATE -eq 'Disc'}
+    $consoleuser = $users | Where {$_.SESSIONNAME -eq 'Console'}
+
+    $activeUsersString = [string]::Empty
+    $disconnectedUsersString = [string]::Empty
+    $consoleUserString = [string]::Empty
+
+    if ($active) {
+        $activeUsersString =  [string]::Join(', ', $active.USERNAME)
+    }
+
+    if ($disconnected) {
+        $disconnectedUsersString =  [string]::Join(', ', $disconnected.USERNAME)
+    }
+
+    if ($consoleuser) {
+        $consoleUserString = $consoleuser.USERNAME
+    }
+
+    return @{
+        activeUsers = $activeUsersString
+        disconnectedUsers = $disconnectedUsersString
+        consoleUser = $consoleUserString
+    }
+}
+
 $ipv4s = Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceIndex -ne 1} | Select IPAddress
 $ipv6s = Get-NetIPAddress -AddressFamily IPv6 | Where-Object {$_.InterfaceIndex -ne 1} | Select IPAddress
 $compSys = Get-WmiObject -Query 'SELECT * FROM Win32_ComputerSystem' | Select Manufacturer, Model, SystemType, TotalPhysicalMemory
 $compOS = Get-WmiObject -Query 'SELECT * FROM Win32_OperatingSystem' | Select BuildNumber, Caption, LastBootUpTime, OSArchitecture, Version, WindowsDirectory
 $compBIOS = Get-WmiObject -Query 'SELECT * FROM Win32_BIOS' | Select SerialNumber, SMBIOSBIOSVersion
-
+$users = Get-LoggedOnUsers
 $power = Get-PowerInfo
 
 $systemInfo = @{
@@ -118,6 +148,9 @@ $systemInfo = @{
     memorySize = $compSys.TotalPhysicalMemory
     ipv4Addresses = [string]::Join(", ", $ipv4s.IPAddress)
     ipv6Addresses = [string]::Join(", ", $ipv6s.IPAddress)
+    consoleUser = $users.consoleUser
+    activeUsers = $users.activeUsers
+    disconnectedUsers = $users.disconnectedUsers
     model = $compSys.Model
     biosVersion = $compBIOS.SMBIOSBIOSVersion
     serial = $compBIOS.SerialNumber
