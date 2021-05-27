@@ -26,6 +26,7 @@ using WindowsHelpers;
 using Core.Logging;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
+using Core;
 
 namespace ConfigMgrHelpers
 {
@@ -41,6 +42,12 @@ namespace ConfigMgrHelpers
         public bool UseWMI { get; set; } = false;
 
         public bool UseSSL { get; set; } = true;
+
+
+        /// <summary>
+        /// The credentials used to connect to the ConfigMgr server
+        /// </summary>
+        public Credential Credential { get; set; }
 
         /// <summary>
         /// Path of the WMI namespace for the SMS_Provider

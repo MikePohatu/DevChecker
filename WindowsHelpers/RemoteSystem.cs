@@ -46,6 +46,11 @@ namespace WindowsHelpers
         public bool IsConnected { get; set; } = false;
 
         /// <summary>
+        /// The credentials used to connect to the client device
+        /// </summary>
+        public Credential Credential { get; set; }
+
+        /// <summary>
         /// Is the \\device\c$ share accessible
         /// </summary>
         public bool CDollarAccessible { get; set; } = false;

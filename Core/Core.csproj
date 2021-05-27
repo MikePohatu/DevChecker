@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Credential.cs" />
     <Compile Include="Diagnostics\DiagnosticsEnums.cs" />
     <Compile Include="Diagnostics\DiagnosticsHelper.cs" />
     <Compile Include="Logging\ILoggingReceiver.cs" />

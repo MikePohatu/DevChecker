@@ -19,19 +19,33 @@
         </Grid.RowDefinitions>
         <StackPanel x:Name="_connect_Pane" Orientation="Horizontal" IsEnabled="{Binding ControlsEnabled}" Margin="5,2">
             <GroupBox Header="Device" Width="340">
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Text="{Binding RemoteComputer, UpdateSourceTrigger=PropertyChanged}" Width="270" Padding="5,3,5,3" Margin="2" AcceptsReturn="False" KeyUp="onConnectionKeyup" />
-                    <CheckBox Margin="5,3,5,3" IsChecked="{Binding ClientSSL}" VerticalAlignment="Center">
-                        <TextBlock Text="SSL" Margin="0,1,0,0"/>
-                    </CheckBox>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding RemoteComputer, UpdateSourceTrigger=PropertyChanged}" Width="270" Padding="5,3,5,3" Margin="2" AcceptsReturn="False" KeyUp="onConnectionKeyup" />
+                        <CheckBox Margin="5,3,5,3" IsChecked="{Binding ClientSSL}" VerticalAlignment="Center">
+                            <TextBlock Text="SSL" Margin="0,1,0,0"/>
+                        </CheckBox>
+                    </StackPanel>
+                    <TextBlock Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <Hyperlink Click="onClientConnectAsClicked" TextDecorations="None">
+                            <TextBlock Text="Connect as" Margin="0" FontSize="10" />
+                        </Hyperlink>
+                    </TextBlock>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Server" Width="340">
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
                     <TextBox Text="{Binding ConfigMgrServerName,UpdateSourceTrigger=PropertyChanged}" Width="270" Padding="5,3,5,3" Margin="2"  AcceptsReturn="False" KeyUp="onConnectionKeyup" />
                     <CheckBox Margin="5,3,5,3" IsChecked="{Binding ServerSSL}" VerticalAlignment="Center">
                         <TextBlock Text="SSL" Margin="0,1,0,0"/>
                     </CheckBox>
+                    </StackPanel>
+                    <TextBlock Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <Hyperlink Click="onServerConnectAsClicked" TextDecorations="None">
+                            <TextBlock Text="Connect as" Margin="0" FontSize="10" />
+                        </Hyperlink>
+                    </TextBlock>
                 </StackPanel>
             </GroupBox>
             <Button Width="75" Padding="5,3,5,3" Margin="10,14,0,5" Click="onConnectClick" Height="35">

@@ -38,6 +38,11 @@ namespace _20RoadRemoteAdmin.Config
 
         public bool UseSSL { get; set; } = false;
 
+        public string ClientUsername { get; set; }
+        public string ClientDomain { get; set; }
+        public string ServerUsername { get; set; }
+        public string ServerDomain { get; set; }
+
         public static Configuration Instance { get; private set; } = new Configuration();
         private Configuration() { }
 

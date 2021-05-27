@@ -69,6 +69,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Config\Configuration.cs" />
+    <Compile Include="CredentialPopup.xaml.cs">
+      <DependentUpon>CredentialPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Spinner.xaml.cs">
       <DependentUpon>Spinner.xaml</DependentUpon>
     </Compile>
@@ -94,6 +97,10 @@
       <DependentUpon>WindowsClientTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModelBase.cs" />
+    <Page Include="CredentialPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

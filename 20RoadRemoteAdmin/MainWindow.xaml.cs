@@ -40,6 +40,7 @@ using System.Windows.Threading;
 using CustomActions;
 using System.Collections.ObjectModel;
 using Microsoft.Win32;
+using Core;
 
 namespace _20RoadRemoteAdmin
 {
@@ -53,6 +54,10 @@ namespace _20RoadRemoteAdmin
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+
+        Credential _clientCred;
+        Credential _serverCred;
+
         protected void OnPropertyChanged(object sender, string name)
         {
             PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
@@ -63,6 +68,9 @@ namespace _20RoadRemoteAdmin
             InitializeComponent();
             LoggingHelpers.AddLoggingHandler(this.OnNewLogMessage);
             Log.Debug("20Road Remote Admin started");
+            this._clientCred = new Credential();
+            this._serverCred = new Credential();
+
             this.StartUpAsync().ConfigureAwait(false);
         }
 
@@ -169,6 +177,10 @@ namespace _20RoadRemoteAdmin
                 this.RemoteComputer = Configuration.Instance.LastDevice;
                 this.ClientSSL = Configuration.Instance.ClientSSL;
                 this.ServerSSL = Configuration.Instance.ServerSSL;
+                this._clientCred.Username = Configuration.Instance.ClientUsername;
+                this._clientCred.Domain = Configuration.Instance.ClientDomain;
+                this._serverCred.Username = Configuration.Instance.ServerUsername;
+                this._serverCred.Domain = Configuration.Instance.ServerDomain;
             }
             await ActionLibrary.RefreshAsync();
         }
@@ -216,6 +228,9 @@ namespace _20RoadRemoteAdmin
 
                 this.CmServer = CmServer.Current;
                 this.RemoteSystem = RemoteSystem.Current;
+
+                if (this.RemoteSystem != null) { this.RemoteSystem.Credential = this._clientCred; }
+                if (this.CmServer != null) { this.CmServer.Credential = this._serverCred; }
 
                 //release
                 this.ControlsEnabled = true;
@@ -287,6 +302,11 @@ namespace _20RoadRemoteAdmin
             Configuration.Instance.ClientSSL = this.ClientSSL;
             Configuration.Instance.ServerSSL = this.ServerSSL;
 
+            Configuration.Instance.ClientUsername = this._clientCred.Username;
+            Configuration.Instance.ClientDomain = this._clientCred.Domain;
+            Configuration.Instance.ServerUsername = this._serverCred.Username;
+            Configuration.Instance.ServerDomain = this._serverCred.Domain;
+
             await Configuration.Instance.WriteAsync(this._configFilePath);
         }
 
@@ -302,6 +322,19 @@ namespace _20RoadRemoteAdmin
             {
                 File.WriteAllText(saveFileDialog.FileName, log);
             } 
+        }
+
+        private void onClientConnectAsClicked(object sender, RoutedEventArgs e)
+        {
+
+            var popup = new CredentialPopup(this._clientCred);
+            popup.ShowDialog();
+        }
+
+        private void onServerConnectAsClicked(object sender, RoutedEventArgs e)
+        {
+            var popup = new CredentialPopup(this._serverCred);
+            popup.ShowDialog();
         }
     }
 }
