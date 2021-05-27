@@ -12,57 +12,47 @@
             <Setter Property="Foreground" Value="Black" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="FontSize" Value="10" />
+            <Setter Property="Margin" Value="2,1" />
         </Style>
     </UserControl.Resources>
-    <Grid Width="Auto">
+    <Grid Width="Auto" x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition x:Name="propsColumn" Width="*"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <GroupBox Grid.Column="0" Grid.Row="0" Header="Client Info" Margin="5" Padding="5">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <ItemsControl Grid.Column="0" Grid.Row="0" ItemsSource="{Binding PropertyBlocks}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <DataGrid VerticalAlignment="Top" HorizontalAlignment="Stretch" AutoGenerateColumns="False"
-                                    HeadersVisibility="None" BorderThickness="0" GridLinesVisibility="None" ItemsSource="{Binding}">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Binding="{Binding Key, StringFormat={}{0}:}" FontWeight="Bold" />
-                                    <DataGridTemplateColumn MaxWidth="485">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Viewbox StretchDirection="DownOnly" Stretch="Uniform" HorizontalAlignment="Left">
-                                                    <TextBlock Text="{Binding Value}" VerticalAlignment="Top" />
-                                                </Viewbox>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel MaxWidth="600"></WrapPanel>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </Grid>
+        <GroupBox x:Name="infoGroup" Grid.Column="0" Grid.Row="0" Header="Client Info" Margin="5" Padding="5">
+            <ItemsControl Grid.Column="0" Grid.Row="0" ItemsSource="{Binding PropertyBlocks}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel MaxWidth="{Binding Path=InfoMaxWidth, RelativeSource={RelativeSource AncestorType={x:Type local:WindowsClientTab}}}"></WrapPanel>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <DataGrid VerticalAlignment="Top" HorizontalAlignment="Stretch" AutoGenerateColumns="False"
+                                HeadersVisibility="None" BorderThickness="0" GridLinesVisibility="None" ItemsSource="{Binding}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Key, StringFormat={}{0}:}" FontWeight="Bold" />
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Viewbox StretchDirection="DownOnly" Stretch="Uniform" HorizontalAlignment="Left" MaxWidth="800">
+                                                <TextBlock Text="{Binding Value}" VerticalAlignment="Top" HorizontalAlignment="Stretch" />
+                                            </Viewbox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </GroupBox>
-        <GroupBox Header="Tools" Grid.Column="1" Grid.Row="0" Margin="5" Padding="5" HorizontalAlignment="Stretch">
+        <GroupBox x:Name="toolsGroup" Header="Tools" Grid.Column="1" Grid.Row="0" Margin="5" Padding="5" HorizontalAlignment="Stretch" MinWidth="150">
             <StackPanel >
                 <TextBlock IsEnabled="{Binding CDollarAccessible, FallbackValue=false}">
                     <Hyperlink Click="onCDollorClicked" TextDecorations="None">

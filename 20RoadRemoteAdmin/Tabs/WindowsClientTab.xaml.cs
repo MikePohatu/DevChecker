@@ -18,6 +18,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,11 +38,28 @@ namespace _20RoadRemoteAdmin.Tabs
     /// <summary>
     /// Interaction logic for WindowsClientTab.xaml
     /// </summary>
-    public partial class WindowsClientTab : UserControl
+    public partial class WindowsClientTab : UserControl, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(object sender, string name)
+        {
+            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
+        }
+
+        public double InfoMaxWidth
+        {
+            get
+            {
+                return this.propsColumn.ActualWidth - this.toolsGroup.Margin.Left - this.toolsGroup.Margin.Right;
+            }
+        }
+
         public WindowsClientTab()
         {
             InitializeComponent();
+            this.SizeChanged += (object sender, SizeChangedEventArgs e) => { this.OnPropertyChanged(this, "InfoMaxWidth"); };
+            this.OnPropertyChanged(this, "InfoMaxWidth");
         }
 
         public void onCDollorClicked(object sender, RoutedEventArgs e)
