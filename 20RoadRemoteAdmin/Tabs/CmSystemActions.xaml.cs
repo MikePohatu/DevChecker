@@ -51,7 +51,7 @@ namespace _20RoadRemoteAdmin.Tabs
         {
             if (RemoteSystem.Current != null)
             {
-                await ServiceHelpers.RestartService("ccmexec", RemoteSystem.Current.ComputerName, true);
+                await ServiceHelpers.RestartService("ccmexec", RemoteSystem.Current);
             }
         }
 

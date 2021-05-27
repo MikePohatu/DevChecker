@@ -131,7 +131,7 @@ namespace WindowsHelpers
                 string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\GetSystemInfo.ps1";
                 string script = await IOHelpers.ReadFileAsync(scriptPath);
 
-                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL))
+                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
                 {
                     PSDataCollection<PSObject> results = await PoshHandler.InvokeRunnerAsync(posh, true);
                     if (results != null)
@@ -241,7 +241,7 @@ namespace WindowsHelpers
             {
                 string script = "gpupdate /force";
 
-                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL))
+                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
                 {
                     await PoshHandler.InvokeRunnerAsync(posh);
                 }

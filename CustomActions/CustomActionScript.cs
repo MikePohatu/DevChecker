@@ -125,7 +125,7 @@ namespace CustomActions
             {
                 Log.Info("Running custom action: " + this.DisplayName);
 
-                PowerShell posh = PoshHandler.GetRunner(this._script, RemoteSystem.Current.ComputerName, RemoteSystem.Current.UseSSL);
+                PowerShell posh = PoshHandler.GetRunner(this._script, RemoteSystem.Current);
 
                 await PoshHandler.InvokeRunnerAsync(posh, !this.Settings.LogScriptContent);
             }

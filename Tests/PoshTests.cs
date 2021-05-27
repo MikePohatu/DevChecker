@@ -35,7 +35,7 @@ namespace Tests
         [TestCase("sccm01.home.local", true, ExpectedResult = "1.0.0.0")]
         public async Task<string> PoshConnectionTest(string Computer, bool useSSL)
         {
-            PowerShell posh = PoshHandler.GetRunner("Get-Host", Computer, useSSL);
+            PowerShell posh = PoshHandler.GetRunner("Get-Host", Computer, useSSL, null);
             PSDataCollection<PSObject> result = await PoshHandler.InvokeRunnerAsync(posh);
 
             string version = "0";
@@ -60,7 +60,7 @@ namespace Tests
         [TestCase("sccm01.home.local", true, ExpectedResult = "3")]
         public async Task<string> OSTypeTest(string Computer, bool useSSL)
         {
-            PowerShell posh = PoshHandler.GetRunner("Get-WmiObject -Query 'SELECT ProductType FROM Win32_OperatingSystem'", Computer, useSSL);
+            PowerShell posh = PoshHandler.GetRunner("Get-WmiObject -Query 'SELECT ProductType FROM Win32_OperatingSystem'", Computer, useSSL, null);
 
             PSDataCollection<PSObject> results = await PoshHandler.InvokeRunnerAsync(posh);
             string type = PoshHandler.GetPropertyValues<string>(results, "ProductType").First();

@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using Core.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,7 @@ namespace Core
 
         public void Update(Credential newcreds)
         {
+            Log.Info("Updated credentials with username: " + this.Username + " and domain: " + this.Domain );
             this.Username = newcreds.Username;
             this.Password = newcreds.Password;
             this.Domain = newcreds.Domain;

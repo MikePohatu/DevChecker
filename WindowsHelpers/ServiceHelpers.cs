@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using Core;
 using Core.Logging;
 using System;
 using System.Collections.Generic;
@@ -29,14 +30,14 @@ namespace WindowsHelpers
 {
     public static class ServiceHelpers
     {
-        public static async Task RestartService(string servicename, string computername, bool useSSL)
+        public static async Task RestartService(string servicename, RemoteSystem remote)
         {
             string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\RestartService.ps1";
             
             try
             {
                 string script = await IOHelpers.ReadFileAsync(scriptPath);
-                using (PowerShell posh = PoshHandler.GetRunner(script, computername, useSSL))
+                using (PowerShell posh = PoshHandler.GetRunner(script, remote))
                 {
                     posh.AddStatement().AddCommand("Restart").AddParameter("ServiceName", servicename);
                     await PoshHandler.InvokeRunnerAsync(posh, true);

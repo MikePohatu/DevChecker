@@ -26,6 +26,7 @@ using System.IO;
 using Core.Logging;
 using System.Collections;
 using System.Text;
+using Core;
 
 namespace WindowsHelpers
 {
@@ -34,27 +35,44 @@ namespace WindowsHelpers
         public static bool LogVerbose { get; set; } = false;
         public static bool LogProgress { get; set; } = false;
 
-        private static PowerShell GetRunner(string script, string computerName, bool useSSL, int port)
-        {
-            Runspace runspace;
+        private static PowerShell GetRunner(string script, string computerName, bool useSSL, int port, Credential cred)
+        {            
+            //create the creds
+            PSCredential currentCred;
+            if (string.IsNullOrWhiteSpace(cred?.Username) || string.IsNullOrWhiteSpace(cred?.Password))
+            {
+                currentCred = PSCredential.Empty;
+            }
+            else
+            {
+                string user = string.IsNullOrWhiteSpace(cred.Domain) ? cred.Username : cred.Domain + "\\" + cred.Username;
+                currentCred = new PSCredential(user, cred.SecurePassword);
+            }
 
+            //create the connection
+            WSManConnectionInfo connectioninfo;
             if (string.IsNullOrWhiteSpace(computerName) || computerName == "." || computerName == "localhost" || computerName == "127.0.0.1")
             {
-                runspace = RunspaceFactory.CreateRunspace();
-                runspace.Open();
+                connectioninfo = null;
             }
             else { 
                 string shellUri = "http://schemas.microsoft.com/powershell/Microsoft.PowerShell";
-                //PSCredential remoteCredential = new PSCredential(domainAndUsername, securePW);
-                PSCredential currentCred = PSCredential.Empty;
-                WSManConnectionInfo connectioninfo = new WSManConnectionInfo(useSSL, computerName, port, "/wsman", shellUri, currentCred);
+                connectioninfo = new WSManConnectionInfo(useSSL, computerName, port, "/wsman", shellUri, currentCred);
 
-                runspace = RunspaceFactory.CreateRunspace(connectioninfo);
-                runspace.Open();
             }
-                
+
+            //create the runspace
+            Runspace runspace = connectioninfo == null ? RunspaceFactory.CreateRunspace() : RunspaceFactory.CreateRunspace(connectioninfo);
+            runspace.Open();
+
             runspace.CreatePipeline();
-            PowerShell posh = GetRunner();
+            PowerShell posh = PowerShell.Create();
+            posh.Streams.Warning.DataAdded += WarnEventHandler;
+            posh.Streams.Error.DataAdded += ErrorEventHandler;
+            posh.Streams.Information.DataAdded += InfoEventHandler;
+            posh.Streams.Verbose.DataAdded += VerboseEventHandler;
+            posh.Streams.Progress.DataAdded += ProgressEventHandler;
+
             posh.Runspace = runspace;
             if (string.IsNullOrWhiteSpace(script) == false)
             {
@@ -93,32 +111,28 @@ namespace WindowsHelpers
 
         public static PowerShell GetRunner(string script)
         {
-            PowerShell posh = GetRunner().AddScript(script);
-            return posh;
+            return GetRunner(script, "localhost", false, null);
         }
 
-        public static PowerShell GetRunner(string computerName, bool useSSL)
+        public static PowerShell GetRunner(string script, RemoteSystem remote)
         {
-            return GetRunner(null, computerName, useSSL);
+            return GetRunner(script, remote.ComputerName, remote.UseSSL, remote.Credential);
         }
 
-        public static PowerShell GetRunner(string script, string computerName, bool useSSL)
+        public static PowerShell GetRunner(string script, Credential cred)
+        {
+            return GetRunner(script, "localhost", false, cred);
+        }
+
+        public static PowerShell GetRunner(string computerName, bool useSSL, Credential cred)
+        {
+            return GetRunner(null, computerName, useSSL, cred);
+        }
+
+        public static PowerShell GetRunner(string script, string computerName, bool useSSL, Credential cred)
         {
             int port = useSSL ? 5986 : 5985;
-            return GetRunner(script, computerName, useSSL, port);
-        }
-
-        public static PowerShell GetRunner()
-        {
-            PowerShell posh = PowerShell.Create();
-
-            posh.Streams.Warning.DataAdded += WarnEventHandler;
-            posh.Streams.Error.DataAdded += ErrorEventHandler;
-            posh.Streams.Information.DataAdded += InfoEventHandler;
-            posh.Streams.Verbose.DataAdded += VerboseEventHandler;
-            posh.Streams.Progress.DataAdded += ProgressEventHandler;
-
-            return posh;
+            return GetRunner(script, computerName, useSSL, port, cred);
         }
 
         public static T GetPropertyValue<T>(PSObject obj, string valueName)
@@ -312,12 +326,12 @@ namespace WindowsHelpers
             return script;
         }
 
-        public async static Task RunScriptAsync(string scriptPath, string computer, bool useSSL)
+        public async static Task RunScriptAsync(string scriptPath, string computer, bool useSSL, Credential cred)
         {
             string script = await IOHelpers.ReadFileAsync(scriptPath);
             try
             {
-                using (PowerShell posh = PoshHandler.GetRunner(script, computer, useSSL))
+                using (PowerShell posh = PoshHandler.GetRunner(script, computer, useSSL, cred))
                 {
                     PSDataCollection<PSObject> results = await PoshHandler.InvokeRunnerAsync(posh);
                 }

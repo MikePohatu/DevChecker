@@ -54,7 +54,7 @@ namespace _20RoadRemoteAdmin.Config
 
         public async Task WriteAsync(string filePath)
         {
-            string json = JsonConvert.SerializeObject(this);
+            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
             await IOHelpers.WriteTextFileAsync(filePath, json);
         }
     }

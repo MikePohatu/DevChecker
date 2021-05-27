@@ -70,7 +70,7 @@ namespace ConfigMgrHelpers
 				Log.Info("Gathering ConfigMgr client info");
 				string command = @"Get-WmiObject -Namespace root\ccm -Query 'SELECT * FROM SMS_Client'"; 
 
-				var posh = PoshHandler.GetRunner(command, RemoteSystem.Current.ComputerName, RemoteSystem.Current.UseSSL);
+				var posh = PoshHandler.GetRunner(command, RemoteSystem.Current);
 				var result = await PoshHandler.InvokeRunnerAsync(posh);
 
 				if (result.Count > 0)
