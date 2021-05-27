@@ -78,7 +78,7 @@
         <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="5,5,5,0" TextWrapping="Wrap" Text="Output" 
                    FontSize="10" VerticalAlignment="Bottom"/>
         <Border Grid.Row="3" BorderBrush="LightGray" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Margin="5" >
-            <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+            <ScrollViewer x:Name="outputScroll" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
                 <TextBlock x:Name="outputTb" HorizontalAlignment="Stretch" Margin="5,1,2,5" FontSize="10" TextWrapping="Wrap" />
             </ScrollViewer>
         </Border>

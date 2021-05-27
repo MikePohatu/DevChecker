@@ -275,6 +275,7 @@ namespace _20RoadRemoteAdmin
 
                 this.outputTb.Inlines.Add(loglevevlrun);
                 this.outputTb.Inlines.Add(messagerun);
+                this.outputScroll.ScrollToBottom();
             });
         }
 
