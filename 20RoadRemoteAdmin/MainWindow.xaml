@@ -82,11 +82,29 @@
                 <TextBlock x:Name="outputTb" HorizontalAlignment="Stretch" Margin="5,1,2,5" FontSize="10" TextWrapping="Wrap" />
             </ScrollViewer>
         </Border>
-        <StackPanel Grid.Row="4" Orientation="Horizontal" >
-            <Label Content="Log Trace/Verbose Messages" VerticalAlignment="Center" />
-            <CheckBox IsChecked="{Binding LogVerbose}" VerticalAlignment="Center" />
-            <Label Content="   Log Progress"  VerticalAlignment="Center" />
-            <CheckBox IsChecked="{Binding LogProgress}" VerticalAlignment="Center" />
-        </StackPanel>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Stretch" >
+                <Label Content="Log Trace/Verbose Messages" VerticalAlignment="Center" />
+                <CheckBox IsChecked="{Binding LogVerbose}" VerticalAlignment="Center" />
+                <Label Content="   Log Progress"  VerticalAlignment="Center" />
+                <CheckBox IsChecked="{Binding LogProgress}" VerticalAlignment="Center" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </StackPanel>
+
+            <TextBlock Grid.Column="1" Margin="10,0" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <Hyperlink Click="onSaveLogClicked" TextDecorations="None">
+                    <TextBlock Text="Save log" Margin="0" />
+                </Hyperlink>
+            </TextBlock>
+        </Grid>
     </Grid>
 </Window>

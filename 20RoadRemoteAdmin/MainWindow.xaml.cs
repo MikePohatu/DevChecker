@@ -39,6 +39,7 @@ using WindowsHelpers;
 using System.Windows.Threading;
 using CustomActions;
 using System.Collections.ObjectModel;
+using Microsoft.Win32;
 
 namespace _20RoadRemoteAdmin
 {
@@ -287,6 +288,20 @@ namespace _20RoadRemoteAdmin
             Configuration.Instance.ServerSSL = this.ServerSSL;
 
             await Configuration.Instance.WriteAsync(this._configFilePath);
+        }
+
+        private void onSaveLogClicked(object sender, RoutedEventArgs e)
+        {
+            string log = this.outputTb.Text;
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.AddExtension = true;
+            saveFileDialog.FileName = "RemoteAdmin-"+ DateTime.Now.ToString("ddMMMyyyy-HHmmss") + ".log";
+            saveFileDialog.Filter = "Log Files (*.log)|*.log|Text Files(*.txt)|*.txt";
+            saveFileDialog.Title = "Save Remote Admin log file";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                File.WriteAllText(saveFileDialog.FileName, log);
+            } 
         }
     }
 }
