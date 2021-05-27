@@ -56,12 +56,22 @@
             <StackPanel >
                 <TextBlock IsEnabled="{Binding CDollarAccessible, FallbackValue=false}">
                     <Hyperlink Click="onCDollorClicked" TextDecorations="None">
-                        <TextBlock Text="Open c$" Margin="0" />
+                        <TextBlock Text="c$" Margin="0" />
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>
                     <Hyperlink Click="onGPUpdateClicked" TextDecorations="None">
-                        <TextBlock Text="Run GPUpdate" Margin="0" />
+                        <TextBlock Text="GPUpdate" Margin="0" />
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Click="onCompMgmtClicked" TextDecorations="None">
+                        <TextBlock Text="Computer Management" Margin="0" />
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Click="onPoshClicked" TextDecorations="None">
+                        <TextBlock Text="PowerShell" Margin="0" />
                     </Hyperlink>
                 </TextBlock>
             </StackPanel>

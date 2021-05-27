@@ -197,11 +197,22 @@ namespace WindowsHelpers
             Process.Start(@"\\" + RemoteSystem.Current.ComputerName + @"\c$");
         }
 
+        public void OpenCompMgmt()
+        {
+            Process.Start(@"C:\Windows\System32\mmc.exe",@"c:\windows\system32\compmgmt.msc /computer:\\" + RemoteSystem.Current.ComputerName);
+        }
+
+        public void OpenPosh()
+        {
+            string ssl = this.UseSSL ? " -UseSSL" : "";
+            Process.Start(@"C:\Windows\System32\WindowsPowershell\v1.0\powershell.exe"," -noexit -command \"Enter-PSSession -ComputerName " + this.ComputerName + ssl + "\"");
+        }
+
         public async Task GpUpdateAsync()
         {
             try
             {
-                string script = "Invoke-GPUpdate -Force";
+                string script = "gpupdate /force";
 
                 using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL))
                 {

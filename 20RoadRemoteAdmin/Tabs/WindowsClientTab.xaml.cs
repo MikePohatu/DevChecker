@@ -71,5 +71,15 @@ namespace _20RoadRemoteAdmin.Tabs
         {
             await RemoteSystem.Current?.GpUpdateAsync();
         }
+
+        public void onCompMgmtClicked(object sender, RoutedEventArgs e)
+        {
+            RemoteSystem.Current?.OpenCompMgmt();
+        }
+
+        public void onPoshClicked(object sender, RoutedEventArgs e)
+        {
+            RemoteSystem.Current?.OpenPosh();
+        }
     }
 }
