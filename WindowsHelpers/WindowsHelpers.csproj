@@ -61,9 +61,6 @@
     <Content Include="Scripts\GetSystemInfo.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\PendingReboot - Copy.ps1">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\RestartService.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
