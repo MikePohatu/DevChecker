@@ -194,18 +194,40 @@ namespace WindowsHelpers
 
         public void OpenCDollar()
         {
-            Process.Start(@"\\" + RemoteSystem.Current.ComputerName + @"\c$");
+            
+            try
+            {
+                Process.Start(@"\\" + RemoteSystem.Current.ComputerName + @"\c$");
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error opening c$ share");
+            }
         }
 
         public void OpenCompMgmt()
         {
-            Process.Start(@"C:\Windows\System32\mmc.exe",@"c:\windows\system32\compmgmt.msc /computer:\\" + RemoteSystem.Current.ComputerName);
+            try
+            {
+                Process.Start(@"C:\Windows\System32\mmc.exe", @"c:\windows\system32\compmgmt.msc /computer:\\" + RemoteSystem.Current.ComputerName);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error opening Computer Management");
+            }
         }
 
         public void OpenPosh()
         {
-            string ssl = this.UseSSL ? " -UseSSL" : "";
-            Process.Start(@"C:\Windows\System32\WindowsPowershell\v1.0\powershell.exe"," -noexit -command \"Enter-PSSession -ComputerName " + this.ComputerName + ssl + "\"");
+            try
+            {
+                string ssl = this.UseSSL ? " -UseSSL" : "";
+                Process.Start(@"C:\Windows\System32\WindowsPowershell\v1.0\powershell.exe", " -noexit -command \"Enter-PSSession -ComputerName " + this.ComputerName + ssl + "\"");
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error opening remote PowerShell session");
+            }
         }
 
         public async Task GpUpdateAsync()
