@@ -38,48 +38,11 @@ namespace _20RoadRemoteAdmin.Tabs
     /// <summary>
     /// Interaction logic for WindowsClientTab.xaml
     /// </summary>
-    public partial class WindowsClientTab : UserControl, INotifyPropertyChanged
+    public partial class WindowsClientTab : UserControl
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(object sender, string name)
-        {
-            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
-        }
-
-        public double InfoMaxWidth
-        {
-            get
-            {
-                return this.propsColumn.ActualWidth - this.toolsGroup.Margin.Left - this.toolsGroup.Margin.Right;
-            }
-        }
-
         public WindowsClientTab()
         {
             InitializeComponent();
-            this.SizeChanged += (object sender, SizeChangedEventArgs e) => { this.OnPropertyChanged(this, "InfoMaxWidth"); };
-            this.OnPropertyChanged(this, "InfoMaxWidth");
-        }
-
-        public void onCDollorClicked(object sender, RoutedEventArgs e)
-        {
-            RemoteSystem.Current?.OpenCDollar();
-        }
-
-        public async void onGPUpdateClicked(object sender, RoutedEventArgs e)
-        {
-            await RemoteSystem.Current?.GpUpdateAsync();
-        }
-
-        public void onCompMgmtClicked(object sender, RoutedEventArgs e)
-        {
-            RemoteSystem.Current?.OpenCompMgmt();
-        }
-
-        public void onPoshClicked(object sender, RoutedEventArgs e)
-        {
-            RemoteSystem.Current?.OpenPosh();
         }
     }
 }

@@ -6,17 +6,18 @@
              xmlns:local="clr-namespace:_20RoadRemoteAdmin.Tabs"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Orientation="Vertical" Margin="10">
-        <TextBlock Grid.Row="0" Text="System actions" FontWeight="Bold" Margin="0,0,0,5" />
-        <TextBlock>
+    <GroupBox Header="System Actions" Margin="5" Padding="5">
+        <StackPanel Orientation="Vertical">
+            <TextBlock>
             <Hyperlink Click="onRestartClicked" TextDecorations="None">
                 <TextBlock Text="Restart/start client" />
             </Hyperlink>
         </TextBlock>
-        <TextBlock>
+            <TextBlock>
             <Hyperlink Click="onLogsClicked" TextDecorations="None">
                 <TextBlock Text="Open ConfigMgr client logs folder" />
             </Hyperlink>
         </TextBlock>
-    </StackPanel>
+        </StackPanel>
+    </GroupBox>
 </UserControl>

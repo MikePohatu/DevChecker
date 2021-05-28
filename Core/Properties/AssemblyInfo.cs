@@ -28,7 +28,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("20Road Remote Admin")]
-[assembly: AssemblyCopyright("Copyright © 20Road  2021")]
+[assembly: AssemblyCopyright("Copyright © 20Road Limited 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

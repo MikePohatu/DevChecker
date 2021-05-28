@@ -6,13 +6,9 @@
              xmlns:local="clr-namespace:_20RoadRemoteAdmin.Tabs"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="10" MinWidth="300">
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="Client actions" FontWeight="Bold" Margin="0,0,0,5" />
-        <DataGrid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" ItemsSource="{Binding ClientActions}"
+
+    <GroupBox Header="Client Actions" Margin="5" Padding="5">
+        <DataGrid VerticalAlignment="Top" HorizontalAlignment="Stretch" ItemsSource="{Binding ClientActions}"
                   Width="Auto" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0" GridLinesVisibility="None" >
 
             <DataGrid.Resources>
@@ -22,7 +18,7 @@
                     <Setter Property="BorderThickness" Value="0" />
                 </Style>
             </DataGrid.Resources>
-            
+
             <DataGrid.Columns>
                 <!-- Action run -->
                 <DataGridHyperlinkColumn Width="150" ContentBinding="{Binding DisplayName}">
@@ -34,5 +30,5 @@
                 </DataGridHyperlinkColumn>
             </DataGrid.Columns>
         </DataGrid>
-    </Grid>
+    </GroupBox>
 </UserControl>

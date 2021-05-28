@@ -16,15 +16,7 @@
         </Style>
     </UserControl.Resources>
     <Grid Width="Auto" x:Name="mainGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="propsColumn" Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <GroupBox x:Name="infoGroup" Grid.Column="0" Grid.Row="0" Header="Client Info" Margin="5" Padding="5">
+        <GroupBox x:Name="infoGroup" Header="Client Info" Margin="0,0,5,0" Padding="5">
             <ItemsControl Grid.Column="0" Grid.Row="0" ItemsSource="{Binding PropertyBlocks}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -33,16 +25,14 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <DataGrid VerticalAlignment="Top" HorizontalAlignment="Stretch" AutoGenerateColumns="False"
+                        <DataGrid VerticalAlignment="Top" HorizontalAlignment="Stretch" AutoGenerateColumns="False" Width="370"
                                 HeadersVisibility="None" BorderThickness="0" GridLinesVisibility="None" ItemsSource="{Binding}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Key, StringFormat={}{0}:}" FontWeight="Bold" />
-                                <DataGridTemplateColumn>
+                                <DataGridTextColumn Binding="{Binding Key, StringFormat={}{0}:}" FontWeight="Bold" Width="115"/>
+                                <DataGridTemplateColumn Width="auto">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Viewbox StretchDirection="DownOnly" Stretch="Uniform" HorizontalAlignment="Left" MaxWidth="800">
-                                                <TextBlock Text="{Binding Value}" VerticalAlignment="Top" HorizontalAlignment="Stretch" />
-                                            </Viewbox>
+                                            <TextBlock Text="{Binding Value}" VerticalAlignment="Top" HorizontalAlignment="Stretch" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -51,30 +41,6 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </GroupBox>
-        <GroupBox x:Name="toolsGroup" Header="Tools" Grid.Column="1" Grid.Row="0" Margin="5" Padding="5" HorizontalAlignment="Stretch" MinWidth="150">
-            <StackPanel >
-                <TextBlock IsEnabled="{Binding CDollarAccessible, FallbackValue=false}">
-                    <Hyperlink Click="onCDollorClicked" TextDecorations="None">
-                        <TextBlock Text="c$" Margin="0" />
-                    </Hyperlink>
-                </TextBlock>
-                <TextBlock>
-                    <Hyperlink Click="onGPUpdateClicked" TextDecorations="None">
-                        <TextBlock Text="GPUpdate" Margin="0" />
-                    </Hyperlink>
-                </TextBlock>
-                <TextBlock>
-                    <Hyperlink Click="onCompMgmtClicked" TextDecorations="None">
-                        <TextBlock Text="Computer Management" Margin="0" />
-                    </Hyperlink>
-                </TextBlock>
-                <TextBlock>
-                    <Hyperlink Click="onPoshClicked" TextDecorations="None">
-                        <TextBlock Text="PowerShell" Margin="0" />
-                    </Hyperlink>
-                </TextBlock>
-            </StackPanel>
         </GroupBox>
     </Grid>
 </UserControl>

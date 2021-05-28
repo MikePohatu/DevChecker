@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using Core.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -50,6 +51,7 @@ namespace _20RoadRemoteAdmin.Config
         {
             string json = await IOHelpers.ReadFileAsync(filePath);
             Instance = JsonConvert.DeserializeObject<Configuration>(json);
+            Log.Info("Done loading config file: " + filePath);
         }
 
         public async Task WriteAsync(string filePath)

@@ -12,22 +12,26 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto" MinWidth="250"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
+            <local:CmActions />
+            <local:CmSystemActions  />
+        </StackPanel>
+        
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
             <GroupBox Grid.Column="0" Grid.Row="0" Header="Client Info" Margin="5" Padding="5">
-                <Grid Width="350" >
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120"></ColumnDefinition>
-                        <ColumnDefinition Width="230" MinWidth="45"></ColumnDefinition>
+                        <ColumnDefinition Width="130" MinWidth="45"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Computer name:" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
@@ -35,17 +39,8 @@
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Client Version:" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
                     <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ClientVersion}" VerticalAlignment="Top" />
-
-                    <!--<TextBlock Grid.Row="2" Grid.Column="0" Text="OU:" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
-                    <Viewbox Grid.Row="2" Grid.Column="1" StretchDirection="DownOnly" Stretch="Uniform" HorizontalAlignment="Left">
-                        <TextBlock Text="{Binding ClientOU}" VerticalAlignment="Top" />
-                    </Viewbox>-->
                 </Grid>
             </GroupBox>
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
-            <local:CmActions />
-            <local:CmSystemActions  />
         </StackPanel>
     </Grid>
 </UserControl>

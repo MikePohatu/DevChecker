@@ -35,6 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -90,8 +91,8 @@
     <Compile Include="Tabs\CmSystemActions.xaml.cs">
       <DependentUpon>CmSystemActions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\CustomActionTab.xaml.cs">
-      <DependentUpon>CustomActionTab.xaml</DependentUpon>
+    <Compile Include="Tabs\ActionsTab.xaml.cs">
+      <DependentUpon>ActionsTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tabs\WindowsClientTab.xaml.cs">
       <DependentUpon>WindowsClientTab.xaml</DependentUpon>
@@ -137,7 +138,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Tabs\CustomActionTab.xaml">
+    <Page Include="Tabs\ActionsTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -192,4 +193,25 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>SET ReleasePath=C:\source\release\remoteadmin
+
+rmdir /s /q "%25ReleasePath%25"
+md "%25ReleasePath%25"
+
+xcopy /I /H /E /Y "$(OutputDir)Scripts" "%25ReleasePath%25\Scripts"
+
+Copy /Y "$(SolutionDir)Release notes.txt" "%25ReleasePath%25"
+Copy /Y "$(SolutionDir)Documentation and Source.url" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)NLog.config" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)NLog.dll" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)Core.dll" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)ConfigMgrHelpers.dll" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)CustomActions.dll" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)WindowsHelpers.dll" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)Newtonsoft.Json.dll" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)WMicrosoft.Management.Infrastructure.dll" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)System.Management.Automation.dll" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)20RoadRemoteAdmin.exe" "%25ReleasePath%25"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -17,7 +17,7 @@
             <RowDefinition Height="200*" />
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <StackPanel x:Name="_connect_Pane" Orientation="Horizontal" IsEnabled="{Binding ControlsEnabled}" Margin="5,2">
+        <StackPanel x:Name="_connectPane" Orientation="Horizontal" IsEnabled="{Binding ControlsEnabled}" Margin="5,2">
             <GroupBox Header="Device" Width="340">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
@@ -68,14 +68,14 @@
             </TabItem>
             <TabItem Header="Client Side" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
                 <TabControl Grid.Row="1" MinHeight="250" BorderBrush="{x:Null}" >
-                    <TabItem Header="Windows Client" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                    <TabItem Header="Client Info" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
                         <tabs:WindowsClientTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
+                    </TabItem>
+                    <TabItem Header="Actions" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
+                        <tabs:ActionsTab IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}"/>
                     </TabItem>
                     <TabItem Header="ConfigMgr Client" DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
                         <tabs:CmClientTab IsEnabled="{Binding ClientInstalled, FallbackValue=false}"/>
-                    </TabItem>
-                    <TabItem Header="Custom Actions" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
-                        <tabs:CustomActionTab IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}"/>
                     </TabItem>
                 </TabControl>
             </TabItem>

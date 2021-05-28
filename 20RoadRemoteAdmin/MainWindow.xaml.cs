@@ -215,7 +215,7 @@ namespace _20RoadRemoteAdmin
                 this.CmClient = null;
                 this.CmServer = null;
                 this.SpinnerVisibility = Visibility.Visible;
-                this._connect_Pane.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
+                this._connectPane.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
 
                 //update
                 RemoteSystem.New(this._remoteComputer, this._clientssl);

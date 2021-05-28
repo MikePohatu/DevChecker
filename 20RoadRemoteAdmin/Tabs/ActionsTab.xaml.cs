@@ -31,15 +31,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CustomActions;
+using WindowsHelpers;
 
 namespace _20RoadRemoteAdmin.Tabs
 {
     /// <summary>
     /// Interaction logic for CustomActionTab.xaml
     /// </summary>
-    public partial class CustomActionTab : UserControl
+    public partial class ActionsTab : UserControl
     {
-        public CustomActionTab()
+        public ActionsTab()
         {
             InitializeComponent();
         }
@@ -54,6 +55,26 @@ namespace _20RoadRemoteAdmin.Tabs
         public async void onRefreshClicked(object sender, RoutedEventArgs e)
         {
             await ActionLibrary.RefreshAsync();
+        }
+
+        public void onCDollorClicked(object sender, RoutedEventArgs e)
+        {
+            RemoteSystem.Current?.OpenCDollar();
+        }
+
+        public async void onGPUpdateClicked(object sender, RoutedEventArgs e)
+        {
+            await RemoteSystem.Current?.GpUpdateAsync();
+        }
+
+        public void onCompMgmtClicked(object sender, RoutedEventArgs e)
+        {
+            RemoteSystem.Current?.OpenCompMgmt();
+        }
+
+        public void onPoshClicked(object sender, RoutedEventArgs e)
+        {
+            RemoteSystem.Current?.OpenPosh();
         }
     }
 }
