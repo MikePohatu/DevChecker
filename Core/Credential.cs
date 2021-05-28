@@ -60,12 +60,12 @@ namespace Core
         }
 
         public void Update(Credential newcreds)
-        {
-            Log.Info("Updated credentials with username: " + this.Username + " and domain: " + this.Domain );
+        {            
             this.Username = newcreds.Username;
             this.Password = newcreds.Password;
             this.Domain = newcreds.Domain;
-            this.SecurePassword = newcreds.SecurePassword;
+            this.SecurePassword = newcreds.SecurePassword; 
+            Log.Info("Updated credentials with username: " + this.Username + " and domain: " + this.Domain);
         }
     }
 }

@@ -57,7 +57,7 @@ namespace WindowsHelpers
             }
             else { 
                 string shellUri = "http://schemas.microsoft.com/powershell/Microsoft.PowerShell";
-                connectioninfo = new WSManConnectionInfo(useSSL, computerName, port, "/wsman", shellUri, currentCred);
+                connectioninfo = new WSManConnectionInfo(useSSL, computerName, port, "/wsman", shellUri, currentCred, 5000);
 
             }
 

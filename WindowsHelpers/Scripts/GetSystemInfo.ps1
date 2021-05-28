@@ -105,7 +105,17 @@ function Get-ProductType {
 }
 
 Function Get-LoggedOnUsers {
-    $users = ((quser) -replace '^>', '' -replace '\s{20}', ',' -replace '\s{2,}', ',') | ConvertFrom-Csv
+    $ErrorActionPreference= 'silentlycontinue'
+    try {
+        $users = ((quser) -replace '^>', '' -replace '\s{20}', ',' -replace '\s{2,}', ',') | ConvertFrom-Csv
+    }
+    catch {
+        return @{
+            activeUsers = ""
+            disconnectedUsers = ""
+            consoleUser = ""
+        }
+    }
 
     $active = $users | Where {$_.STATE -eq 'Active'}
     $disconnected = $users | Where {$_.STATE -eq 'Disc'}
