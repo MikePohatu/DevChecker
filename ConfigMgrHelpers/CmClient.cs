@@ -19,6 +19,7 @@
 using Core.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,6 +80,20 @@ namespace ConfigMgrHelpers
 					this.ReportedName = PoshHandler.GetFirstPropertyValue<string>(result, "PSComputerName");
 					Log.Info("Finished gathering ConfigMgr client info");
 				}
+			}
+		}
+
+		public void OpenLogs()
+		{
+			string path = @"\\" + RemoteSystem.Current.ComputerName + @"\c$\Windows\ccm\Logs";
+
+			try
+			{
+				Process.Start(path);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e, "Error opening " + path);
 			}
 		}
 	}

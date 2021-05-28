@@ -194,14 +194,14 @@ namespace WindowsHelpers
 
         public void OpenCDollar()
         {
-            
+            string path = @"\\" + RemoteSystem.Current.ComputerName + @"\c$";
             try
             {
-                this.StartProcess(@"\\" + RemoteSystem.Current.ComputerName + @"\c$");
+                Process.Start(path);
             }
             catch (Exception e)
             {
-                Log.Error(e, "Error opening c$ share");
+                Log.Error(e, "Error opening " + path);
             }
         }
 
@@ -209,7 +209,10 @@ namespace WindowsHelpers
         {
             try
             {
-                this.StartProcess(@"C:\Windows\System32\mmc.exe", @"c:\windows\system32\compmgmt.msc /computer:\\" + RemoteSystem.Current.ComputerName, true);
+                ImpersonationHelpers.Impersonate(this.Credential.Domain, this.Credential.Username, this.Credential.Password, delegate
+                {
+                    this.StartProcess(@"C:\Windows\System32\mmc.exe", @"c:\windows\system32\compmgmt.msc /computer:\\" + RemoteSystem.Current.ComputerName, null);
+                });
             }
             catch (Exception e)
             {
@@ -224,7 +227,7 @@ namespace WindowsHelpers
                 string ssl = this.UseSSL ? " -UseSSL" : "";
                 string command = @"C:\Windows\System32\WindowsPowershell\v1.0\powershell.exe";
                 string args = " -noexit -command \"Enter-PSSession -ComputerName " + this.ComputerName + ssl + "\"";
-                this.StartProcess(command, args, false);
+                this.StartProcess(command, args, this.Credential);
             }
             catch (Exception e)
             {
@@ -241,6 +244,7 @@ namespace WindowsHelpers
                 using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
                 {
                     await PoshHandler.InvokeRunnerAsync(posh);
+                    Log.Info("Done");
                 }
             }
             catch (Exception e)
@@ -249,28 +253,12 @@ namespace WindowsHelpers
             }
         }
 
-        public void StartProcess(string file)
-        {
-            this.StartProcess(file, null, false);
-        }
-
-        public void StartProcess(string file, string args)
-        {
-            this.StartProcess(file, args, false);
-        }
-
-        public void StartProcess(string file, bool elevate)
-        {
-            this.StartProcess(file, null, elevate);
-        }
-
-        public void StartProcess(string file, string args, bool elevate)
+        public void StartProcess(string file, string args, Credential creds)
         {
             ProcessStartInfo info = string.IsNullOrWhiteSpace(args) ? new ProcessStartInfo(file) : new ProcessStartInfo(file, args);
             info.UseShellExecute = false;
-            if (elevate) { info.Verb = "runas"; }
 
-            if (this.Credential != null && this.Credential.CredentialsSet)
+            if (creds != null && creds.CredentialsSet)
             {
                 info.UserName = this.Credential.Username;
                 if (!this.Credential.Username.Contains("@")) { info.Domain = this.Credential.Domain; }

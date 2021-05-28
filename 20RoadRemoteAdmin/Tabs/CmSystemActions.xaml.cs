@@ -57,15 +57,7 @@ namespace _20RoadRemoteAdmin.Tabs
 
         public void onLogsClicked(object sender, RoutedEventArgs e)
         {
-            string path = @"\\" + RemoteSystem.Current.ComputerName + @"\c$\Windows\ccm\Logs";
-            try
-            {
-                Process.Start(path);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error opening path: " + path);
-            }
+            CmClient.Current.OpenLogs();
         }
     }
 }
