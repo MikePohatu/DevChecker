@@ -74,6 +74,8 @@ namespace _20RoadRemoteAdmin
             this.StartUpAsync().ConfigureAwait(false);
         }
 
+        public Visibility RelaunchVisibility { get { return UacHelpers.IsAdministrator() ? Visibility.Collapsed : Visibility.Visible; } }
+
         private bool _clientssl = false;
         public bool ClientSSL
         {
@@ -156,6 +158,7 @@ namespace _20RoadRemoteAdmin
                 {
                     LoggingHelpers.SetLoggingLevel(LogLevel.Info);
                 }
+                Log.Debug("Log level updated");
             }
         }
 
@@ -181,6 +184,8 @@ namespace _20RoadRemoteAdmin
                 this._clientCred.Domain = Configuration.Instance.ClientDomain;
                 this._serverCred.Username = Configuration.Instance.ServerUsername;
                 this._serverCred.Domain = Configuration.Instance.ServerDomain;
+                this._serverCred.UseKerberos = Configuration.Instance.ServerKerberos;
+                this._clientCred.UseKerberos = Configuration.Instance.ClientKerberos;
             }
             await ActionLibrary.RefreshAsync();
         }
@@ -218,8 +223,7 @@ namespace _20RoadRemoteAdmin
                 this._connectPane.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
 
                 //update
-                RemoteSystem.New(this._remoteComputer, this._clientssl);
-                Log.Info(Log.Highlight("Connecting to device: " + RemoteSystem.Current.ComputerName));
+                RemoteSystem.New(this._remoteComputer, this._clientssl, this._clientCred);
 
                 List<Task> connectTasks = new List<Task>();
                 connectTasks.Add(CmServer.Create(this.ConfigMgrServerName, this.ServerSSL, RemoteSystem.Current.BareComputerName).ConnectAsync());
@@ -301,6 +305,8 @@ namespace _20RoadRemoteAdmin
             Configuration.Instance.LastDevice = this.RemoteComputer;
             Configuration.Instance.ClientSSL = this.ClientSSL;
             Configuration.Instance.ServerSSL = this.ServerSSL;
+            Configuration.Instance.ClientKerberos = this._clientCred.UseKerberos;
+            Configuration.Instance.ServerKerberos = this._serverCred.UseKerberos;
 
             Configuration.Instance.ClientUsername = this._clientCred.Username;
             Configuration.Instance.ClientDomain = this._clientCred.Domain;
@@ -335,6 +341,11 @@ namespace _20RoadRemoteAdmin
         {
             var popup = new CredentialPopup(this._serverCred);
             popup.ShowDialog();
+        }
+
+        private void onAdminClicked(object sender, RoutedEventArgs e)
+        {
+            UacHelpers.RestartToAdmin();
         }
     }
 }

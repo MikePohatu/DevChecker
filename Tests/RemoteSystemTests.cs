@@ -40,7 +40,7 @@ namespace Tests
         [Test, TestCaseSource("RemoteSystemConfig")]
         public async Task RemoteSysTest(RemoteSystemDetails details)
         {
-            RemoteSystem sys = RemoteSystem.New(details.Device, details.UseSSL);
+            RemoteSystem sys = RemoteSystem.New(details.Device, details.UseSSL, null);
 
             await RemoteSystem.Current.ConnectAsync();
 

@@ -36,29 +36,41 @@ namespace WindowsHelpers
         public static bool LogProgress { get; set; } = false;
 
         private static PowerShell GetRunner(string script, string computerName, bool useSSL, int port, Credential cred)
-        {            
+        {
+            bool credsSet = cred == null ? false : cred.CredentialsSet;
+            Log.Trace($"PoshHandler.GetRunner called. computerName:{computerName}, useSSL:{useSSL}, port:{port}, cred:{credsSet}");
             //create the creds
             PSCredential currentCred;
-            if (string.IsNullOrWhiteSpace(cred?.Username) || string.IsNullOrWhiteSpace(cred?.Password))
-            {
-                currentCred = PSCredential.Empty;
-            }
-            else
+            if (credsSet)
             {
                 string user = string.IsNullOrWhiteSpace(cred.Domain) ? cred.Username : cred.Domain + "\\" + cred.Username;
                 currentCred = new PSCredential(user, cred.SecurePassword);
+            }
+            else
+            {
+                currentCred = PSCredential.Empty;
             }
 
             //create the connection
             WSManConnectionInfo connectioninfo;
             if (string.IsNullOrWhiteSpace(computerName) || computerName == "." || computerName == "localhost" || computerName == "127.0.0.1")
             {
+                Log.Debug("Connecting to localhost uri: " + computerName);
                 connectioninfo = null;
             }
-            else { 
+            else 
+            { 
                 string shellUri = "http://schemas.microsoft.com/powershell/Microsoft.PowerShell";
                 connectioninfo = new WSManConnectionInfo(useSSL, computerName, port, "/wsman", shellUri, currentCred, 5000);
-
+                if (currentCred != PSCredential.Empty && cred.UseKerberos)
+                {
+                    Log.Debug("Connecting with kerberos");
+                    connectioninfo.AuthenticationMechanism = AuthenticationMechanism.Kerberos;
+                }  
+                else
+                {
+                    Log.Debug("No kerberos");
+                }
             }
 
             //create the runspace

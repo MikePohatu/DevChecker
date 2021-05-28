@@ -37,6 +37,9 @@ namespace _20RoadRemoteAdmin.Config
         public bool ClientSSL { get; set; }
         public bool ServerSSL { get; set; }
 
+        public bool ClientKerberos { get; set; }
+        public bool ServerKerberos { get; set; }
+
         public bool UseSSL { get; set; } = false;
 
         public string ClientUsername { get; set; }

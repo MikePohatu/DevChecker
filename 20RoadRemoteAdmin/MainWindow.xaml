@@ -101,6 +101,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Stretch" >
                 <Label Content="Log Trace/Verbose Messages" VerticalAlignment="Center" />
@@ -114,7 +115,13 @@
                 </Grid>
             </StackPanel>
 
-            <TextBlock Grid.Column="1" Margin="10,0" VerticalAlignment="Center" HorizontalAlignment="Right">
+            <TextBlock Grid.Column="1" Margin="10,0" Visibility="{Binding RelaunchVisibility}" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <Hyperlink Click="onAdminClicked" TextDecorations="None">
+                    <TextBlock Text="Relaunch as admin" Margin="0" />
+                </Hyperlink>
+            </TextBlock>
+            
+            <TextBlock Grid.Column="2" Margin="10,0" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <Hyperlink Click="onSaveLogClicked" TextDecorations="None">
                     <TextBlock Text="Save log" Margin="0" />
                 </Hyperlink>

@@ -97,10 +97,11 @@ namespace WindowsHelpers
         /// The current RemoteSystem instance. Behaves like a singleton
         /// </summary>
         public static RemoteSystem Current { get; private set; }
-        private RemoteSystem(string ComputerName, bool useSSL)
+        private RemoteSystem(string ComputerName, bool useSSL, Credential cred)
         {
             this.ComputerName = ComputerName;
             this.UseSSL = useSSL;
+            this.Credential = cred;
         }
 
         /// <summary>
@@ -108,9 +109,9 @@ namespace WindowsHelpers
         /// </summary>
         /// <param name="ComputerName"></param>
         /// <returns></returns>
-        public static RemoteSystem New(string ComputerName, bool useSSL)
+        public static RemoteSystem New(string ComputerName, bool useSSL, Credential cred)
         {
-            Current = new RemoteSystem(ComputerName, useSSL);
+            Current = new RemoteSystem(ComputerName, useSSL, cred);
             return Current;
         }
 
@@ -121,13 +122,10 @@ namespace WindowsHelpers
         public async Task ConnectAsync()
         {
             this.IsConnected = false;
-            if (string.IsNullOrWhiteSpace(this.ComputerName))
-            {
-                throw new ArgumentException("No computer name specified");
-            }
 
             try
             {
+                Log.Info("Connecting to " + this.ComputerName);
                 string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\GetSystemInfo.ps1";
                 string script = await IOHelpers.ReadFileAsync(scriptPath);
 
@@ -145,12 +143,9 @@ namespace WindowsHelpers
                         this.IPv6Address = PoshHandler.GetFirstHashTableString(results, "ipv6Addresses");
                         this.ReportedComputerName = PoshHandler.GetFirstHashTableString(results, "name");
                         this.ConfigMgrClientStatus = PoshHandler.GetFirstHashTableString(results, "configMgrClientStatus");
-
                         this.Properties = PoshHandler.GetHashTableAsOrderedDictionary(results);
-
                         this.PropertyBlocks = Overflow.CreateFromDictionary(this.Properties, 15);
                         
-
                         Log.Info(Log.Highlight("Connected to " + this.ReportedComputerName));
                         Connected?.Invoke(this, new EventArgs());
                     }
@@ -202,7 +197,7 @@ namespace WindowsHelpers
             
             try
             {
-                Process.Start(@"\\" + RemoteSystem.Current.ComputerName + @"\c$");
+                this.StartProcess(@"\\" + RemoteSystem.Current.ComputerName + @"\c$");
             }
             catch (Exception e)
             {
@@ -214,7 +209,7 @@ namespace WindowsHelpers
         {
             try
             {
-                Process.Start(@"C:\Windows\System32\mmc.exe", @"c:\windows\system32\compmgmt.msc /computer:\\" + RemoteSystem.Current.ComputerName);
+                this.StartProcess(@"C:\Windows\System32\mmc.exe", @"c:\windows\system32\compmgmt.msc /computer:\\" + RemoteSystem.Current.ComputerName, true);
             }
             catch (Exception e)
             {
@@ -227,7 +222,9 @@ namespace WindowsHelpers
             try
             {
                 string ssl = this.UseSSL ? " -UseSSL" : "";
-                Process.Start(@"C:\Windows\System32\WindowsPowershell\v1.0\powershell.exe", " -noexit -command \"Enter-PSSession -ComputerName " + this.ComputerName + ssl + "\"");
+                string command = @"C:\Windows\System32\WindowsPowershell\v1.0\powershell.exe";
+                string args = " -noexit -command \"Enter-PSSession -ComputerName " + this.ComputerName + ssl + "\"";
+                this.StartProcess(command, args, false);
             }
             catch (Exception e)
             {
@@ -250,6 +247,37 @@ namespace WindowsHelpers
             {
                 Log.Error(e, "Error running gpupdate");
             }
+        }
+
+        public void StartProcess(string file)
+        {
+            this.StartProcess(file, null, false);
+        }
+
+        public void StartProcess(string file, string args)
+        {
+            this.StartProcess(file, args, false);
+        }
+
+        public void StartProcess(string file, bool elevate)
+        {
+            this.StartProcess(file, null, elevate);
+        }
+
+        public void StartProcess(string file, string args, bool elevate)
+        {
+            ProcessStartInfo info = string.IsNullOrWhiteSpace(args) ? new ProcessStartInfo(file) : new ProcessStartInfo(file, args);
+            info.UseShellExecute = false;
+            if (elevate) { info.Verb = "runas"; }
+
+            if (this.Credential != null && this.Credential.CredentialsSet)
+            {
+                info.UserName = this.Credential.Username;
+                if (!this.Credential.Username.Contains("@")) { info.Domain = this.Credential.Domain; }
+                info.Password = this.Credential.SecurePassword;
+            }
+
+            Process.Start(info);
         }
     }
 }

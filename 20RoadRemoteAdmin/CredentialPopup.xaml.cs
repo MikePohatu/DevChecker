@@ -42,10 +42,11 @@ namespace _20RoadRemoteAdmin
         Credential _newcreds;
         public CredentialPopup(Credential existingCreds)
         {
+            InitializeComponent();
             this._existingCred = existingCreds;
             this._newcreds = this._existingCred.Clone();
             this.DataContext = this._newcreds;
-            InitializeComponent();
+            this.pwBox.Password = existingCreds.Password;
         }
 
         public void onPasswordChanged(object sender, RoutedEventArgs args)

@@ -28,6 +28,8 @@ namespace Core
 {
     public class Credential: ViewModelBase
     {
+        public bool CredentialsSet { get { return !(string.IsNullOrWhiteSpace(this.Username) || string.IsNullOrWhiteSpace(this.Password)); } }
+
         private string _username;
         public string Username
         {
@@ -45,6 +47,13 @@ namespace Core
             set { this._domain = value; this.OnPropertyChanged(this, "Domain"); }
         }
 
+        private bool _useKerberos;
+        public bool UseKerberos
+        {
+            get { return this._useKerberos; }
+            set { this._useKerberos = value; this.OnPropertyChanged(this, "UseKerberos"); }
+        }
+
         public void UpdatePassword(SecureString securePassword, string password)
         {
             this.SecurePassword = securePassword;
@@ -56,6 +65,7 @@ namespace Core
             Credential newcred = new Credential();
             newcred.Username = this.Username;
             newcred.Domain = this.Domain;
+            newcred.UseKerberos = this.UseKerberos;
             return newcred;
         }
 
@@ -64,6 +74,7 @@ namespace Core
             this.Username = newcreds.Username;
             this.Password = newcreds.Password;
             this.Domain = newcreds.Domain;
+            this.UseKerberos = newcreds.UseKerberos;
             this.SecurePassword = newcreds.SecurePassword; 
             Log.Info("Updated credentials with username: " + this.Username + " and domain: " + this.Domain);
         }
