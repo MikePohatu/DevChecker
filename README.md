@@ -13,14 +13,21 @@ This tool was created because existing tools either didn't do what I wanted, or 
 * Run *gpupdate /force*
 * List installed patches
 * List install applications
-* Add custom PowerShell scripts 
+* Add custom PowerShell scripts to run on client
 * See ConfigMgr collections
 * 'Connect as' functionality
 
 ## Planned features
 
-* Access to Software Center
+* Access to ConfigMgr Software Center
 * Add custom tabs using PowerShell scripts
+* Run ConfigMgr scripts
+* List and control device services
+* List and kill device processes
+* List and install available updates
+* List printers and print drivers
+* Show BitLocker status
+* Shutdown, restart, logoff functions
 
 [Documentation](/documentation/README.md)
 
