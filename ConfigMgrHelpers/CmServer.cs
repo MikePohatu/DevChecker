@@ -173,7 +173,7 @@ namespace ConfigMgrHelpers
             if (!this.IsLocalhostClient)
             {
                 Log.Info("Gathering collections");
-                string command = "Get-WmiObject -ComputerName " + CmServer.Current.ServerName + " -Namespace \"" + CmServer.Current.SiteWmiNamespace + "\"  -Query \"SELECT SMS_Collection.* FROM SMS_FullCollectionMembership, SMS_Collection where name = '" + this.ClientName + "' and SMS_FullCollectionMembership.CollectionID = SMS_Collection.CollectionID\"";
+                string command = "Get-WmiObject -ComputerName " + CmServer.Current.ServerName + " -Namespace \"" + CmServer.Current.SiteWmiNamespace + "\"  -Query \"SELECT DISTINCT SMS_Collection.* FROM SMS_FullCollectionMembership, SMS_Collection where name = '" + this.ClientName + "' and SMS_FullCollectionMembership.CollectionID = SMS_Collection.CollectionID\"";
                 
                 var posh = PoshHandler.GetRunner(command);
                 var result = await PoshHandler.InvokeRunnerAsync(posh);
