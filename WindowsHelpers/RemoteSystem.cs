@@ -77,8 +77,6 @@ namespace WindowsHelpers
 
         public string InstalledOSType { get; private set; } = "Unknown";
         public bool SystemPendingReboot { get; private set; } = false;
-        public UInt64 SystemMemory { get; private set; } = 0;
-        public UInt64 SystemMemoryMB { get { return ( SystemMemory / 1024 ) / 1024; } }
 
         public string IPv4Address { get; private set; }
         public string IPv6Address { get; private set; }
@@ -137,7 +135,6 @@ namespace WindowsHelpers
                         this.IsConnected = true;
                         this.CDollarAccessible = true;
                         this.SystemPendingReboot = PoshHandler.GetFirstHashTableValue<bool>(results, "pendingReboot");
-                        this.SystemMemory = PoshHandler.GetFirstHashTableValue<ulong>(results, "memorySize");
                         this.InstalledOSType = PoshHandler.GetFirstHashTableString(results, "type");
                         this.IPv4Address = PoshHandler.GetFirstHashTableString(results, "ipv4Addresses");
                         this.IPv6Address = PoshHandler.GetFirstHashTableString(results, "ipv6Addresses");

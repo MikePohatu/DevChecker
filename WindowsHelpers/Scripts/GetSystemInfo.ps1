@@ -149,13 +149,14 @@ $ipv6s = Get-NetIPAddress -AddressFamily IPv6 | Where-Object {$_.InterfaceIndex 
 $compSys = Get-WmiObject -Query 'SELECT * FROM Win32_ComputerSystem' | Select Manufacturer, Model, SystemType, TotalPhysicalMemory
 $compOS = Get-WmiObject -Query 'SELECT * FROM Win32_OperatingSystem' | Select BuildNumber, Caption, LastBootUpTime, OSArchitecture, Version, WindowsDirectory
 $compBIOS = Get-WmiObject -Query 'SELECT * FROM Win32_BIOS' | Select SerialNumber, SMBIOSBIOSVersion
+$memory = [Math]::Round($compSys.TotalPhysicalMemory /1024 /1024 )
 $users = Get-LoggedOnUsers
 $power = Get-PowerInfo
 
 $systemInfo = @{
     pendingReboot = IsRebootPending
     type = $compOS.OSArchitecture
-    memorySize = $compSys.TotalPhysicalMemory
+    memorySize = "$memory MB"
     ipv4Addresses = [string]::Join(", ", $ipv4s.IPAddress)
     ipv6Addresses = [string]::Join(", ", $ipv6s.IPAddress)
     consoleUser = $users.consoleUser
