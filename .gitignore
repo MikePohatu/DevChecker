@@ -351,3 +351,5 @@ MigrationBackup/
 Tests/testconfig.json
 
 Tests/Configs/RemoteSystem-testconfig.json
+
+.DS_Store
