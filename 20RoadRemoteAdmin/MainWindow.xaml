@@ -12,12 +12,12 @@
     <Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="150*" MinHeight="150" />
             <RowDefinition Height="20"/>
-            <RowDefinition Height="200*" />
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="70*" MinHeight="70" />
+            <RowDefinition Height="30" MinHeight="30" />
         </Grid.RowDefinitions>
-        <StackPanel x:Name="_connectPane" Orientation="Horizontal" IsEnabled="{Binding ControlsEnabled}" Margin="5,2">
+        <StackPanel Grid.Row="0" x:Name="_connectPane" Orientation="Horizontal" IsEnabled="{Binding ControlsEnabled}" Margin="5,2">
             <GroupBox Header="Device" Width="340">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
@@ -62,12 +62,12 @@
                 </Button.Style>
             </Button>
         </StackPanel>
-        <TabControl Grid.Row="1" MinHeight="250" BorderBrush="{x:Null}" >
+        <TabControl Grid.Row="1" MinHeight="200" BorderBrush="{x:Null}" >
             <TabItem Header="Overview">
                 <tabs:OverviewTab />
             </TabItem>
             <TabItem Header="Client Side" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
-                <TabControl Grid.Row="1" MinHeight="250" BorderBrush="{x:Null}" >
+                <TabControl Grid.Row="1" BorderBrush="{x:Null}" >
                     <TabItem Header="Client Info" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
                         <tabs:WindowsClientTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
                     </TabItem>
@@ -91,8 +91,9 @@
         
         <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="5,5,5,0" TextWrapping="Wrap" Text="Output" 
                    FontSize="10" VerticalAlignment="Bottom"/>
+        
         <Border Grid.Row="3" BorderBrush="LightGray" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Margin="5" >
-            <ScrollViewer x:Name="outputScroll" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+            <ScrollViewer x:Name="outputScroll" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <TextBlock x:Name="outputTb" HorizontalAlignment="Stretch" Margin="5,1,2,5" FontSize="10" TextWrapping="Wrap" />
             </ScrollViewer>
         </Border>
