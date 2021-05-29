@@ -4,7 +4,7 @@ Remote Admin is a little application to allow IT admins to remotely access devic
 
 This tool was created because existing tools either didn't do what I wanted, or were stuck behind an email sign-up page. 
 
-Current features:
+## Current features:
 
 * Connect to remote device over WinRM
 * Gather basic device info like OS version, IP, model, serial, logged in users, is power connected etc.
@@ -16,3 +16,11 @@ Current features:
 * Add custom PowerShell scripts 
 * See ConfigMgr collections
 * 'Connect as' functionality
+
+## Planned features
+
+* Access to Software Center
+* Add custom tabs using PowerShell scripts
+
+[Documentation](/documentation/README.md)
+
