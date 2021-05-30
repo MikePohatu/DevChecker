@@ -229,6 +229,8 @@ namespace _20RoadRemoteAdmin
             }
             else
             {
+                string bars = "----------------------------------------";
+                Log.Info("Connecting to " + this._remoteComputer + Environment.NewLine + bars);
                 //reset and prep
                 this.ControlsEnabled = false;
                 this.RemoteSystem = null;

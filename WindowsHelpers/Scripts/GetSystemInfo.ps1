@@ -145,15 +145,18 @@ Function Get-LoggedOnUsers {
 }
 
 function Get-BitLockerInfo {
-    $bitLocker = Get-BitLockerVolume -ErrorAction SilentlyContinue -MountPoint $env:SystemDrive | Select MountPoint, VolumeStatus, EncryptionPercentage, ProtectionStatus
-
+    try {
+        $bitLocker = Get-BitLockerVolume -ErrorAction SilentlyContinue -MountPoint $env:SystemDrive | Select MountPoint, VolumeStatus, EncryptionPercentage, ProtectionStatus
+    } catch {
+        Write-Information "BitLocker not available on device."
+    }
+    
     if ($bitLocker) {
         return @{
             percent = "$($bitLocker.EncryptionPercentage)%"
             status = $bitLocker.ProtectionStatus
         }
     } else {
-        Write-Information "BitLocker not available on device."
         return @{
             percent = "0%"
             status = "N/A"
