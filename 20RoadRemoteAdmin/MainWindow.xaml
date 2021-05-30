@@ -17,11 +17,14 @@
             <RowDefinition Height="70*" MinHeight="70" />
             <RowDefinition Height="30" MinHeight="30" />
         </Grid.RowDefinitions>
+        
+        <!-- Connections-->
         <StackPanel Grid.Row="0" x:Name="_connectPane" Orientation="Horizontal" IsEnabled="{Binding ControlsEnabled}" Margin="5,2">
             <GroupBox Header="Device" Width="340">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
-                        <TextBox Text="{Binding RemoteComputer, UpdateSourceTrigger=PropertyChanged}" Width="270" Padding="5,3,5,3" Margin="2" AcceptsReturn="False" KeyUp="onConnectionKeyup" />
+                        <ComboBox x:Name="clientBox" ItemsSource="{Binding DeviceHistory}" Text="{Binding RemoteComputer, Mode=TwoWay}" 
+                            IsEditable="True" Width="270" Padding="5,3,5,3" Margin="2" TextBox.KeyUp="onConnectionKeyup" />
                         <CheckBox Margin="5,3,5,3" IsChecked="{Binding ClientSSL}" VerticalAlignment="Center">
                             <TextBlock Text="SSL" Margin="0,1,0,0"/>
                         </CheckBox>
@@ -36,10 +39,10 @@
             <GroupBox Header="Server" Width="340">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
-                    <TextBox Text="{Binding ConfigMgrServerName,UpdateSourceTrigger=PropertyChanged}" Width="270" Padding="5,3,5,3" Margin="2"  AcceptsReturn="False" KeyUp="onConnectionKeyup" />
-                    <CheckBox Margin="5,3,5,3" IsChecked="{Binding ServerSSL}" VerticalAlignment="Center">
-                        <TextBlock Text="SSL" Margin="0,1,0,0"/>
-                    </CheckBox>
+                        <TextBox Text="{Binding ConfigMgrServerName,UpdateSourceTrigger=PropertyChanged}" Width="270" Padding="5,3,5,3" Margin="2"  AcceptsReturn="False" KeyUp="onConnectionKeyup" />
+                        <CheckBox Margin="5,3,5,3" IsChecked="{Binding ServerSSL}" VerticalAlignment="Center">
+                            <!--<TextBlock Text="SSL" Margin="0,1,0,0"/>-->
+                        </CheckBox>
                     </StackPanel>
                     <TextBlock Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Left">
                         <Hyperlink Click="onServerConnectAsClicked" TextDecorations="None">
@@ -62,6 +65,8 @@
                 </Button.Style>
             </Button>
         </StackPanel>
+        
+        <!-- Tabs -->
         <TabControl Grid.Row="1" MinHeight="200" BorderBrush="{x:Null}" >
             <TabItem Header="Overview">
                 <tabs:OverviewTab />

@@ -83,6 +83,25 @@ namespace _20RoadRemoteAdmin
             set { this._clientssl = value; this.OnPropertyChanged(this, "ClientSSL"); }
         }
 
+        private string _remoteComputer;
+        public string RemoteComputer
+        {
+            get { return this._remoteComputer; }
+            set { this._remoteComputer = value; this.OnPropertyChanged(this, "RemoteComputer"); }
+        }
+
+        private ObservableCollection<string> _deviceHistory = new ObservableCollection<string>();
+        public ObservableCollection<string> DeviceHistory
+        {
+            get { return this._deviceHistory; }
+            set 
+            { 
+                this._deviceHistory = value; 
+                this.OnPropertyChanged(this, "DeviceHistory");
+                this.RemoteComputer = this._deviceHistory.First();
+            }
+        }
+
         private bool _serverssl = true;
         public bool ServerSSL
         {
@@ -103,14 +122,6 @@ namespace _20RoadRemoteAdmin
             get { return this._connectEnabled; }
             set { this._connectEnabled = value; this.OnPropertyChanged(this, "ControlsEnabled"); }
         }
-
-        private string _remoteComputer;
-        public string RemoteComputer
-        {
-            get { return this._remoteComputer; }
-            set { this._remoteComputer = value; this.OnPropertyChanged(this, "RemoteComputer"); }
-        }
-
         private RemoteSystem _remotesystem;
         public RemoteSystem RemoteSystem
         {
@@ -178,6 +189,10 @@ namespace _20RoadRemoteAdmin
                 await Configuration.LoadAsync(this._configFilePath);
                 this.ConfigMgrServerName = Configuration.Instance.ConfigMgrServer;
                 this.RemoteComputer = Configuration.Instance.LastDevice;
+                if (Configuration.Instance.DeviceHistory != null && Configuration.Instance.DeviceHistory.Count > 0)
+                {
+                    this.DeviceHistory = new ObservableCollection<string>(Configuration.Instance.DeviceHistory);
+                }
                 this.ClientSSL = Configuration.Instance.ClientSSL;
                 this.ServerSSL = Configuration.Instance.ServerSSL;
                 this._clientCred.Username = Configuration.Instance.ClientUsername;
@@ -233,7 +248,10 @@ namespace _20RoadRemoteAdmin
                 this.CmServer = CmServer.Current;
                 this.RemoteSystem = RemoteSystem.Current;
 
-                if (this.RemoteSystem != null) { this.RemoteSystem.Credential = this._clientCred; }
+                if (this.RemoteSystem != null) {
+                    this.RemoteSystem.Credential = this._clientCred;
+                    this.UpdateDeviceHistory(this._remoteComputer);
+                }
                 if (this.CmServer != null) { this.CmServer.Credential = this._serverCred; }
 
                 //release
@@ -303,6 +321,7 @@ namespace _20RoadRemoteAdmin
         {
             Configuration.Instance.ConfigMgrServer = this.ConfigMgrServerName;
             Configuration.Instance.LastDevice = this.RemoteComputer;
+            Configuration.Instance.DeviceHistory = this.DeviceHistory.ToList();
             Configuration.Instance.ClientSSL = this.ClientSSL;
             Configuration.Instance.ServerSSL = this.ServerSSL;
             Configuration.Instance.ClientKerberos = this._clientCred.UseKerberos;
@@ -346,6 +365,26 @@ namespace _20RoadRemoteAdmin
         private void onAdminClicked(object sender, RoutedEventArgs e)
         {
             UacHelpers.RestartToAdmin();
+        }
+
+        private void UpdateDeviceHistory(string newdevice)
+        {
+            this.DeviceHistory.Insert(0, newdevice);
+            var enumerator = this.DeviceHistory.GetEnumerator();
+            int index = 0;
+            List<int> toremove = new List<int>();
+
+            while (enumerator.MoveNext())
+            {
+                if (enumerator.Current == newdevice && index != 0)
+                {
+                    toremove.Add(index);
+                }
+                index++;
+            }
+
+            foreach (int i in toremove) { this.DeviceHistory.RemoveAt(i); }
+            this.clientBox.SelectedIndex = 0;
         }
     }
 }

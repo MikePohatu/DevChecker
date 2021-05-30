@@ -47,7 +47,7 @@ namespace Tests
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(RemoteSystem.Current.ReportedComputerName.ToLower(), details.Device.ToLower());
-                Assert.GreaterOrEqual(RemoteSystem.Current.SystemMemoryMB, details.MinMem);
+                //Assert.GreaterOrEqual(RemoteSystem.Current.Properties[], details.MinMem);
                 //Assert.IsTrue(RemoteSystem.Current.SystemPendingReboot == rebootPending);
             });
         } 

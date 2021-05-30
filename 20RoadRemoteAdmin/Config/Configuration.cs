@@ -34,6 +34,8 @@ namespace _20RoadRemoteAdmin.Config
         public string ConfigMgrServer { get; set; }
         public string LastDevice { get; set; }
 
+        public List<string> DeviceHistory { get; set; }
+
         public bool ClientSSL { get; set; }
         public bool ServerSSL { get; set; }
 
