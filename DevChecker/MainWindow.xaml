@@ -40,9 +40,9 @@
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <TextBox Text="{Binding ConfigMgrServerName,UpdateSourceTrigger=PropertyChanged}" Width="270" Padding="5,3,5,3" Margin="2"  AcceptsReturn="False" KeyUp="onConnectionKeyup" />
-                        <CheckBox Margin="5,3,5,3" IsChecked="{Binding ServerSSL}" VerticalAlignment="Center">
-                            <!--<TextBlock Text="SSL" Margin="0,1,0,0"/>-->
-                        </CheckBox>
+                        <!--<CheckBox Margin="5,3,5,3" IsChecked="{Binding ServerSSL}" VerticalAlignment="Center">
+                            <TextBlock Text="SSL" Margin="0,1,0,0"/>
+                        </CheckBox>-->
                     </StackPanel>
                     <TextBlock Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Left">
                         <Hyperlink Click="onServerConnectAsClicked" TextDecorations="None">

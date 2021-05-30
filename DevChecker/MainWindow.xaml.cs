@@ -329,7 +329,8 @@ namespace DevChecker
         {
             Configuration.Instance.ConfigMgrServer = this.ConfigMgrServerName;
             Configuration.Instance.LastDevice = this.RemoteComputer;
-            Configuration.Instance.DeviceHistory = this.DeviceHistory.ToList();
+            int historykeepcount = this.DeviceHistory.Count > 20 ? 20 : this.DeviceHistory.Count;
+            Configuration.Instance.DeviceHistory = this.DeviceHistory.ToList().GetRange(0, historykeepcount);
             Configuration.Instance.ClientSSL = this.ClientSSL;
             Configuration.Instance.ServerSSL = this.ServerSSL;
             Configuration.Instance.ClientKerberos = this._clientCred.UseKerberos;
