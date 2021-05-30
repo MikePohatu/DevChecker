@@ -1,4 +1,4 @@
-# Documentation
+# ![logo](/icons/logo-24.png) Documentation
 
 * [Connectivity](#connectivity)
   * [Device](#device)

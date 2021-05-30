@@ -1,4 +1,6 @@
-# DevChecker
+# ![logo](/icons/logo-24.png) DevChecker 
+
+
 
 DevChecker is a little application to allow IT admins to remotely access devices and complete common diagnostics tasks, without having to bug the user.
 
