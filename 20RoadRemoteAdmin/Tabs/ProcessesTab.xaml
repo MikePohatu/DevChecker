@@ -6,6 +6,9 @@
              xmlns:local="clr-namespace:_20RoadRemoteAdmin.Tabs"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="filteredProcs" Source="{Binding Processes}" Filter="onSearchFilter" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,13 +18,15 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Padding="3,5,5,0" HorizontalAlignment="Left">
+        <TextBox x:Name="searchBox" TextChanged="onSearchBoxTextChanged" Grid.Row="0" Grid.Column="0" Width="150" HorizontalAlignment="Left"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Padding="3,5,5,0" HorizontalAlignment="Right">
             <Hyperlink Click="onRefreshClicked" TextDecorations="None">
                 <TextBlock Text="Refresh" Margin="0" />
             </Hyperlink>
         </TextBlock>
-        <DataGrid Grid.Row="1" Grid.ColumnSpan="2" x:Name="procGrid" ItemsSource="{Binding Processes}" AutoGenerateColumns="True" 
-            BorderThickness="0" HeadersVisibility="Column" GridLinesVisibility="Horizontal" SelectionMode="Single" IsReadOnly="True">
+        <DataGrid Grid.Row="1" Grid.ColumnSpan="2" x:Name="procGrid" ItemsSource="{Binding Source={StaticResource filteredProcs}}" AutoGenerateColumns="True" 
+            BorderThickness="0" HeadersVisibility="Column" GridLinesVisibility="Horizontal" SelectionMode="Single" IsReadOnly="True"
+            >
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Kill process" Click="onKillClicked" />

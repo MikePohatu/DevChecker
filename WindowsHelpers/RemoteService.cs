@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 
 namespace WindowsHelpers
 {
-    public class RemoteService: ViewModelBase
+    public class RemoteService: ViewModelBase, IComparable<RemoteService>
     {
         private string _displayName;
         public string DisplayName
@@ -132,6 +132,18 @@ namespace WindowsHelpers
             catch (Exception e)
             {
                 Log.Error(e, "Error starting service: " + this.Name);
+            }
+        }
+
+        public int CompareTo(RemoteService other)
+        {
+            if (string.IsNullOrWhiteSpace(this.DisplayName))
+            {
+                return this.Name.CompareTo(other.Name);
+            }
+            else
+            {
+                return this.DisplayName.CompareTo(other.DisplayName);
             }
         }
     }

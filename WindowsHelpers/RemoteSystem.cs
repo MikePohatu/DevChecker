@@ -259,6 +259,7 @@ namespace WindowsHelpers
                         procs.Add(RemoteProcess.Create(result));
                     }
                 }
+                procs.Sort();
                 this.Processes = procs;
             }
             catch (Exception e)
@@ -282,6 +283,7 @@ namespace WindowsHelpers
                         services.Add(RemoteService.Create(result));
                     }
                 }
+                services.Sort();
                 this.Services = services;
             }
             catch (Exception e)

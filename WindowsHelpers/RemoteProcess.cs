@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace WindowsHelpers
 {
-    public class RemoteProcess
+    public class RemoteProcess: IComparable<RemoteProcess>
     {        
         public string Name { get; set; }
         public string Id { get; set; }
@@ -67,6 +67,11 @@ namespace WindowsHelpers
             {
                 Log.Error(e, "Error killing process " + this.Name + ", pid: " + this.Id);
             }
+        }
+
+        public int CompareTo(RemoteProcess other)
+        {
+            return this.Name.CompareTo(other.Name);
         }
     }
 }
