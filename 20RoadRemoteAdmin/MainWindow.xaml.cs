@@ -260,7 +260,12 @@ namespace _20RoadRemoteAdmin
 
                 //further updates
                 List<Task> postconnectTasks = new List<Task>();
-                postconnectTasks.Add(this.PostConnectCmClient());
+                if (this.RemoteSystem.IsConnected)
+                {
+                    postconnectTasks.Add(this.PostConnectCmClient());
+                    postconnectTasks.Add(this.RemoteSystem.UpdateProcessesAsync());
+                }
+                
                 if (CmServer.Current.IsConnected) { postconnectTasks.Add(CmServer.Current.QueryCollectionsAsync()); }
 
                 await Task.WhenAll(postconnectTasks);

@@ -202,7 +202,7 @@ namespace WindowsHelpers
             return null;
         }
 
-        public static SortedDictionary<string, string> GetHashTableAsOrderedDictionary(PSDataCollection<PSObject> objList)
+        public static SortedDictionary<string, string> GetFromHashTableAsOrderedDictionary(PSDataCollection<PSObject> objList)
         {
             SortedDictionary<string, string> vals = new SortedDictionary<string, string>();
             if (objList != null)

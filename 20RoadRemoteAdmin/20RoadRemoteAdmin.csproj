@@ -94,6 +94,9 @@
     <Compile Include="Tabs\ActionsTab.xaml.cs">
       <DependentUpon>ActionsTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\ProcessesTab.xaml.cs">
+      <DependentUpon>ProcessesTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\WindowsClientTab.xaml.cs">
       <DependentUpon>WindowsClientTab.xaml</DependentUpon>
     </Compile>
@@ -139,6 +142,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Tabs\ActionsTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tabs\ProcessesTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

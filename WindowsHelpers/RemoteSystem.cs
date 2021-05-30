@@ -33,7 +33,7 @@ using System.Diagnostics;
 
 namespace WindowsHelpers
 {
-    public class RemoteSystem
+    public class RemoteSystem: ViewModelBase
     {
         /// <summary>
         /// Static event. Fired when any RemoteSystem object is connected
@@ -85,10 +85,16 @@ namespace WindowsHelpers
         public SortedDictionary<string, string> Properties { get; private set; }
 
         /// <summary>
-        /// HorizontalOverflowEnumerable is the properties dictionary split into blocks of 15
+        /// PropertyBlocks is the properties dictionary split into blocks of 15
         /// </summary>
         public List<IDictionary<string, string>> PropertyBlocks { get; private set; }
 
+        private List<RemoteProcess> _processes;
+        public List<RemoteProcess> Processes
+        {
+            get { return this._processes; }
+            set { this._processes = value; this.OnPropertyChanged(this, "Processes"); }
+        }
 
 
         /// <summary>
@@ -140,7 +146,7 @@ namespace WindowsHelpers
                         this.IPv6Address = PoshHandler.GetFirstHashTableString(results, "ipv6Addresses");
                         this.ReportedComputerName = PoshHandler.GetFirstHashTableString(results, "name");
                         this.ConfigMgrClientStatus = PoshHandler.GetFirstHashTableString(results, "configMgrClientStatus");
-                        this.Properties = PoshHandler.GetHashTableAsOrderedDictionary(results);
+                        this.Properties = PoshHandler.GetFromHashTableAsOrderedDictionary(results);
                         this.PropertyBlocks = Overflow.CreateFromDictionary(this.Properties, 15);
                         
                         Log.Info(Log.Highlight("Connected to " + this.ReportedComputerName));
@@ -229,6 +235,29 @@ namespace WindowsHelpers
             catch (Exception e)
             {
                 Log.Error(e, "Error opening remote PowerShell session");
+            }
+        }
+
+        public async Task UpdateProcessesAsync()
+        {
+            try
+            {
+                this.Processes = null;
+                List<RemoteProcess> procs = new List<RemoteProcess>();
+                string script = RemoteProcess.GetScript;
+                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
+                {
+                    var results = await PoshHandler.InvokeRunnerAsync(posh);
+                    foreach (var result in results)
+                    {
+                        procs.Add(RemoteProcess.Create(result));
+                    }
+                }
+                this.Processes = procs;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error getting process information");
             }
         }
 
