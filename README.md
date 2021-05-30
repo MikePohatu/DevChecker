@@ -14,6 +14,7 @@ This tool was created because existing tools either didn't do what I wanted, or 
 * List and kill device processes
 * List installed patches
 * List install applications
+* Show BitLocker status
 * Run *gpupdate /force*
 * Add custom PowerShell scripts to run on client
 * See ConfigMgr collections
@@ -26,7 +27,6 @@ This tool was created because existing tools either didn't do what I wanted, or 
 * Run ConfigMgr scripts
 * List and install available updates
 * List printers and print drivers
-* Show BitLocker status
 * Shutdown, restart, logoff functions
 
 [Documentation](/documentation/README.md)
