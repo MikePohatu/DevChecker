@@ -153,7 +153,7 @@ namespace WindowsHelpers
                         this.ReportedComputerName = PoshHandler.GetFirstHashTableString(results, "name");
                         this.ConfigMgrClientStatus = PoshHandler.GetFirstHashTableString(results, "configMgrClientStatus");
                         this.Properties = PoshHandler.GetFromHashTableAsOrderedDictionary(results);
-                        this.PropertyBlocks = Overflow.CreateFromDictionary(this.Properties, 15);
+                        this.PropertyBlocks = Overflow.CreateFromDictionary(this.Properties, 12);
                         
                         Log.Info(Log.Highlight("Connected to " + this.ReportedComputerName));
                         Connected?.Invoke(this, new EventArgs());
@@ -246,11 +246,12 @@ namespace WindowsHelpers
 
         public async Task UpdateProcessesAsync()
         {
+            this.Processes = null;
+            List<RemoteProcess> procs = new List<RemoteProcess>();
+            string script = RemoteProcess.GetScript;
+
             try
             {
-                this.Processes = null;
-                List<RemoteProcess> procs = new List<RemoteProcess>();
-                string script = RemoteProcess.GetScript;
                 using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
                 {
                     var results = await PoshHandler.InvokeRunnerAsync(posh);

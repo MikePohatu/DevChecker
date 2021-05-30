@@ -144,6 +144,24 @@ Function Get-LoggedOnUsers {
     }
 }
 
+function Get-BitLockerInfo {
+    $bitLocker = Get-BitLockerVolume -ErrorAction SilentlyContinue -MountPoint $env:SystemDrive | Select MountPoint, VolumeStatus, EncryptionPercentage, ProtectionStatus
+
+    if ($bitLocker) {
+        return @{
+            percent = "$($bitLocker.EncryptionPercentage)%"
+            status = $bitLocker.ProtectionStatus
+        }
+    } else {
+        Write-Information "BitLocker not available on device."
+        return @{
+            percent = "0%"
+            status = "N/A"
+        }
+    }
+    
+}
+
 $ipv4s = Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceIndex -ne 1} | Select IPAddress
 $ipv6s = Get-NetIPAddress -AddressFamily IPv6 | Where-Object {$_.InterfaceIndex -ne 1} | Select IPAddress
 $compSys = Get-WmiObject -Query 'SELECT * FROM Win32_ComputerSystem' | Select Manufacturer, Model, SystemType, TotalPhysicalMemory
@@ -152,8 +170,11 @@ $compBIOS = Get-WmiObject -Query 'SELECT * FROM Win32_BIOS' | Select SerialNumbe
 $memory = [Math]::Round($compSys.TotalPhysicalMemory /1024 /1024 )
 $users = Get-LoggedOnUsers
 $power = Get-PowerInfo
+$bitLocker = Get-BitLockerInfo
 
 $systemInfo = @{
+    encryptionStatus = $bitLocker.status
+    encryptionPercentage = $bitLocker.percent
     pendingReboot = IsRebootPending
     type = $compOS.OSArchitecture
     memorySize = "$memory MB"

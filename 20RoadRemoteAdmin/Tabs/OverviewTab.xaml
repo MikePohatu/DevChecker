@@ -18,9 +18,9 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Width="Auto" Margin="7,5">
+    <Grid Width="Auto" Height="Auto" Margin="7,5">
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -28,7 +28,7 @@
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <GroupBox Grid.Column="0" Grid.Row="0" Header="Client Side" Margin="5" Padding="5" DataContext="{Binding RemoteSystem}" >
-            <Grid Width="350">
+            <Grid Width="350" Height="auto">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="120"></ColumnDefinition>
                     <ColumnDefinition Width="230" MinWidth="45"></ColumnDefinition>
