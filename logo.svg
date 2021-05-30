@@ -7,6 +7,9 @@
    viewBox="0 0 210 297"
    height="297mm"
    width="210mm"
+   inkscape:export-filename="/Users/mikep/repos/20RoadRemoteAdmin/icons/logo-128.png"
+   inkscape:export-xdpi="29.556362"
+   inkscape:export-ydpi="29.556362"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +30,7 @@
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
      inkscape:cy="771.52884"
-     inkscape:cx="524.75307"
+     inkscape:cx="431.14847"
      inkscape:zoom="0.35254677"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -59,12 +62,6 @@
        width="75"
        id="rect833"
        style="fill:#666666;fill-opacity:1;stroke-width:0.578531" />
-    <circle
-       cy="112.5"
-       cx="47.5"
-       id="path835"
-       style="fill:#666666;fill-opacity:1;stroke-width:1.75098"
-       r="12.5" />
     <rect
        y="135"
        x="70"
@@ -72,12 +69,6 @@
        width="75"
        id="rect833-7"
        style="fill:#666666;fill-opacity:1;stroke-width:0.578531" />
-    <circle
-       cy="147.5"
-       cx="47.5"
-       id="path835-2"
-       style="fill:#666666;fill-opacity:1;stroke-width:1.75098"
-       r="12.5" />
     <rect
        y="170"
        x="70"
@@ -85,11 +76,5 @@
        width="75"
        id="rect833-7-3"
        style="fill:#666666;fill-opacity:1;stroke-width:0.578531" />
-    <circle
-       cy="182.5"
-       cx="47.5"
-       id="path835-2-5"
-       style="fill:#666666;fill-opacity:1;stroke-width:1.75098"
-       r="12.5" />
   </g>
 </svg>
