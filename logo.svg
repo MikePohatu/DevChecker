@@ -7,9 +7,9 @@
    viewBox="0 0 210 297"
    height="297mm"
    width="210mm"
-   inkscape:export-filename="/Users/mikep/repos/20RoadRemoteAdmin/icons/logo-128.png"
-   inkscape:export-xdpi="29.556362"
-   inkscape:export-ydpi="29.556362"
+   inkscape:export-filename="/Users/mikep/repos/20RoadRemoteAdmin/icons/logo-16.png"
+   inkscape:export-xdpi="4.0639997"
+   inkscape:export-ydpi="4.0639997"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -61,20 +61,20 @@
        height="25"
        width="100"
        id="rect833"
-       style="fill:#666666;fill-opacity:1;stroke-width:0.66803" />
+       style="fill:#008000;fill-opacity:1;stroke-width:0.66803" />
     <rect
        y="135"
        x="70"
        height="25"
        width="100"
        id="rect833-7"
-       style="fill:#666666;fill-opacity:1;stroke-width:0.66803" />
+       style="fill:#008000;fill-opacity:1;stroke-width:0.66803" />
     <rect
        y="170"
        x="70"
        height="25"
        width="100"
        id="rect833-7-3"
-       style="fill:#666666;fill-opacity:1;stroke-width:0.66803" />
+       style="fill:#008000;fill-opacity:1;stroke-width:0.66803" />
   </g>
 </svg>
