@@ -57,7 +57,7 @@
     <Compile Include="RemoteProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistryHelpers.cs" />
-    <Compile Include="ServiceHelpers.cs" />
+    <Compile Include="RemoteService.cs" />
     <Compile Include="LocalSystemConnector.cs" />
     <Compile Include="RemoteSystem.cs" />
     <Compile Include="UacHelpers.cs" />
@@ -68,7 +68,7 @@
     <Content Include="Scripts\GetSystemInfo.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\RestartService.ps1">
+    <Content Include="Scripts\ServiceControl.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

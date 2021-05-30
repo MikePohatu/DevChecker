@@ -264,6 +264,7 @@ namespace _20RoadRemoteAdmin
                 {
                     postconnectTasks.Add(this.PostConnectCmClient());
                     postconnectTasks.Add(this.RemoteSystem.UpdateProcessesAsync());
+                    postconnectTasks.Add(this.RemoteSystem.UpdateServicesAsync());
                 }
                 
                 if (CmServer.Current.IsConnected) { postconnectTasks.Add(CmServer.Current.QueryCollectionsAsync()); }

@@ -42,6 +42,7 @@ namespace _20RoadRemoteAdmin.Tabs
     /// </summary>
     public partial class CmSystemActions : UserControl
     {
+        private RemoteService _remoteService = new RemoteService() { Name = "ccmexec" };
         public CmSystemActions()
         {
             InitializeComponent();
@@ -51,7 +52,7 @@ namespace _20RoadRemoteAdmin.Tabs
         {
             if (RemoteSystem.Current != null)
             {
-                await ServiceHelpers.RestartService("ccmexec", RemoteSystem.Current);
+                await _remoteService.RestartServiceAsync();
             }
         }
 

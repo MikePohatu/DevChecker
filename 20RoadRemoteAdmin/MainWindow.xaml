@@ -85,6 +85,9 @@
                     <TabItem Header="Processes" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
                         <tabs:ProcessesTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
                     </TabItem>
+                    <TabItem Header="Services" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <tabs:ServicesTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
+                    </TabItem>
                 </TabControl>
             </TabItem>
 

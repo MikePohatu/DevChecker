@@ -96,6 +96,12 @@ namespace WindowsHelpers
             set { this._processes = value; this.OnPropertyChanged(this, "Processes"); }
         }
 
+        private List<RemoteService> _services;
+        public List<RemoteService> Services
+        {
+            get { return this._services; }
+            set { this._services = value; this.OnPropertyChanged(this, "Services"); }
+        }
 
         /// <summary>
         /// The current RemoteSystem instance. Behaves like a singleton
@@ -258,6 +264,29 @@ namespace WindowsHelpers
             catch (Exception e)
             {
                 Log.Error(e, "Error getting process information");
+            }
+        }
+
+        public async Task UpdateServicesAsync()
+        {
+            try
+            {
+                this.Services = null;
+                List<RemoteService> services = new List<RemoteService>();
+                string script = RemoteService.GetScript;
+                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
+                {
+                    var results = await PoshHandler.InvokeRunnerAsync(posh);
+                    foreach (var result in results)
+                    {
+                        services.Add(RemoteService.Create(result));
+                    }
+                }
+                this.Services = services;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error getting service information");
             }
         }
 
