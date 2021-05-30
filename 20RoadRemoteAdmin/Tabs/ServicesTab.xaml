@@ -6,6 +6,9 @@
              xmlns:local="clr-namespace:_20RoadRemoteAdmin.Tabs"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="filteredServices" Source="{Binding Services}" Filter="onSearchFilter" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,12 +18,14 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Padding="3,5,5,0" HorizontalAlignment="Left">
+        <TextBox x:Name="searchBox" TextChanged="onSearchBoxTextChanged" Grid.Row="0" Grid.Column="0" Width="150" HorizontalAlignment="Left"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="1" Padding="3,5,5,0" HorizontalAlignment="Right">
             <Hyperlink Click="onRefreshClicked" TextDecorations="None">
                 <TextBlock Text="Refresh" Margin="0" />
             </Hyperlink>
         </TextBlock>
-        <DataGrid Grid.Row="1" Grid.ColumnSpan="2" x:Name="serviceGrid" ItemsSource="{Binding Services}" AutoGenerateColumns="True" 
+        <DataGrid Grid.Row="1" Grid.ColumnSpan="2" x:Name="serviceGrid" ItemsSource="{Binding Source={StaticResource filteredServices}}" AutoGenerateColumns="True" 
             BorderThickness="0" HeadersVisibility="Column" GridLinesVisibility="Horizontal" SelectionMode="Single" IsReadOnly="True">
             <DataGrid.ContextMenu>
                 <ContextMenu>

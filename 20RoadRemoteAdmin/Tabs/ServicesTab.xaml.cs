@@ -79,5 +79,24 @@ namespace _20RoadRemoteAdmin.Tabs
         {
             await RemoteSystem.Current.UpdateServicesAsync();
         }
+        private void onSearchFilter(object sender, FilterEventArgs e)
+        {
+            var obj = e.Item as RemoteService;
+            if (obj != null)
+            {
+                if (obj.DisplayName != null && obj.DisplayName.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
+                else if (obj.Name != null && obj.Name.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
+                else { e.Accepted = false; }
+            }
+        }
+
+        private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            CollectionViewSource source = this.Resources["filteredServices"] as CollectionViewSource;
+            if (source != null)
+            {
+                source.View.Refresh();
+            }
+        }
     }
 }
