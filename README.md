@@ -10,9 +10,11 @@ This tool was created because existing tools either didn't do what I wanted, or 
 * Gather basic device info like OS version, IP, model, serial, logged in users, is power connected etc.
 * Quick access to c$ share, Computer Management, remote PowerShell
 * Ability to run ConfigMgr client tasks e.g. Machine Policy refresh etc
-* Run *gpupdate /force*
+* List and control device services
+* List and kill device processes
 * List installed patches
 * List install applications
+* Run *gpupdate /force*
 * Add custom PowerShell scripts to run on client
 * See ConfigMgr collections
 * 'Connect as' functionality
@@ -22,8 +24,6 @@ This tool was created because existing tools either didn't do what I wanted, or 
 * Access to ConfigMgr Software Center
 * Add custom tabs using PowerShell scripts
 * Run ConfigMgr scripts
-* List and control device services
-* List and kill device processes
 * List and install available updates
 * List printers and print drivers
 * Show BitLocker status
