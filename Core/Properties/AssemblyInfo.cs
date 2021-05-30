@@ -1,9 +1,9 @@
 ﻿#region license
 // Copyright (c) 2021 20Road Limited
 //
-// This file is part of 20Road Remote Admin.
+// This file is part of DevChecker.
 //
-// 20Road Remote Admin is free software: you can redistribute it and/or modify
+// DevChecker is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, version 3 of the License.
 //
@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("20Road Remote Admin")]
+[assembly: AssemblyProduct("20Road DevChecker")]
 [assembly: AssemblyCopyright("Copyright © 20Road Limited 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

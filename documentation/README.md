@@ -24,7 +24,7 @@ The device must have a valid certificate capable of server authentication with a
 winrm quickconfig -transport:https
 ```
 
-Some connectivity is not done over WinRM as the native tool is simply launched from Remote Admin. These include:
+Some connectivity is not done over WinRM as the native tool is simply launched from DevChecker. These include:
 
 * Computer Management
 * Access to C$ and other network shares
@@ -36,9 +36,9 @@ The ConfigMgr server is accessed over WMI using the default ConfigMgr using the 
 ---
 
 ## User Settings
-When Remote Admin is closed, the current connection entries are saved to a user config file. These settings are loaded back in on application start. This is saved in *%APPDATA%\20Road\RemoteAdmin\conf.json*
+When DevChecker is closed, the current connection entries are saved to a user config file. These settings are loaded back in on application start. This is saved in *%APPDATA%\20Road\DevChecker\conf.json*
 
 ---
 
 ## Saving log output
-Due to technical limitations, the logging text in the output window cannot currently be selected for copy/paste. You can save the text from output pane to a text/log file by clicking the *Save log* link at the bottom right of the Remote Admin window.
+Due to technical limitations, the logging text in the output window cannot currently be selected for copy/paste. You can save the text from output pane to a text/log file by clicking the *Save log* link at the bottom right of the DevChecker window.

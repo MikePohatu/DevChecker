@@ -1,6 +1,6 @@
-# 20Road Remote Admin
+# DevChecker
 
-Remote Admin is a little application to allow IT admins to remotely access devices and complete common diagnostics tasks, without having to bug the user.
+DevChecker is a little application to allow IT admins to remotely access devices and complete common diagnostics tasks, without having to bug the user.
 
 This tool was created because existing tools either didn't do what I wanted, or were stuck behind an email sign-up page. 
 
