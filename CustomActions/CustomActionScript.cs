@@ -127,7 +127,8 @@ namespace CustomActions
 
                 PowerShell posh = PoshHandler.GetRunner(this._script, RemoteSystem.Current);
 
-                await PoshHandler.InvokeRunnerAsync(posh, !this.Settings.LogScriptContent);
+                bool hidescript = this.Settings == null ? false : !this.Settings.LogScriptContent;
+                await PoshHandler.InvokeRunnerAsync(posh, hidescript);
             }
             else
             {

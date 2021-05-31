@@ -38,16 +38,22 @@ namespace WindowsHelpers
             string script = string.Empty;
             try
             {
-
                 byte[] result;
+                Encoding encoding = Encoding.UTF8;
+                using (var reader = new StreamReader(path, Encoding.UTF8, true))
+                {
+                    reader.Peek();
+                    encoding = reader.CurrentEncoding;
+                }
+
                 using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
                     result = new byte[fs.Length];
                     await fs.ReadAsync(result, 0, (int)fs.Length);
                 }
-
-                script = System.Text.Encoding.UTF8.GetString(result);
-
+                //get the string and strip the BOM
+                //script = encoding.GetString(result).Trim(new char[] { '\uFEFF', '\u200B' });
+                script = GetString(encoding, result);
                 return script;
             }
             catch (Exception e)
@@ -56,6 +62,37 @@ namespace WindowsHelpers
             }
 
             return script;
+        }
+
+        //https://stackoverflow.com/a/29176183
+        public static string GetString(Encoding encoding, byte[] bytes)
+        {
+            byte[] preamble = encoding.GetPreamble();
+            if (bytes.StartsWith(preamble))
+            {
+                return encoding.GetString(bytes, preamble.Length, bytes.Length - preamble.Length);
+            }
+            else
+            {
+                return encoding.GetString(bytes);
+            }
+        }
+
+        //https://stackoverflow.com/a/29176183
+        public static bool StartsWith(this byte[] thisArray, byte[] otherArray)
+        {
+            // Handle invalid/unexpected input
+            // (nulls, thisArray.Length < otherArray.Length, etc.)
+
+            for (int i = 0; i < otherArray.Length; ++i)
+            {
+                if (thisArray[i] != otherArray[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
