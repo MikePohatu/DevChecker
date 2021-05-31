@@ -218,10 +218,17 @@ namespace WindowsHelpers
         {
             try
             {
-                ImpersonationHelpers.Impersonate(this.Credential.Domain, this.Credential.Username, this.Credential.Password, delegate
+                if (this.Credential != null && this.Credential.CredentialsSet)
+                {
+                    ImpersonationHelpers.Impersonate(this.Credential.Domain, this.Credential.Username, this.Credential.Password, delegate
+                    {
+                        this.StartProcess(@"C:\Windows\System32\mmc.exe", @"c:\windows\system32\compmgmt.msc /computer:\\" + RemoteSystem.Current.ComputerName, null);
+                    });
+                }
+                else
                 {
                     this.StartProcess(@"C:\Windows\System32\mmc.exe", @"c:\windows\system32\compmgmt.msc /computer:\\" + RemoteSystem.Current.ComputerName, null);
-                });
+                }
             }
             catch (Exception e)
             {

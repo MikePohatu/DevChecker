@@ -53,9 +53,9 @@ Function PackageFolder {
     #Compress-Archive -Path "$PackageFolder\*" -DestinationPath $DestinationPath
 }
 
-$ReleasePath='C:\Source\release\remoteadmin'
+$ReleasePath='C:\Source\release\devchecker'
 
-SignAssembliesInPath -PackagePath $ReleasePath -Description "20Road Remote Admin"
+SignAssembliesInPath -PackagePath $ReleasePath -Description "DevChecker"
 
 $appstatus = VerifyAssembliesInPath -PackagePath $ReleasePath
 
