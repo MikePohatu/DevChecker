@@ -1,4 +1,4 @@
-# ![logo](/icons/logo-24.png) Documentation
+# ![logo](/documentation/images/logo-24.png) Documentation
 
 * [Features](#features)
 * [Connectivity](#connectivity)

@@ -1,4 +1,4 @@
-# ![logo](/icons/logo-24.png) DevChecker 
+# ![logo](/documentation/images/logo-24.png) DevChecker 
 
 
 
