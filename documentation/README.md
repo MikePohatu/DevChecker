@@ -1,10 +1,15 @@
 # ![logo](/icons/logo-24.png) Documentation
 
+* [Features](#features)
 * [Connectivity](#connectivity)
   * [Device](#device)
   * [Server](#server)
 * [User Settings](#user-settings)
 * [Saving log output](#saving-log-output)
+
+## Features
+
+[Custom Actions](/documentation/customactions.md)
 
 ## Connectivity
 In order to connect to the remote device and the ConfigMgr server, the appropriate connectivity and authentication needs to be available.
