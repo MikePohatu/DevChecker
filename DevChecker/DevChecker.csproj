@@ -214,7 +214,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>SET ReleasePath=C:\source\release\quietadmin
+    <PostBuildEvent>SET ReleasePath=C:\source\release\devchecker
 
 rmdir /s /q "%25ReleasePath%25"
 md "%25ReleasePath%25"
