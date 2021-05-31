@@ -1,9 +1,22 @@
 # Custom Actions
 
-## Adding a Custom Action
-Custom actions are simply PowerShell scripts that will be run on the remote device. 
 
-To add a custom action, copy your custom script file to the **Scripts\Custom** folder. If DevChecker is already running, you can click *Refresh* on the Client Side\Actions\Custom Actions tab.
+Custom actions are simply PowerShell scripts that will be run on the remote device. They are available from DevChecker\Client Side\Actions\Custom Actions
+
+![screenshot](images/customactions1.png)
+
+---
+
+## Adding a Custom Action
+
+To add a custom action, copy your custom script file to the **Scripts\Custom** folder. If DevChecker is already running, you can click *Refresh* on the Custom Actions tab.
+
+## Output
+DevChecker will capture Write-Information, Write-Warning, Write-Error etc. from your script and output it to the *Output* pane.
+
+If you wish to highlight your text in the Output pane, add **\*\*** to the start of your message.
+
+Output to the pipeline e.g. custom objects, is not currently captured by Custom Actions, however this is planned for a future release for outputting to a table or list view.
 
 ## Metadata
 
