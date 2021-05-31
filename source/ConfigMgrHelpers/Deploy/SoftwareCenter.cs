@@ -38,7 +38,7 @@ namespace ConfigMgrHelpers.Deploy
 		{
 			if (CmClient.Current.ClientInstalled)
 			{
-				string command = @"get-wmiobject -query 'SELECT * FROM CCM_Application' -namespace 'ROOT\ccm\ClientSDK' | Select Name, Id, InstallState, ResolvedState, Revision";
+				string command = Application.GetterCommand;
 
 				Log.Info("Gathering Software Center applications");
 				this.Applications.Clear();
@@ -49,13 +49,7 @@ namespace ConfigMgrHelpers.Deploy
 				{
 					foreach (var poshObj in result)
 					{
-						var cmobj = new Application();
-						cmobj.Name = PoshHandler.GetPropertyValue<string>(poshObj, "Name");
-						cmobj.Id = PoshHandler.GetPropertyValue<string>(poshObj, "Id");
-						cmobj.InstallState = PoshHandler.GetPropertyValue<string>(poshObj, "InstallState");
-						cmobj.ResolvedState = PoshHandler.GetPropertyValue<string>(poshObj, "ResolvedState");
-						cmobj.Revision = PoshHandler.GetPropertyValue<int>(poshObj, "Revision");
-						this.Applications.Add(cmobj);
+						this.Applications.Add(Application.New(poshObj));
 					}
 
 					Log.Info("Finished gathering applications");
@@ -67,7 +61,7 @@ namespace ConfigMgrHelpers.Deploy
 		{
 			if (CmClient.Current.ClientInstalled)
 			{
-				string command = @"get-wmiobject -query 'SELECT * FROM CCM_SoftwareUpdate' -namespace 'ROOT\ccm\ClientSDK' | Select Name, ArticleID, BulletinID, MaxExecutionTime, URL";
+				string command = Update.GetterCommand;
 
 				Log.Info("Gathering Software Center updates");
 				this.SoftwareUpdates.Clear();
@@ -78,13 +72,7 @@ namespace ConfigMgrHelpers.Deploy
 				{
 					foreach (var poshObj in result)
 					{
-						var cmobj = new Update();
-						cmobj.Name = PoshHandler.GetPropertyValue<string>(poshObj, "Name");
-						cmobj.ArticleID = PoshHandler.GetPropertyValue<string>(poshObj, "ArticleID");
-						cmobj.BulletinID = PoshHandler.GetPropertyValue<string>(poshObj, "BulletinID");
-						cmobj.MaxExecutionTime = PoshHandler.GetPropertyValue<int>(poshObj, "MaxExecutionTime");
-						cmobj.URL = PoshHandler.GetPropertyValue<string>(poshObj, "URL");
-						this.SoftwareUpdates.Add(cmobj);
+						this.SoftwareUpdates.Add(Update.New(poshObj));
 					}
 
 					Log.Info("Finished gathering updates");
@@ -96,8 +84,7 @@ namespace ConfigMgrHelpers.Deploy
 		{
 			if (CmClient.Current.ClientInstalled)
 			{
-				string command = @"get-wmiobject -query 'SELECT * FROM CCM_Program WHERE TaskSequence = True' -namespace 'ROOT\ccm\ClientSDK' | Select Name, PackageID, HighImpactTaskSequence";
-
+				string command = TaskSequence.GetterCommand;
 				Log.Info("Gathering Software Center Task Sequences");
 				this.TaskSequences.Clear();
 				var posh = PoshHandler.GetRunner(command, RemoteSystem.Current);
@@ -107,11 +94,7 @@ namespace ConfigMgrHelpers.Deploy
 				{
 					foreach (var poshObj in result)
 					{
-						var cmobj = new TaskSequence();
-						cmobj.Name = PoshHandler.GetPropertyValue<string>(poshObj, "Name");
-						cmobj.PackageID = PoshHandler.GetPropertyValue<string>(poshObj, "PackageID");
-						cmobj.HighImpactTaskSequence = PoshHandler.GetPropertyValue<bool>(poshObj, "HighImpactTaskSequence");
-						this.TaskSequences.Add(cmobj);
+						this.TaskSequences.Add(TaskSequence.New(poshObj));
 					}
 
 					Log.Info("Finished gathering task sequences");

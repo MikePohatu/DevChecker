@@ -7,14 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Configs\RemoteSystem-testconfig.json" />
     <None Remove="NLog.config" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Configs\RemoteSystem-testconfig.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

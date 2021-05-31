@@ -47,13 +47,13 @@ namespace DevChecker.Tabs
             InitializeComponent();
         }
 
-        private async void onInstallClicked(object sender, RoutedEventArgs e)
+        private async void onRunClicked(object sender, RoutedEventArgs e)
         {
             var selected = (TaskSequence)this.dataGrid.SelectedItem;
             if (MessageBox.Show("Are you sure you want to run "+ selected.Name+"?", "Run Task Sequence", MessageBoxButton.YesNo)== MessageBoxResult.Yes)
             {
                 Log.Info(Log.Highlight("Run task sequence " + selected.Name));
-                //await proc.KillAsync();
+                await selected.RunAsync();
                 await CmClient.Current.SoftwareCenter.QueryTaskSequencesAsync();
             }
         }

@@ -17,14 +17,48 @@
 //
 #endregion
 
+using Core.Logging;
+using System;
+using System.Management.Automation;
+using System.Text;
+using System.Threading.Tasks;
+using WindowsHelpers;
+
 namespace ConfigMgrHelpers.Deploy
 {
     public class Application
     {
+        public static string GetterCommand { get; } = @"get-wmiobject -query 'SELECT * FROM CCM_Application' -namespace 'ROOT\ccm\ClientSDK' | Select Name, Id, InstallState, ResolvedState, Revision";
         public string Name { get; set; }
         public string InstallState { get; set; }
         public string ResolvedState { get; set; }
         public int Revision { get; set; }
         public string Id { get; set; }
+
+        public static Application New(PSObject poshObj)
+        {
+            var cmobj = new Application();
+            cmobj.Name = PoshHandler.GetPropertyValue<string>(poshObj, "Name");
+            cmobj.Id = PoshHandler.GetPropertyValue<string>(poshObj, "Id");
+            cmobj.InstallState = PoshHandler.GetPropertyValue<string>(poshObj, "InstallState");
+            cmobj.ResolvedState = PoshHandler.GetPropertyValue<string>(poshObj, "ResolvedState");
+            cmobj.Revision = PoshHandler.GetPropertyValue<int>(poshObj, "Revision");
+            return cmobj;
+        }
+
+        public async Task InstallAsync()
+        {
+            if (string.IsNullOrWhiteSpace(this.Id) == false)
+            {
+                StringBuilder builder = new StringBuilder();
+                string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\CMInstallApplication.ps1";
+                string script = await IOHelpers.ReadFileAsync(scriptPath);
+                builder.AppendLine(script).Append("Install-Application -AppID '").Append(this.Id).AppendLine("'");
+
+                Log.Info("Installing application" + this.Name);
+                var posh = PoshHandler.GetRunner(builder.ToString(), RemoteSystem.Current);
+                await PoshHandler.InvokeRunnerAsync(posh,true);
+            }
+        }
     }
 }

@@ -53,7 +53,7 @@ namespace DevChecker.Tabs
             if (MessageBox.Show("Are you sure you want to install "+ selected.Name+"?", "Install application", MessageBoxButton.YesNo)== MessageBoxResult.Yes)
             {
                 Log.Info(Log.Highlight("Installing application " + selected.Name));
-                //await proc.KillAsync();
+                await selected.InstallAsync();
                 await CmClient.Current.SoftwareCenter.QueryApplicationsAsync();
             }
         }

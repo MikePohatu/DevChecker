@@ -29,7 +29,7 @@
             >
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Install" Click="onInstallClicked" />
+                    <MenuItem Header="Run" Click="onRunClicked" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
