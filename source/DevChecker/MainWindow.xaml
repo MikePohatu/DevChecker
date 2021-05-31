@@ -79,14 +79,23 @@
                     <TabItem Header="Actions" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
                         <tabs:ActionsTab IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}"/>
                     </TabItem>
-                    <TabItem Header="ConfigMgr Client" DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
-                        <tabs:CmClientTab IsEnabled="{Binding ClientInstalled, FallbackValue=false}"/>
-                    </TabItem>
                     <TabItem Header="Processes" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
                         <tabs:ProcessesTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
                     </TabItem>
                     <TabItem Header="Services" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
                         <tabs:ServicesTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
+                    </TabItem>
+                    <TabItem Header="ConfigMgr Client" DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
+                        <tabs:CmClientTab IsEnabled="{Binding ClientInstalled, FallbackValue=false}"/>
+                    </TabItem>
+                    <TabItem Header="ConfigMgr Applications" IsEnabled="{Binding CmClient.ClientInstalled, FallbackValue=false}">
+                        <tabs:CmApplicationsTab DataContext="{Binding CmClient.SoftwareCenter}"/>
+                    </TabItem>
+                    <TabItem Header="ConfigMgr Updates" IsEnabled="{Binding CmClient.ClientInstalled, FallbackValue=false}">
+                        <tabs:CmUpdatesTab DataContext="{Binding CmClient.SoftwareCenter}"/>
+                    </TabItem>
+                    <TabItem Header="ConfigMgr Task Sequences" IsEnabled="{Binding CmClient.ClientInstalled, FallbackValue=false}">
+                        <tabs:CmTaskSequencesTab DataContext="{Binding CmClient.SoftwareCenter}"/>
                     </TabItem>
                 </TabControl>
             </TabItem>

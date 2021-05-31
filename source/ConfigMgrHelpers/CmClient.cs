@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using ConfigMgrHelpers.Deploy;
 using Core.Logging;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ namespace ConfigMgrHelpers
 		/// </summary>
 		public string ReportedName { get; private set; }
 
+		public SoftwareCenter SoftwareCenter { get; private set; }
 		public List<CmClientAction> ClientActions { get; private set; }
 
 		public static CmClient Current;
@@ -52,6 +54,7 @@ namespace ConfigMgrHelpers
 
 		private CmClient()
         {
+			this.SoftwareCenter = new SoftwareCenter();
 			this.ClientActions = new List<CmClientAction>() {
 				new CmClientAction( "MachinePolicy", "{00000000-0000-0000-0000-000000000021}", "Machine Policy", this),
 				new CmClientAction( "DiscoveryData", "{00000000-0000-0000-0000-000000000003}","Discovery Data", this ),
@@ -64,7 +67,18 @@ namespace ConfigMgrHelpers
 			};
 		}
 
-		public async Task QueryClientAsync()
+		public async Task QueryAsync()
+        {
+			this.ClientInstalled = true;
+			List<Task> tasks = new List<Task>();
+			tasks.Add(this.QueryClientAsync());
+			tasks.Add(this.SoftwareCenter.QueryApplicationsAsync());
+			tasks.Add(this.SoftwareCenter.QueryUpdatesAsync());
+			tasks.Add(this.SoftwareCenter.QueryTaskSequencesAsync());
+			await Task.WhenAll(tasks);
+		}
+
+		private async Task QueryClientAsync()
 		{
 			if (this.ClientInstalled)
 			{

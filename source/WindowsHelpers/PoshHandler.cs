@@ -234,6 +234,13 @@ namespace WindowsHelpers
             }
         }
 
+        /// <summary>
+        /// Get the value of the first property with the specified name from a list of PSObjects
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objList"></param>
+        /// <param name="valueName"></param>
+        /// <returns></returns>
         public static T GetFirstPropertyValue<T>(PSDataCollection<PSObject> objList, string valueName)
         {
             if (objList != null)
@@ -251,6 +258,14 @@ namespace WindowsHelpers
             return default(T);
         }
 
+        /// <summary>
+        /// From a list of PSObjects, get a list containing all values of the specified property value
+        /// from each item in the list
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objList"></param>
+        /// <param name="valueName"></param>
+        /// <returns></returns>
         public static List<T> GetPropertyValues<T>(PSDataCollection<PSObject> objList, string valueName)
         {
             List<T> newList = new List<T>();

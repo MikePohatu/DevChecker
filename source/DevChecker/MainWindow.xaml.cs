@@ -279,10 +279,9 @@ namespace DevChecker
         {
             var cmclient = CmClient.New();
 
-            if (RemoteSystem.Current.ConfigMgrClientStatus != "NotInstalled" && RemoteSystem.Current.ConfigMgrClientStatus != "Unknown")
+            if (RemoteSystem.Current.IsConnected && RemoteSystem.Current.ConfigMgrClientStatus != "NotInstalled" && RemoteSystem.Current.ConfigMgrClientStatus != "Unknown")
             {
-                cmclient.ClientInstalled = true;
-                await cmclient.QueryClientAsync();
+                await cmclient.QueryAsync();
             }
 
             this.CmClient = cmclient;

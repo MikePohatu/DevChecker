@@ -62,7 +62,10 @@
     <Compile Include="CmClientAction.cs" />
     <Compile Include="CmCollection.cs" />
     <Compile Include="CmServer.cs" />
+    <Compile Include="Deploy\Application.cs" />
     <Compile Include="Deploy\SoftwareCenter.cs" />
+    <Compile Include="Deploy\TaskSequence.cs" />
+    <Compile Include="Deploy\Update.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -84,6 +87,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Content Include="Scripts\CMQuerySoftwareCenter.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
