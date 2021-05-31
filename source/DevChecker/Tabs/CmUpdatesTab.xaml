@@ -9,7 +9,7 @@
     <UserControl.Resources>
         <CollectionViewSource x:Key="filtered" Source="{Binding SoftwareUpdates}" Filter="onSearchFilter" />
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>

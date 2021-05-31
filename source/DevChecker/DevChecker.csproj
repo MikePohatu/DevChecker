@@ -82,6 +82,9 @@
     <Compile Include="Tabs\CmActions.xaml.cs">
       <DependentUpon>CmActions.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\CmSoftwareCenterTab.xaml.cs">
+      <DependentUpon>CmSoftwareCenterTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\CmUpdatesTab.xaml.cs">
       <DependentUpon>CmUpdatesTab.xaml</DependentUpon>
     </Compile>
@@ -137,6 +140,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Tabs\CmActions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tabs\CmSoftwareCenterTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
