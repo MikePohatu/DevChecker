@@ -9,10 +9,10 @@ Write-Information "Done"
 
 <#ActionSettings
 {
-    DisplayName: "Get Patches",
-    OutputType: "None",
-    Description: "List installed updates",
-    RunOnConnect: false,
-    LogScriptContent: false
+    "DisplayName": "Get Patches",
+    "OutputType": "None",
+    "Description": "List installed updates",
+    "RunOnConnect": false,
+    "LogScriptContent": false
 }
 ActionSettings#>

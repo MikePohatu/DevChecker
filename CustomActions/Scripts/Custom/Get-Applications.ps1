@@ -41,10 +41,10 @@ Write-Information "Done"
 
 <#ActionSettings
 {
-    DisplayName: "Get Applications",
-    OutputType: "None",
-    Description: "List installed applications recorded in registry",
-    RunOnConnect: false,
-    LogScriptContent: false
+    "DisplayName": "Get Applications",
+    "OutputType": "None",
+    "Description": "List installed applications recorded in registry",
+    "RunOnConnect": false,
+    "LogScriptContent": false
 }
 ActionSettings#>
