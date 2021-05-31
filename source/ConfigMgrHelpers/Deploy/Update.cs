@@ -17,7 +17,9 @@
 //
 #endregion
 
+using Core.Logging;
 using System.Management.Automation;
+using System.Threading.Tasks;
 using WindowsHelpers;
 
 namespace ConfigMgrHelpers.Deploy
@@ -41,6 +43,36 @@ namespace ConfigMgrHelpers.Deploy
             cmobj.MaxExecutionTime = PoshHandler.GetPropertyValue<int>(poshObj, "MaxExecutionTime");
             cmobj.URL = PoshHandler.GetPropertyValue<string>(poshObj, "URL");
             return cmobj;
+        }
+
+        public async Task InstallAsync()
+        {
+            if (string.IsNullOrWhiteSpace(this.Name) == false)
+            {
+                //StringBuilder builder = new StringBuilder();
+                //string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\CMInstallApplication.ps1";
+                //string script = await IOHelpers.ReadFileAsync(scriptPath);
+                //builder.AppendLine(script).Append("Deploy-Application -AppID '").Append(this.Id).AppendLine("' -Action Install");
+
+                Log.Info("Installing update " + this.Name);
+                //var posh = PoshHandler.GetRunner(builder.ToString(), RemoteSystem.Current);
+                //await PoshHandler.InvokeRunnerAsync(posh, true);
+            }
+        }
+
+        public async Task UninstallAsync()
+        {
+            if (string.IsNullOrWhiteSpace(this.Name) == false)
+            {
+                //StringBuilder builder = new StringBuilder();
+                //string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\CMInstallApplication.ps1";
+                //string script = await IOHelpers.ReadFileAsync(scriptPath);
+                //builder.AppendLine(script).Append("Deploy-Application -AppID '").Append(this.Id).AppendLine("' -Action Uninstall");
+
+                Log.Info("Uninstalling update " + this.Name);
+                //var posh = PoshHandler.GetRunner(builder.ToString(), RemoteSystem.Current);
+                //await PoshHandler.InvokeRunnerAsync(posh, true);
+            }
         }
     }
 }

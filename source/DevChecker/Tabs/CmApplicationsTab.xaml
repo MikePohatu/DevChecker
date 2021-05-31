@@ -30,6 +30,7 @@
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Install" Click="onInstallClicked" />
+                    <MenuItem Header="Uninstall" Click="onUninstallClicked" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>

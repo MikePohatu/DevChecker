@@ -87,9 +87,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="Scripts\CMQuerySoftwareCenter.ps1">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\CMInstallApplication.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

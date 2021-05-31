@@ -21,7 +21,7 @@
 
             <DataGrid.Columns>
                 <!-- Action run -->
-                <DataGridHyperlinkColumn Width="150" ContentBinding="{Binding DisplayName}">
+                <DataGridHyperlinkColumn Width="250" ContentBinding="{Binding DisplayName}">
                     <DataGridHyperlinkColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <EventSetter Event="Hyperlink.Click" Handler="onRunActionClicked" />

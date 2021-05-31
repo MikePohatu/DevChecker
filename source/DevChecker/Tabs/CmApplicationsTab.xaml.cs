@@ -52,9 +52,16 @@ namespace DevChecker.Tabs
             var selected = (ConfigMgrHelpers.Deploy.Application)this.dataGrid.SelectedItem;
             if (MessageBox.Show("Are you sure you want to install "+ selected.Name+"?", "Install application", MessageBoxButton.YesNo)== MessageBoxResult.Yes)
             {
-                Log.Info(Log.Highlight("Installing application " + selected.Name));
                 await selected.InstallAsync();
-                await CmClient.Current.SoftwareCenter.QueryApplicationsAsync();
+            }
+        }
+
+        private async void onUninstallClicked(object sender, RoutedEventArgs e)
+        {
+            var selected = (ConfigMgrHelpers.Deploy.Application)this.dataGrid.SelectedItem;
+            if (MessageBox.Show("Are you sure you want to uninstall " + selected.Name + "?", "Uninstall application", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                await selected.UninstallAsync();
             }
         }
 

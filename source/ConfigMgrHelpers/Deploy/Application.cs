@@ -53,11 +53,26 @@ namespace ConfigMgrHelpers.Deploy
                 StringBuilder builder = new StringBuilder();
                 string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\CMInstallApplication.ps1";
                 string script = await IOHelpers.ReadFileAsync(scriptPath);
-                builder.AppendLine(script).Append("Install-Application -AppID '").Append(this.Id).AppendLine("'");
+                builder.AppendLine(script).Append("Deploy-Application -AppID '").Append(this.Id).AppendLine("' -Action Install");
 
-                Log.Info("Installing application" + this.Name);
+                Log.Info("Installing application " + this.Name);
                 var posh = PoshHandler.GetRunner(builder.ToString(), RemoteSystem.Current);
                 await PoshHandler.InvokeRunnerAsync(posh,true);
+            }
+        }
+
+        public async Task UninstallAsync()
+        {
+            if (string.IsNullOrWhiteSpace(this.Id) == false)
+            {
+                StringBuilder builder = new StringBuilder();
+                string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\CMInstallApplication.ps1";
+                string script = await IOHelpers.ReadFileAsync(scriptPath);
+                builder.AppendLine(script).Append("Deploy-Application -AppID '").Append(this.Id).AppendLine("' -Action Uninstall");
+
+                Log.Info("Uninstalling application " + this.Name);
+                var posh = PoshHandler.GetRunner(builder.ToString(), RemoteSystem.Current);
+                await PoshHandler.InvokeRunnerAsync(posh, true);
             }
         }
     }

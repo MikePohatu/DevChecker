@@ -47,17 +47,6 @@ namespace DevChecker.Tabs
             InitializeComponent();
         }
 
-        private async void onInstallClicked(object sender, RoutedEventArgs e)
-        {
-            var selected = (Update)this.dataGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to install "+ selected.Name+"?", "Install software update", MessageBoxButton.YesNo)== MessageBoxResult.Yes)
-            {
-                Log.Info(Log.Highlight("Install software update " + selected.Name));
-                //await proc.KillAsync();
-                await CmClient.Current.SoftwareCenter.QueryUpdatesAsync();
-            }
-        }
-
         private async void onRefreshClicked(object sender, RoutedEventArgs e)
         {
             var sc = CmClient.Current.SoftwareCenter;
@@ -80,6 +69,24 @@ namespace DevChecker.Tabs
             if (source?.View != null)
             {
                 source.View.Refresh();
+            }
+        }
+
+        private async void onInstallClicked(object sender, RoutedEventArgs e)
+        {
+            var selected = (Update)this.dataGrid.SelectedItem;
+            if (MessageBox.Show("Are you sure you want to install " + selected.Name + "?", "Install software update", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                await selected.InstallAsync();
+            }
+        }
+
+        private async void onUninstallClicked(object sender, RoutedEventArgs e)
+        {
+            var selected = (Update)this.dataGrid.SelectedItem;
+            if (MessageBox.Show("Are you sure you want to uninstall " + selected.Name + "?", "Uninstall software update", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                await selected.UninstallAsync();
             }
         }
     }

@@ -56,14 +56,15 @@ namespace ConfigMgrHelpers
         {
 			this.SoftwareCenter = new SoftwareCenter();
 			this.ClientActions = new List<CmClientAction>() {
-				new CmClientAction( "MachinePolicy", "{00000000-0000-0000-0000-000000000021}", "Machine Policy", this),
-				new CmClientAction( "DiscoveryData", "{00000000-0000-0000-0000-000000000003}","Discovery Data", this ),
-				new CmClientAction( "ComplianceEvaluation", "{00000000-0000-0000-0000-000000000071}","Compliance Evaluation", this),
-				new CmClientAction( "AppDeployment", "{00000000-0000-0000-0000-000000000121}","App Deployment", this),
+
+				new CmClientAction( "AppDeployment", "{00000000-0000-0000-0000-000000000121}","Application Deployment Evaluation", this),
+				new CmClientAction( "DiscoveryData", "{00000000-0000-0000-0000-000000000003}","Discovery Data Collection", this ),
 				new CmClientAction( "HardwareInventory", "{00000000-0000-0000-0000-000000000001}","Hardware Inventory", this),
-				new CmClientAction( "UpdateDeployment", "{00000000-0000-0000-0000-000000000108}","Update Deployment", this),
-				new CmClientAction( "UpdateScan", "{00000000-0000-0000-0000-000000000113}","Update Scan", this),
-				new CmClientAction( "SoftwareInventory", "{00000000-0000-0000-0000-000000000002}","Software Inventory", this)
+				new CmClientAction( "MachinePolicy", "{00000000-0000-0000-0000-000000000021}", "Machine Policy Retrieval & Evaluation", this),
+				new CmClientAction( "SoftwareInventory", "{00000000-0000-0000-0000-000000000002}","Software Inventory", this),
+				new CmClientAction( "ComplianceEvaluation", "{00000000-0000-0000-0000-000000000071}","Compliance Evaluation", this),
+				new CmClientAction( "UpdateDeployment", "{00000000-0000-0000-0000-000000000108}","Software Update Deployment Evaluation", this),
+				new CmClientAction( "UpdateScan", "{00000000-0000-0000-0000-000000000113}","Software Update Scan", this)
 			};
 		}
 
