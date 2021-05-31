@@ -26,7 +26,7 @@ ActionSettings#>
 Update the fields appropriately:
 * DisplayName: The name to be shown in DevChecker. If this is empty the script name will be used
 * OutputType: *Not currently implemented. This will be used to change the output to a table view if desired
-* Descripttion: The description to appear in DevChecker
+* Description: The description to appear in DevChecker
 * RunOnConnect: *Not currently implemented. This will be used to set whether to automatically run the script on connect to the device
 * LogScriptContent: Set this to true to output the content of the script file to the logging pane in DevChecker
 
