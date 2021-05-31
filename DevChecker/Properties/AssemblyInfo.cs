@@ -28,7 +28,7 @@ using System.Windows;
 [assembly: AssemblyTitle("DevChecker")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("20Road Limited")]
 [assembly: AssemblyProduct("DevChecker")]
 [assembly: AssemblyCopyright("Copyright © 20Road Limited 2021")]
 [assembly: AssemblyTrademark("")]
