@@ -184,24 +184,21 @@ namespace DevChecker
 
         private async Task StartUpAsync()
         {
-            if (File.Exists(this._configFilePath))
+            await Configuration.LoadAsync(this._configFilePath);
+            this.ConfigMgrServerName = Configuration.Instance.ConfigMgrServer;
+            this.RemoteComputer = Configuration.Instance.LastDevice;
+            if (Configuration.Instance.DeviceHistory != null && Configuration.Instance.DeviceHistory.Count > 0)
             {
-                await Configuration.LoadAsync(this._configFilePath);
-                this.ConfigMgrServerName = Configuration.Instance.ConfigMgrServer;
-                this.RemoteComputer = Configuration.Instance.LastDevice;
-                if (Configuration.Instance.DeviceHistory != null && Configuration.Instance.DeviceHistory.Count > 0)
-                {
-                    this.DeviceHistory = new ObservableCollection<string>(Configuration.Instance.DeviceHistory);
-                }
-                this.ClientSSL = Configuration.Instance.ClientSSL;
-                this.ServerSSL = Configuration.Instance.ServerSSL;
-                this._clientCred.Username = Configuration.Instance.ClientUsername;
-                this._clientCred.Domain = Configuration.Instance.ClientDomain;
-                this._serverCred.Username = Configuration.Instance.ServerUsername;
-                this._serverCred.Domain = Configuration.Instance.ServerDomain;
-                this._serverCred.UseKerberos = Configuration.Instance.ServerKerberos;
-                this._clientCred.UseKerberos = Configuration.Instance.ClientKerberos;
+                this.DeviceHistory = new ObservableCollection<string>(Configuration.Instance.DeviceHistory);
             }
+            this.ClientSSL = Configuration.Instance.ClientSSL;
+            this.ServerSSL = Configuration.Instance.ServerSSL;
+            this._clientCred.Username = Configuration.Instance.ClientUsername;
+            this._clientCred.Domain = Configuration.Instance.ClientDomain;
+            this._serverCred.Username = Configuration.Instance.ServerUsername;
+            this._serverCred.Domain = Configuration.Instance.ServerDomain;
+            this._serverCred.UseKerberos = Configuration.Instance.ServerKerberos;
+            this._clientCred.UseKerberos = Configuration.Instance.ClientKerberos;
             await ActionLibrary.RefreshAsync();
         }
 

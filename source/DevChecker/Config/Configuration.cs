@@ -54,13 +54,20 @@ namespace DevChecker.Config
 
         public static async Task LoadAsync(string filePath)
         {
-            string json = await IOHelpers.ReadFileAsync(filePath);
-            Instance = JsonConvert.DeserializeObject<Configuration>(json);
+            if (string.IsNullOrWhiteSpace(filePath) == false && File.Exists(filePath))
+            {
+                string json = await IOHelpers.ReadFileAsync(filePath);
+                Instance = JsonConvert.DeserializeObject<Configuration>(json);
+                Log.Info("Done loading config file: " + filePath);
+            }
+            else
+            {
+                Log.Debug("Creating base config");
+            }
             if (string.IsNullOrWhiteSpace(Instance.ConfigMgrServer))
             {
                 Instance.ConfigMgrServer = RegistryHelpers.GetStringValue(@"HKEY_CURRENT_USER\Software\Microsoft\ConfigMgr10\AdminUI\MRU\1", "ServerName", null);
             }
-            Log.Info("Done loading config file: " + filePath);
         }
 
         public async Task WriteAsync(string filePath)
