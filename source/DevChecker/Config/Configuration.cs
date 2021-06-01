@@ -56,6 +56,10 @@ namespace DevChecker.Config
         {
             string json = await IOHelpers.ReadFileAsync(filePath);
             Instance = JsonConvert.DeserializeObject<Configuration>(json);
+            if (string.IsNullOrWhiteSpace(Instance.ConfigMgrServer))
+            {
+                Instance.ConfigMgrServer = RegistryHelpers.GetStringValue(@"HKEY_CURRENT_USER\Software\Microsoft\ConfigMgr10\AdminUI\MRU\1", "ServerName", null);
+            }
             Log.Info("Done loading config file: " + filePath);
         }
 
