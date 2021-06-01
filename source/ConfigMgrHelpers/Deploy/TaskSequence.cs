@@ -30,14 +30,17 @@ namespace ConfigMgrHelpers.Deploy
 
         public string Name { get; set; }
         public string PackageID { get; set; }
-        public bool HighImpactTaskSequence { get; set; }
+        public string HighImpactTaskSequence { get; set; }
+        public string LastRunStatus { get; set; }
 
         public static TaskSequence New(PSObject poshObj)
         {
             var cmobj = new TaskSequence();
             cmobj.Name = PoshHandler.GetPropertyValue<string>(poshObj, "Name");
             cmobj.PackageID = PoshHandler.GetPropertyValue<string>(poshObj, "PackageID");
-            cmobj.HighImpactTaskSequence = PoshHandler.GetPropertyValue<bool>(poshObj, "HighImpactTaskSequence");
+            cmobj.HighImpactTaskSequence = PoshHandler.GetPropertyValue<bool>(poshObj, "HighImpactTaskSequence").ToString();
+            cmobj.LastRunStatus = PoshHandler.GetPropertyValue<string>(poshObj, "LastRunStatus");
+
             return cmobj;
         }
 

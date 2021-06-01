@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncHelpers.cs" />
+    <Compile Include="Hotfix.cs" />
     <Compile Include="ImpersonationHelpers.cs" />
     <Compile Include="IOHelpers.cs" />
     <Compile Include="PoshHandler.cs" />

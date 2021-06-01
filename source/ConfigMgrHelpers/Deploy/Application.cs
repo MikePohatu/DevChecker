@@ -51,7 +51,7 @@ namespace ConfigMgrHelpers.Deploy
             if (string.IsNullOrWhiteSpace(this.Id) == false)
             {
                 StringBuilder builder = new StringBuilder();
-                string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\CMInstallApplication.ps1";
+                string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\CMDeployApplication.ps1";
                 string script = await IOHelpers.ReadFileAsync(scriptPath);
                 builder.AppendLine(script).Append("Deploy-Application -AppID '").Append(this.Id).AppendLine("' -Action Install");
 

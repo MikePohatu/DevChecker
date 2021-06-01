@@ -30,6 +30,7 @@ using WindowsHelpers;
 using System.Management.Automation;
 using System.IO;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
 
 namespace WindowsHelpers
 {
@@ -102,6 +103,8 @@ namespace WindowsHelpers
             get { return this._services; }
             set { this._services = value; this.OnPropertyChanged(this, "Services"); }
         }
+
+        public ObservableCollection<Hotfix> Hotfixes { get; } = new ObservableCollection<Hotfix>();
 
         /// <summary>
         /// The current RemoteSystem instance. Behaves like a singleton
@@ -297,6 +300,27 @@ namespace WindowsHelpers
             catch (Exception e)
             {
                 Log.Error(e, "Error getting service information");
+            }
+        }
+
+        public async Task UpdateHotfixesAsync()
+        {
+            try
+            {
+                this.Hotfixes.Clear();
+                string script = Hotfix.GetterCommand;
+                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
+                {
+                    var results = await PoshHandler.InvokeRunnerAsync(posh);
+                    foreach (var result in results)
+                    {
+                        this.Hotfixes.Add(Hotfix.New(result));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error getting hotfix information");
             }
         }
 

@@ -112,6 +112,7 @@ namespace WindowsHelpers
                     }
                     Log.Info(builder.ToString().Trim()); 
                 }
+                
                 result = await Task.Factory.FromAsync(posh.BeginInvoke(), asyncResult => posh.EndInvoke(asyncResult));
             }
             catch (Exception e)
