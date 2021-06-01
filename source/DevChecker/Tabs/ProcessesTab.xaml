@@ -7,7 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <CollectionViewSource x:Key="filteredProcs" Source="{Binding Processes}" Filter="onSearchFilter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <CollectionViewSource x:Key="filtered" Source="{Binding Processes}" Filter="onSearchFilter" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -18,13 +19,16 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="searchBox" TextChanged="onSearchBoxTextChanged" Grid.Row="0" Grid.Column="0" Width="150" Margin="0,5,5,5" HorizontalAlignment="Left"/>
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+            <TextBox x:Name="searchBox" TextChanged="onSearchBoxTextChanged"  Width="150" Margin="0,5,5,5" HorizontalAlignment="Left"/>
+            <TextBlock Text="Loading" Visibility="{Binding Path=ProcessesLoading, Converter={StaticResource BoolToVis}}" Margin="10,5,5,5"  />
+        </StackPanel>
         <TextBlock Grid.Row="0" Grid.Column="1" Padding="3,5,5,0" HorizontalAlignment="Right">
             <Hyperlink Click="onRefreshClicked" TextDecorations="None">
                 <TextBlock Text="Refresh" Margin="0" />
             </Hyperlink>
         </TextBlock>
-        <DataGrid Grid.Row="1" Grid.ColumnSpan="2" x:Name="procGrid" ItemsSource="{Binding Source={StaticResource filteredProcs}}" AutoGenerateColumns="True" 
+        <DataGrid Grid.Row="1" Grid.ColumnSpan="2" x:Name="procGrid" ItemsSource="{Binding Source={StaticResource filtered}}" AutoGenerateColumns="True" 
             BorderThickness="0" HeadersVisibility="Column" GridLinesVisibility="Horizontal" SelectionMode="Single" IsReadOnly="True"
             >
             <DataGrid.ContextMenu>

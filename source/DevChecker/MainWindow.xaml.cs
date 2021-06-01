@@ -267,6 +267,7 @@ namespace DevChecker
                     postconnectTasks.Add(this.PostConnectCmClient());
                     postconnectTasks.Add(this.RemoteSystem.UpdateProcessesAsync());
                     postconnectTasks.Add(this.RemoteSystem.UpdateServicesAsync());
+                    postconnectTasks.Add(this.RemoteSystem.UpdateHotfixesAsync());
                 }
                 
                 if (CmServer.Current.IsConnected) { postconnectTasks.Add(CmServer.Current.QueryCollectionsAsync()); }

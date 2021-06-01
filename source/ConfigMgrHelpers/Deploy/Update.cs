@@ -18,6 +18,7 @@
 #endregion
 
 using Core.Logging;
+using System.Collections.Generic;
 using System.Management.Automation;
 using System.Threading.Tasks;
 using WindowsHelpers;
@@ -27,15 +28,16 @@ namespace ConfigMgrHelpers.Deploy
     public class Update
     {
         public static string GetterCommand { get; }= @"get-wmiobject -query 'SELECT * FROM CCM_SoftwareUpdate' -namespace 'ROOT\ccm\ClientSDK'";
-
+        
         public string Name { get; set; }
+        public string Status { get; set; }
         public string ArticleID { get; set; }
         public string BulletinID { get; set; }
-        public string Description { get; set; }
         public int MaxExecutionTime { get; set; }
         public string URL { get; set; }
-        public bool IsUpgrade { get; set; }
-        public bool IsO365Update { get; set; }
+        public string IsUpgrade { get; set; }
+        public string IsO365Update { get; set; }
+        public string Description { get; set; }
 
         public static Update New(PSObject poshObj)
         {
@@ -43,11 +45,12 @@ namespace ConfigMgrHelpers.Deploy
             cmobj.Name = PoshHandler.GetPropertyValue<string>(poshObj, "Name");
             cmobj.ArticleID = PoshHandler.GetPropertyValue<string>(poshObj, "ArticleID");
             cmobj.BulletinID = PoshHandler.GetPropertyValue<string>(poshObj, "BulletinID");
-            cmobj.Description = PoshHandler.GetPropertyValue<string>(poshObj, "Description");
+            cmobj.IsUpgrade = PoshHandler.GetPropertyValue<bool>(poshObj, "MaxExecutIsUpgradeionTime").ToString();
+            cmobj.IsO365Update = PoshHandler.GetPropertyValue<bool>(poshObj, "IsO365Update").ToString();
             cmobj.MaxExecutionTime = PoshHandler.GetPropertyValue<int>(poshObj, "MaxExecutionTime");
             cmobj.URL = PoshHandler.GetPropertyValue<string>(poshObj, "URL");
-            cmobj.IsUpgrade = PoshHandler.GetPropertyValue<bool>(poshObj, "MaxExecutIsUpgradeionTime");
-            cmobj.IsO365Update = PoshHandler.GetPropertyValue<bool>(poshObj, "IsO365Update");
+            cmobj.Description = PoshHandler.GetPropertyValue<string>(poshObj, "Description");
+            cmobj.Status = Definitions.GetAppState(poshObj);
             return cmobj;
         }
 

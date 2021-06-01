@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using Core;
 using Core.Logging;
 using System;
 using System.Collections.Generic;
@@ -28,8 +29,29 @@ using WindowsHelpers;
 
 namespace ConfigMgrHelpers.Deploy
 {
-    public class SoftwareCenter
+    public class SoftwareCenter: ViewModelBase
     {
+		private bool _applicationsLoading = false;
+		public bool ApplicationsLoading
+		{
+			get { return this._applicationsLoading; }
+			set { this._applicationsLoading = value; this.OnPropertyChanged(this, "ApplicationsLoading"); }
+		}
+
+		private bool _updatesLoading = false;
+		public bool UpdatesLoading
+		{
+			get { return this._updatesLoading; }
+			set { this._updatesLoading = value; this.OnPropertyChanged(this, "UpdatesLoading"); }
+		}
+
+		private bool _tasksequencesloading = false;
+		public bool TaskSequencesLoading
+		{
+			get { return this._tasksequencesloading; }
+			set { this._tasksequencesloading = value; this.OnPropertyChanged(this, "TaskSequencesLoading"); }
+		}
+
 		public ObservableCollection<Application> Applications { get; set; } = new ObservableCollection<Application>();
 		public ObservableCollection<Update> SoftwareUpdates { get; set; } = new ObservableCollection<Update>();
 		public ObservableCollection<TaskSequence> TaskSequences { get; set; } = new ObservableCollection<TaskSequence>();
@@ -38,6 +60,7 @@ namespace ConfigMgrHelpers.Deploy
 		{
 			if (CmClient.Current.ClientInstalled)
 			{
+				this.ApplicationsLoading = true;
 				string command = Application.GetterCommand;
 
 				Log.Info("Gathering Software Center applications");
@@ -54,6 +77,7 @@ namespace ConfigMgrHelpers.Deploy
 
 					Log.Info("Finished gathering applications");
 				}
+				this.ApplicationsLoading = false;
 			}
 		}
 
@@ -61,6 +85,7 @@ namespace ConfigMgrHelpers.Deploy
 		{
 			if (CmClient.Current.ClientInstalled)
 			{
+				this.UpdatesLoading = true;
 				string command = Update.GetterCommand;
 
 				Log.Info("Gathering Software Center updates");
@@ -77,6 +102,7 @@ namespace ConfigMgrHelpers.Deploy
 
 					Log.Info("Finished gathering updates");
 				}
+				this.UpdatesLoading = false;
 			}
 		}
 
@@ -84,6 +110,7 @@ namespace ConfigMgrHelpers.Deploy
 		{
 			if (CmClient.Current.ClientInstalled)
 			{
+				this.TaskSequencesLoading = true;
 				string command = TaskSequence.GetterCommand;
 				Log.Info("Gathering Software Center Task Sequences");
 				this.TaskSequences.Clear();
@@ -99,6 +126,7 @@ namespace ConfigMgrHelpers.Deploy
 
 					Log.Info("Finished gathering task sequences");
 				}
+				this.TaskSequencesLoading = false;
 			}
 		}
 	}

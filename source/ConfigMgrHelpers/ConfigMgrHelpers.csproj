@@ -63,6 +63,7 @@
     <Compile Include="CmCollection.cs" />
     <Compile Include="CmServer.cs" />
     <Compile Include="Deploy\Application.cs" />
+    <Compile Include="Deploy\Definitions.cs" />
     <Compile Include="Deploy\SoftwareCenter.cs" />
     <Compile Include="Deploy\TaskSequence.cs" />
     <Compile Include="Deploy\Update.cs" />

@@ -26,9 +26,10 @@ namespace ConfigMgrHelpers.Deploy
 {
     public class TaskSequence
     {
-        public static string GetterCommand { get; } = @"get-wmiobject -query 'SELECT * FROM CCM_Program WHERE TaskSequence = True' -namespace 'ROOT\ccm\ClientSDK' | Select  Name, PackageID, HighImpactTaskSequence, LastRunTime, RepeatRunBehavior, RestartRequired";
+        public static string GetterCommand { get; } = @"get-wmiobject -query 'SELECT * FROM CCM_Program WHERE TaskSequence = True' -namespace 'ROOT\ccm\ClientSDK'";
 
         public string Name { get; set; }
+        public string Status { get; set; }
         public string PackageID { get; set; }
         public string HighImpactTaskSequence { get; set; }
         public string LastRunStatus { get; set; }
@@ -40,7 +41,7 @@ namespace ConfigMgrHelpers.Deploy
             cmobj.PackageID = PoshHandler.GetPropertyValue<string>(poshObj, "PackageID");
             cmobj.HighImpactTaskSequence = PoshHandler.GetPropertyValue<bool>(poshObj, "HighImpactTaskSequence").ToString();
             cmobj.LastRunStatus = PoshHandler.GetPropertyValue<string>(poshObj, "LastRunStatus");
-
+            cmobj.Status = Definitions.GetProgramState(poshObj);
             return cmobj;
         }
 

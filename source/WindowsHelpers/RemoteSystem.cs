@@ -46,6 +46,27 @@ namespace WindowsHelpers
         /// </summary>
         public bool IsConnected { get; set; } = false;
 
+        private bool _processesLoading = false;
+        public bool ProcessesLoading
+        {
+            get { return this._processesLoading; }
+            set { this._processesLoading = value; this.OnPropertyChanged(this, "ProcessesLoading"); }
+        }
+
+        private bool _hotfixesLoading = false;
+        public bool HotfixesLoading
+        {
+            get { return this._hotfixesLoading; }
+            set { this._hotfixesLoading = value; this.OnPropertyChanged(this, "HotfixesLoading"); }
+        }
+
+        private bool _servicesLoading = false;
+        public bool ServicesLoading
+        {
+            get { return this._servicesLoading; }
+            set { this._servicesLoading = value; this.OnPropertyChanged(this, "ServicesLoading"); }
+        }
+
         /// <summary>
         /// The credentials used to connect to the client device
         /// </summary>
@@ -256,6 +277,7 @@ namespace WindowsHelpers
 
         public async Task UpdateProcessesAsync()
         {
+            this.ProcessesLoading = true;
             this.Processes = null;
             List<RemoteProcess> procs = new List<RemoteProcess>();
             string script = RemoteProcess.GetScript;
@@ -277,10 +299,12 @@ namespace WindowsHelpers
             {
                 Log.Error(e, "Error getting process information");
             }
+            this.ProcessesLoading = false;
         }
 
         public async Task UpdateServicesAsync()
         {
+            this.ServicesLoading = true;
             try
             {
                 this.Services = null;
@@ -301,10 +325,13 @@ namespace WindowsHelpers
             {
                 Log.Error(e, "Error getting service information");
             }
+
+            this.ServicesLoading = false;
         }
 
         public async Task UpdateHotfixesAsync()
         {
+            this.HotfixesLoading = true;
             try
             {
                 this.Hotfixes.Clear();
@@ -322,6 +349,7 @@ namespace WindowsHelpers
             {
                 Log.Error(e, "Error getting hotfix information");
             }
+            this.HotfixesLoading = false;
         }
 
         public async Task GpUpdateAsync()

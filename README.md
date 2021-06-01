@@ -15,7 +15,8 @@ This tool was created because existing tools either didn't do what I wanted, or 
 * List and control device services
 * List and kill device processes
 * List installed patches
-* List install applications
+* List and install applications available in Software Center
+* List and install updates available in Software Center
 * Show BitLocker status
 * Run *gpupdate /force*
 * Add custom PowerShell scripts to run on client
@@ -24,11 +25,10 @@ This tool was created because existing tools either didn't do what I wanted, or 
 
 ## Planned features
 
-* Access to ConfigMgr Software Center
+* List printers and print drivers
 * Add custom tabs using PowerShell scripts
 * Run ConfigMgr scripts
-* List and install available updates
-* List printers and print drivers
+
 * Shutdown, restart, logoff functions
 
 [Documentation](/documentation/README.md)

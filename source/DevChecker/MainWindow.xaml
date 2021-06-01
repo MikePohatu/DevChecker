@@ -86,6 +86,9 @@
                     <TabItem Header="Services" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
                         <tabs:ServicesTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
                     </TabItem>
+                    <TabItem Header="Hotfixes" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <tabs:HotfixesTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
+                    </TabItem>
                     <TabItem Header="ConfigMgr Client" DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
                         <configmgr:CmClientTab IsEnabled="{Binding ClientInstalled, FallbackValue=false}"/>
                     </TabItem>

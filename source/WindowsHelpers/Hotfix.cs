@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using Core.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,20 +28,32 @@ namespace WindowsHelpers
 {
     public class Hotfix
     {
-        public static string GetterCommand { get; } = "Get-Hotfix | Select-Object -Property KBArticle, InstalledOn, HotFixID, InstalledBy | Sort-Object -Property InstalledOn -Descending";
-        public string KBArticle { get; set; }
-        public string InstalledOn { get; set; }
+        public static string GetterCommand { get; } = "Get-Hotfix";
+
         public string HotFixID { get; set; }
+        public string Description { get; set; }
+        public string InstalledOn { get; set; }
         public string InstalledBy { get; set; }
 
         public static Hotfix New(PSObject poshObj)
         {
             var obj = new Hotfix();
-            obj.KBArticle = PoshHandler.GetPropertyValue<string>(poshObj, "Name");
-            obj.InstalledOn = PoshHandler.GetPropertyValue<string>(poshObj, "ArticleID");
-            obj.HotFixID = PoshHandler.GetPropertyValue<string>(poshObj, "BulletinID");
-            obj.InstalledBy = PoshHandler.GetPropertyValue<string>(poshObj, "Description");
+            obj.Description = PoshHandler.GetPropertyValue<string>(poshObj, "Description");
+            obj.InstalledOn = PoshHandler.GetPropertyValue<string>(poshObj, "InstalledOn");
+            obj.HotFixID = PoshHandler.GetPropertyValue<string>(poshObj, "HotFixID");
+            obj.InstalledBy = PoshHandler.GetPropertyValue<string>(poshObj, "InstalledBy");
             return obj;
+        }
+
+        public async Task UninstallAsync()
+        {
+            if (string.IsNullOrWhiteSpace(this.HotFixID) == false)
+            {
+                string command = "Start-Process wusa.exe -ArgumentList \"/ uninstall / KB:"+this.HotFixID+" / quiet / norestart\"";
+                Log.Info("Uninstalling hotfix " + this.HotFixID);
+                var posh = PoshHandler.GetRunner(command, RemoteSystem.Current);
+                await PoshHandler.InvokeRunnerAsync(posh);
+            }
         }
     }
 }

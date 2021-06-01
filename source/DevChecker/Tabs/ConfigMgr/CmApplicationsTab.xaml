@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <CollectionViewSource x:Key="filtered" Source="{Binding Applications}" Filter="onSearchFilter" />
     </UserControl.Resources>
     <Grid>
@@ -18,7 +19,10 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="searchBox" TextChanged="onSearchBoxTextChanged" Grid.Row="0" Grid.Column="0" Width="150" Margin="0,5,5,5" HorizontalAlignment="Left"/>
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+            <TextBox x:Name="searchBox" TextChanged="onSearchBoxTextChanged"  Width="150" Margin="0,5,5,5" HorizontalAlignment="Left"/>
+            <TextBlock Text="Loading" Visibility="{Binding Path=ApplicationsLoading, Converter={StaticResource BoolToVis}}" Margin="10,5,5,5"  />
+        </StackPanel>
         <TextBlock Grid.Row="0" Grid.Column="1" Padding="3,5,5,0" HorizontalAlignment="Right">
             <Hyperlink Click="onRefreshClicked" TextDecorations="None">
                 <TextBlock Text="Refresh" Margin="0" />

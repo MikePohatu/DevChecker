@@ -16,6 +16,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using ConfigMgrHelpers.Deploy;
+using ConfigMgrHelpers;
 using Core.Logging;
 using System;
 using System.Collections.Generic;
@@ -36,38 +38,26 @@ using WindowsHelpers;
 namespace DevChecker.Tabs
 {
     /// <summary>
-    /// Interaction logic for ProcessesTab.xaml
+    /// Interaction logic for CmUpdatesTab.xaml
     /// </summary>
-    public partial class ProcessesTab : UserControl
+    public partial class HotfixesTab : UserControl
     {
-        public ProcessesTab()
+        public HotfixesTab()
         {
             InitializeComponent();
         }
 
-        private async void onKillClicked(object sender, RoutedEventArgs e)
-        {
-            RemoteProcess proc = (RemoteProcess)this.procGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to kill "+proc.Name+"?", "Kill process", MessageBoxButton.YesNo)== MessageBoxResult.Yes)
-            {
-                Log.Info(Log.Highlight("Killing process " + proc.Name));
-                await proc.KillAsync();
-                await RemoteSystem.Current.UpdateProcessesAsync();
-            }
-        }
-
         private async void onRefreshClicked(object sender, RoutedEventArgs e)
         {
-            await RemoteSystem.Current.UpdateProcessesAsync();
+            await RemoteSystem.Current.UpdateHotfixesAsync();
         }
 
         private void onSearchFilter(object sender, FilterEventArgs e)
         {
-            var obj = e.Item as RemoteProcess;
+            var obj = e.Item as Hotfix;
             if (obj != null)
             {
-                if (obj.Name != null && obj.Name.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
-                else if (obj.Product != null && obj.Product.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
+                if (obj.HotFixID != null && obj.HotFixID.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
                 else { e.Accepted = false; }
             }
         }
@@ -75,9 +65,18 @@ namespace DevChecker.Tabs
         private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             CollectionViewSource source = this.Resources["filtered"] as CollectionViewSource;
-            if (source != null)
+            if (source?.View != null)
             {
                 source.View.Refresh();
+            }
+        }
+
+        private async void onUninstallClicked(object sender, RoutedEventArgs e)
+        {
+            var selected = (Hotfix)this.dataGrid.SelectedItem;
+            if (MessageBox.Show("Are you sure you want to uninstall " + selected.HotFixID + "?", "Uninstall hotfix", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                await selected.UninstallAsync();
             }
         }
     }
