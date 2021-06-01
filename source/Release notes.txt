@@ -1,4 +1,4 @@
-Version 0.5
-Release date: 31 May 2021
+Version 0.6
+Release date: 2 Jun 2021
 
 *Initial release

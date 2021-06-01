@@ -28,7 +28,6 @@ This tool was created because existing tools either didn't do what I wanted, or 
 * List printers and print drivers
 * Add custom tabs using PowerShell scripts
 * Run ConfigMgr scripts
-
 * Shutdown, restart, logoff functions
 
 [Documentation](/documentation/README.md)
