@@ -79,34 +79,34 @@
     <Compile Include="Spinner.xaml.cs">
       <DependentUpon>Spinner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\CmActions.xaml.cs">
+    <Compile Include="Tabs\ConfigMgr\CmActions.xaml.cs">
       <DependentUpon>CmActions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\CmSoftwareCenterTab.xaml.cs">
+    <Compile Include="Tabs\ConfigMgr\CmSoftwareCenterTab.xaml.cs">
       <DependentUpon>CmSoftwareCenterTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\CmUpdatesTab.xaml.cs">
+    <Compile Include="Tabs\ConfigMgr\CmUpdatesTab.xaml.cs">
       <DependentUpon>CmUpdatesTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\CmTaskSequencesTab.xaml.cs">
+    <Compile Include="Tabs\ConfigMgr\CmTaskSequencesTab.xaml.cs">
       <DependentUpon>CmTaskSequencesTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\CmServerTab.xaml.cs">
+    <Compile Include="Tabs\ConfigMgr\CmServerTab.xaml.cs">
       <DependentUpon>CmServerTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\CmClientTab.xaml.cs">
+    <Compile Include="Tabs\ConfigMgr\CmClientTab.xaml.cs">
       <DependentUpon>CmClientTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tabs\OverviewTab.xaml.cs">
       <DependentUpon>OverviewTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\CmSystemActions.xaml.cs">
+    <Compile Include="Tabs\ConfigMgr\CmSystemActions.xaml.cs">
       <DependentUpon>CmSystemActions.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tabs\ActionsTab.xaml.cs">
       <DependentUpon>ActionsTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\CmApplicationsTab.xaml.cs">
+    <Compile Include="Tabs\ConfigMgr\CmApplicationsTab.xaml.cs">
       <DependentUpon>CmApplicationsTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tabs\ServicesTab.xaml.cs">
@@ -139,27 +139,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Tabs\CmActions.xaml">
+    <Page Include="Tabs\ConfigMgr\CmActions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Tabs\CmSoftwareCenterTab.xaml">
+    <Page Include="Tabs\ConfigMgr\CmSoftwareCenterTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Tabs\CmUpdatesTab.xaml">
+    <Page Include="Tabs\ConfigMgr\CmUpdatesTab.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Tabs\CmTaskSequencesTab.xaml">
+    <Page Include="Tabs\ConfigMgr\CmTaskSequencesTab.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Tabs\CmServerTab.xaml">
+    <Page Include="Tabs\ConfigMgr\CmServerTab.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Tabs\CmClientTab.xaml">
+    <Page Include="Tabs\ConfigMgr\CmClientTab.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -167,7 +167,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Tabs\CmSystemActions.xaml">
+    <Page Include="Tabs\ConfigMgr\CmSystemActions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -175,7 +175,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Tabs\CmApplicationsTab.xaml">
+    <Page Include="Tabs\ConfigMgr\CmApplicationsTab.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

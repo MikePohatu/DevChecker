@@ -35,7 +35,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WindowsHelpers;
 
-namespace DevChecker.Tabs
+namespace DevChecker.Tabs.ConfigMgr
 {
     /// <summary>
     /// Interaction logic for CmSystemActions.xaml

@@ -31,14 +31,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DevChecker.Tabs
+namespace DevChecker.Tabs.ConfigMgr
 {
     /// <summary>
-    /// Interaction logic for CmClientTab.xaml
+    /// Interaction logic for CmSoftwareCenterTab.xaml
     /// </summary>
-    public partial class CmClientTab : UserControl
+    public partial class CmSoftwareCenterTab : UserControl
     {
-        public CmClientTab()
+        public CmSoftwareCenterTab()
         {
             InitializeComponent();
         }

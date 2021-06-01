@@ -35,7 +35,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WindowsHelpers;
 
-namespace DevChecker.Tabs
+namespace DevChecker.Tabs.ConfigMgr
 {
     /// <summary>
     /// Interaction logic for CmUpdatesTab.xaml
@@ -78,15 +78,6 @@ namespace DevChecker.Tabs
             if (MessageBox.Show("Are you sure you want to install " + selected.Name + "?", "Install software update", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 await selected.InstallAsync();
-            }
-        }
-
-        private async void onUninstallClicked(object sender, RoutedEventArgs e)
-        {
-            var selected = (Update)this.dataGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to uninstall " + selected.Name + "?", "Uninstall software update", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                await selected.UninstallAsync();
             }
         }
     }

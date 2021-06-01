@@ -35,45 +35,38 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WindowsHelpers;
 
-namespace DevChecker.Tabs
+namespace DevChecker.Tabs.ConfigMgr
 {
     /// <summary>
-    /// Interaction logic for CmApplicationsTab.xaml
+    /// Interaction logic for CmTaskSequencesTab.xaml
     /// </summary>
-    public partial class CmApplicationsTab : UserControl
+    public partial class CmTaskSequencesTab : UserControl
     {
-        public CmApplicationsTab()
+        public CmTaskSequencesTab()
         {
             InitializeComponent();
         }
 
-        private async void onInstallClicked(object sender, RoutedEventArgs e)
+        private async void onRunClicked(object sender, RoutedEventArgs e)
         {
-            var selected = (ConfigMgrHelpers.Deploy.Application)this.dataGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to install "+ selected.Name+"?", "Install application", MessageBoxButton.YesNo)== MessageBoxResult.Yes)
+            var selected = (TaskSequence)this.dataGrid.SelectedItem;
+            if (MessageBox.Show("Are you sure you want to run "+ selected.Name+"?", "Run Task Sequence", MessageBoxButton.YesNo)== MessageBoxResult.Yes)
             {
-                await selected.InstallAsync();
-            }
-        }
-
-        private async void onUninstallClicked(object sender, RoutedEventArgs e)
-        {
-            var selected = (ConfigMgrHelpers.Deploy.Application)this.dataGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to uninstall " + selected.Name + "?", "Uninstall application", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                await selected.UninstallAsync();
+                Log.Info(Log.Highlight("Run task sequence " + selected.Name));
+                await selected.RunAsync();
+                await CmClient.Current.SoftwareCenter.QueryTaskSequencesAsync();
             }
         }
 
         private async void onRefreshClicked(object sender, RoutedEventArgs e)
         {
             var sc = CmClient.Current.SoftwareCenter;
-            await sc.QueryApplicationsAsync();
+            await sc.QueryTaskSequencesAsync();
         }
 
         private void onSearchFilter(object sender, FilterEventArgs e)
         {
-            var obj = e.Item as ConfigMgrHelpers.Deploy.Application;
+            var obj = e.Item as TaskSequence;
             if (obj != null)
             {
                 if (obj.Name != null && obj.Name.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }

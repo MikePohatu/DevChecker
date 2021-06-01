@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="DevChecker.Tabs.CmSoftwareCenterTab"
+﻿<UserControl x:Class="DevChecker.Tabs.ConfigMgr.CmSoftwareCenterTab"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:DevChecker.Tabs"
+             xmlns:local="clr-namespace:DevChecker.Tabs.ConfigMgr"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}">
     <UserControl.Resources>
@@ -12,7 +12,7 @@
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" />
         </Style>
         <Style TargetType="Grid">
-            <Setter Property="Margin" Value="10,0,0,0" />
+            <Setter Property="Margin" Value="5,0,0,0" />
         </Style>
     </UserControl.Resources>
     <TabControl Grid.Row="1" MinHeight="200" TabStripPlacement="Left" BorderBrush="{x:Null}" 

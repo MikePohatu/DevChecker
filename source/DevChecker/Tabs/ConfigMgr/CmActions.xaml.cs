@@ -30,17 +30,25 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ConfigMgrHelpers;
 
-namespace DevChecker.Tabs
+namespace DevChecker.Tabs.ConfigMgr
 {
     /// <summary>
-    /// Interaction logic for CmSoftwareCenterTab.xaml
+    /// Interaction logic for CmActions.xaml
     /// </summary>
-    public partial class CmSoftwareCenterTab : UserControl
+    public partial class CmActions : UserControl
     {
-        public CmSoftwareCenterTab()
+        public CmActions()
         {
             InitializeComponent();
+        }
+
+        public async void onRunActionClicked(object sender, RoutedEventArgs e)
+        {
+            var uiElement = sender as FrameworkElement;
+            var component = uiElement?.DataContext as CmClientAction;
+            await component?.RunActionAsync();
         }
     }
 }
