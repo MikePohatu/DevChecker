@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2021 20Road Limited
 //
 // This file is part of DevChecker.
@@ -368,7 +368,7 @@ namespace WindowsHelpers
         {
             try
             {
-                string script = "gpupdate /force";
+                string script = "Start-Process 'gpupdate.exe' '/force' -Wait";
 
                 using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
                 {
