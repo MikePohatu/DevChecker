@@ -1,3 +1,13 @@
+Version 0.7.1
+Release date: 3 Jun 2021
+
+*Features	
+    Added sfc /scannow
+*Fixes
+    Added additional checks on connection data to prevent exceptions
+    Fixed gpupdate not reporting correctly
+
+
 Version 0.7
 Release date: 2 Jun 2021
 

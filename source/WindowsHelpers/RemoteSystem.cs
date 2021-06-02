@@ -170,12 +170,12 @@ namespace WindowsHelpers
                     {
                         this.IsConnected = true;
                         this.CDollarAccessible = true;
+                        this.ConfigMgrClientStatus = PoshHandler.GetFirstHashTableString(results, "configMgrClientStatus");
                         this.SystemPendingReboot = PoshHandler.GetFirstHashTableValue<bool>(results, "pendingReboot");
                         this.InstalledOSType = PoshHandler.GetFirstHashTableString(results, "type");
                         this.IPv4Address = PoshHandler.GetFirstHashTableString(results, "ipv4Addresses");
                         this.IPv6Address = PoshHandler.GetFirstHashTableString(results, "ipv6Addresses");
                         this.ReportedComputerName = PoshHandler.GetFirstHashTableString(results, "name");
-                        this.ConfigMgrClientStatus = PoshHandler.GetFirstHashTableString(results, "configMgrClientStatus");
                         this.Properties = PoshHandler.GetFromHashTableAsOrderedDictionary(results);
                         this.PropertyBlocks = Overflow.CreateFromDictionary(this.Properties, 12);
                         

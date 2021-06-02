@@ -240,7 +240,7 @@ namespace DevChecker
                 RemoteSystem.New(this._remoteComputer, this._clientssl, this._clientCred);
 
                 List<Task> connectTasks = new List<Task>();
-                connectTasks.Add(CmServer.Create(this.ConfigMgrServerName, this.ServerSSL, RemoteSystem.Current.BareComputerName).ConnectAsync());
+                connectTasks.Add(CmServer.Create(this.ConfigMgrServerName, this.ServerSSL, RemoteSystem.Current.BareComputerName, this._serverCred).ConnectAsync());
                 connectTasks.Add(RemoteSystem.Current.ConnectAsync());
                 await Task.WhenAll(connectTasks);
 
@@ -248,10 +248,8 @@ namespace DevChecker
                 this.RemoteSystem = RemoteSystem.Current;
 
                 if (this.RemoteSystem != null) {
-                    this.RemoteSystem.Credential = this._clientCred;
                     this.UpdateDeviceHistory(this._remoteComputer);
                 }
-                if (this.CmServer != null) { this.CmServer.Credential = this._serverCred; }
 
                 //release
                 this.ControlsEnabled = true;

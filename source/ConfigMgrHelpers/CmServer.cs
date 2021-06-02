@@ -115,11 +115,12 @@ namespace ConfigMgrHelpers
             this.ServerName = ServerName;
         }
 
-        public static CmServer Create(string serverName, bool useSSL, string clientName)
+        public static CmServer Create(string serverName, bool useSSL, string clientName, Credential servercred)
         {
             Current = new CmServer(serverName);
             Current.UseSSL = useSSL;
             Current.ClientName = clientName;
+            Current.Credential = servercred;
             if (string.IsNullOrWhiteSpace(clientName) || clientName.ToLower() == "localhost" || clientName == "127.0.0.1")
             {
                 Current.IsLocalhostClient = true;
@@ -160,7 +161,8 @@ namespace ConfigMgrHelpers
 
                 if (result.Count > 0)
                 {
-                    this.ClientIPs = string.Join(", ", PoshHandler.GetFirstPropertyValue<string[]>(result, "IPAddresses"));
+                    string[] ips = PoshHandler.GetFirstPropertyValue<string[]>(result, "IPAddresses")?.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+                    this.ClientIPs = ips == null ? null : string.Join(", ", ips);
                     this.ClientOU = PoshHandler.GetFirstPropertyValue<string[]>(result, "SystemOUName").Last();
 
                     Log.Info("Finished gathering ConfigMgr server data for client");

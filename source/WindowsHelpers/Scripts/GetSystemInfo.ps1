@@ -125,11 +125,11 @@ Function Get-LoggedOnUsers {
     $disconnectedUsersString = [string]::Empty
     $consoleUserString = [string]::Empty
 
-    if ($active) {
+    if ($active -and $active.USERNAME) {
         $activeUsersString =  [string]::Join(', ', $active.USERNAME)
     }
 
-    if ($disconnected) {
+    if ($disconnected -and $disconnected.USERNAME) {
         $disconnectedUsersString =  [string]::Join(', ', $disconnected.USERNAME)
     }
 
@@ -174,6 +174,10 @@ $memory = [Math]::Round($compSys.TotalPhysicalMemory /1024 /1024 )
 $users = Get-LoggedOnUsers
 $power = Get-PowerInfo
 $bitLocker = Get-BitLockerInfo
+$ipv4Addresses = ""
+if ($ipv4s.IPAddress) { $ipv4Addresses = [string]::Join(", ", $ipv4s.IPAddress) }
+$ipv6Addresses = ""
+if ($ipv6s.IPAddress) { $ipv6Addresses = [string]::Join(", ", $ipv6s.IPAddress) }
 
 $systemInfo = @{
     encryptionStatus = $bitLocker.status
@@ -181,8 +185,8 @@ $systemInfo = @{
     pendingReboot = IsRebootPending
     type = $compOS.OSArchitecture
     memorySize = "$memory MB"
-    ipv4Addresses = [string]::Join(", ", $ipv4s.IPAddress)
-    ipv6Addresses = [string]::Join(", ", $ipv6s.IPAddress)
+    ipv4Addresses = $ipv4Addresses
+    ipv6Addresses = $ipv6Addresses
     consoleUser = $users.consoleUser
     activeUsers = $users.activeUsers
     disconnectedUsers = $users.disconnectedUsers
