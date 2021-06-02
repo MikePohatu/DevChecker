@@ -20,6 +20,7 @@ using Core.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -62,6 +63,24 @@ namespace WindowsHelpers
 				var posh = PoshHandler.GetRunner(command, RemoteSystem.Current);
 				await PoshHandler.InvokeRunnerAsync(posh);
 				Log.Info("Finished ScanHealth");
+			}
+		}
+
+		public static async Task RunSfcScanNowAsync()
+		{
+			try
+			{
+				string script = "Start-Process 'sfc.exe' '/scannow' -Wait";
+
+				using (PowerShell posh = PoshHandler.GetRunner(script, RemoteSystem.Current))
+				{
+					await PoshHandler.InvokeRunnerAsync(posh);
+					Log.Info("Done");
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Error(e, "Error running sfc /scannow");
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2021 20Road Limited
 //
 // This file is part of DevChecker.
@@ -163,7 +163,7 @@ namespace WindowsHelpers
                 string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\GetSystemInfo.ps1";
                 string script = await IOHelpers.ReadFileAsync(scriptPath);
 
-                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
+                using (PowerShell posh = PoshHandler.GetRunner(script, this))
                 {
                     PSDataCollection<PSObject> results = await PoshHandler.InvokeRunnerAsync(posh, true);
                     if (results != null)
@@ -258,12 +258,12 @@ namespace WindowsHelpers
                 {
                     ImpersonationHelpers.Impersonate(this.Credential.Domain, this.Credential.Username, this.Credential.Password, delegate
                     {
-                        this.StartProcess(@"C:\Windows\System32\mmc.exe", @"c:\windows\system32\compmgmt.msc /computer:\\" + RemoteSystem.Current.ComputerName, null);
+                        this.StartProcess(@"C:\Windows\System32\mmc.exe", @"c:\windows\system32\compmgmt.msc /computer:\\" + this.ComputerName, null);
                     });
                 }
                 else
                 {
-                    this.StartProcess(@"C:\Windows\System32\mmc.exe", @"c:\windows\system32\compmgmt.msc /computer:\\" + RemoteSystem.Current.ComputerName, null);
+                    this.StartProcess(@"C:\Windows\System32\mmc.exe", @"c:\windows\system32\compmgmt.msc /computer:\\" + this.ComputerName, null);
                 }
             }
             catch (Exception e)
@@ -296,7 +296,7 @@ namespace WindowsHelpers
 
             try
             {
-                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
+                using (PowerShell posh = PoshHandler.GetRunner(script, this))
                 {
                     var results = await PoshHandler.InvokeRunnerAsync(posh);
                     foreach (var result in results)
@@ -322,7 +322,7 @@ namespace WindowsHelpers
                 this.Services = null;
                 List<RemoteService> services = new List<RemoteService>();
                 string script = RemoteService.GetScript;
-                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
+                using (PowerShell posh = PoshHandler.GetRunner(script, this))
                 {
                     var results = await PoshHandler.InvokeRunnerAsync(posh);
                     foreach (var result in results)
@@ -348,7 +348,7 @@ namespace WindowsHelpers
             {
                 this.Hotfixes.Clear();
                 string script = Hotfix.GetterCommand;
-                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
+                using (PowerShell posh = PoshHandler.GetRunner(script, this))
                 {
                     var results = await PoshHandler.InvokeRunnerAsync(posh);
                     foreach (var result in results)
@@ -370,7 +370,7 @@ namespace WindowsHelpers
             {
                 string script = "Start-Process 'gpupdate.exe' '/force' -Wait";
 
-                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
+                using (PowerShell posh = PoshHandler.GetRunner(script, this))
                 {
                     await PoshHandler.InvokeRunnerAsync(posh);
                     Log.Info("Done");
@@ -388,7 +388,7 @@ namespace WindowsHelpers
             {
                 string script = "Stop-Computer -Force";
 
-                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
+                using (PowerShell posh = PoshHandler.GetRunner(script, this))
                 {
                     await PoshHandler.InvokeRunnerAsync(posh);
                 }
@@ -405,7 +405,7 @@ namespace WindowsHelpers
             {
                 string script = "Restart-Computer -Force";
 
-                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
+                using (PowerShell posh = PoshHandler.GetRunner(script, this))
                 {
                     await PoshHandler.InvokeRunnerAsync(posh);
                 }

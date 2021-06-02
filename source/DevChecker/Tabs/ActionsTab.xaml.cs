@@ -112,5 +112,11 @@ namespace DevChecker.Tabs
                 await RemoteSystem.Current?.RebootAsync();
             }
         }
+
+        public async void onSfcScanNowClick(object sender, RoutedEventArgs e)
+        {
+            await RepairTools.RunSfcScanNowAsync();
+        }
+        
     }
 }

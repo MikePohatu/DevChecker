@@ -60,6 +60,11 @@
                         <TextBlock Text="Restore Health" Margin="0" ToolTip="Repair-WindowsImage command: https://docs.microsoft.com/en-us/powershell/module/dism/repair-windowsimage?view=windowsserver2019-ps" />
                     </Hyperlink>
                 </TextBlock>
+                <TextBlock>
+                    <Hyperlink Click="onSfcScanNowClick" TextDecorations="None">
+                        <TextBlock Text="Run sfc /scannow" Margin="0" />
+                    </Hyperlink>
+                </TextBlock>
             </StackPanel>
         </GroupBox>
 
