@@ -9,6 +9,7 @@
     <Grid Width="Auto">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -16,12 +17,10 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
-            <local:CmActions />
-            <local:CmSystemActions  />
-        </StackPanel>
+        <local:CmActions Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" IsEnabled="{Binding ClientInstalled, FallbackValue=false}"/>
+        <local:CmSystemActions  Grid.Row="0" Grid.Column="1" />
         
-        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
+        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="1">
             <GroupBox Grid.Column="0" Grid.Row="0" Header="Client Info" Margin="5" Padding="5">
                 <Grid>
                     <Grid.RowDefinitions>

@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using Core.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -45,6 +46,7 @@ namespace CustomActions
             {
                 PoshScripts.Add(script);
             }
+            Log.Info(Log.Highlight("Actions refreshed"));
         }
     }
 }

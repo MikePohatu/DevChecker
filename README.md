@@ -11,7 +11,7 @@ This tool was created because existing tools either didn't do what I wanted, or 
 * Connect to remote device over WinRM
 * Gather basic device info like OS version, IP, model, serial, logged in users, is power connected etc.
 * Quick access to c$ share, Computer Management, remote PowerShell
-* Ability to run ConfigMgr client tasks e.g. Machine Policy refresh etc
+* Ability to run ConfigMgr client tasks e.g. Machine Policy, Hardware Inventory, client repair etc
 * List and control device services
 * List and kill device processes
 * List installed patches
@@ -21,6 +21,7 @@ This tool was created because existing tools either didn't do what I wanted, or 
 * Run *gpupdate /force*
 * Add custom PowerShell scripts to run on client
 * See ConfigMgr collections
+* Shutdown & restart functions
 * 'Connect as' functionality
 
 ## Planned features
@@ -28,7 +29,7 @@ This tool was created because existing tools either didn't do what I wanted, or 
 * List printers and print drivers
 * Add custom tabs using PowerShell scripts
 * Run ConfigMgr scripts
-* Shutdown, restart, logoff functions
+* Log off function
 
 [Documentation](/documentation/README.md)
 

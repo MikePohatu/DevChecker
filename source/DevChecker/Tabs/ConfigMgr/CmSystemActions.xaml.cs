@@ -50,7 +50,7 @@ namespace DevChecker.Tabs.ConfigMgr
 
         private async void onRestartClicked(object sender, RoutedEventArgs e)
         {
-            if (RemoteSystem.Current != null)
+            if (MessageBox.Show("Are you sure you want to restart the ConfigMgr client service?", "Restart ConfigMgr Client", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 await _remoteService.RestartServiceAsync();
             }
@@ -59,6 +59,19 @@ namespace DevChecker.Tabs.ConfigMgr
         public void onLogsClicked(object sender, RoutedEventArgs e)
         {
             CmClient.Current.OpenLogs();
+        }
+
+        public void onSetupLogsClicked(object sender, RoutedEventArgs e)
+        {
+            CmClient.Current.OpenSetupLogs();
+        }
+
+        public async void onRepairClicked(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to run ConfigMgr client repair?", "ConfigMgr Client Repair", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                await CmClient.Current.RepairClientAsync();
+            }
         }
     }
 }

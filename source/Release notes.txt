@@ -1,3 +1,11 @@
+Version 0.7
+Release date: 2 Jun 2021
+
+*Features	
+    Added shutdown and reboot options
+    Added additional ConfigMgr client actions
+    Added access to ConfigMgr client repair, and ccmsetup\logs folder
+
 Version 0.6
 Release date: 2 Jun 2021
 

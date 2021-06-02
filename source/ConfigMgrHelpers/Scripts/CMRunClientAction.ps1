@@ -1,10 +1,8 @@
-
+# https://rid500.wordpress.com/2017/07/23/sccm-refresh-machine-policy-retrieval-evaluation-cycle-via-wmi/
+# https://systemcenterdudes.com/configuration-manager-2012-client-command-list/
 Function Run-CMAction {
     Param (
-	    [Parameter(Mandatory)]
-	    [ValidateSet('{00000000-0000-0000-0000-000000000021}','{00000000-0000-0000-0000-000000000003}','{00000000-0000-0000-0000-000000000071}',
-        '{00000000-0000-0000-0000-000000000121}','{00000000-0000-0000-0000-000000000001}','{00000000-0000-0000-0000-000000000108}',
-        '{00000000-0000-0000-0000-000000000113}','{00000000-0000-0000-0000-000000000002}' )][string]$ClientAction
+	    [Parameter(Mandatory)][string]$ClientAction
 	    )
 
     Try {

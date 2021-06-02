@@ -57,14 +57,21 @@ namespace ConfigMgrHelpers
 			this.SoftwareCenter = new SoftwareCenter();
 			this.ClientActions = new List<CmClientAction>() {
 
-				new CmClientAction( "AppDeployment", "{00000000-0000-0000-0000-000000000121}","Application Deployment Evaluation", this),
-				new CmClientAction( "DiscoveryData", "{00000000-0000-0000-0000-000000000003}","Discovery Data Collection", this ),
-				new CmClientAction( "HardwareInventory", "{00000000-0000-0000-0000-000000000001}","Hardware Inventory", this),
-				new CmClientAction( "MachinePolicy", "{00000000-0000-0000-0000-000000000021}", "Machine Policy Retrieval & Evaluation", this),
-				new CmClientAction( "SoftwareInventory", "{00000000-0000-0000-0000-000000000002}","Software Inventory", this),
-				new CmClientAction( "ComplianceEvaluation", "{00000000-0000-0000-0000-000000000071}","Compliance Evaluation", this),
-				new CmClientAction( "UpdateDeployment", "{00000000-0000-0000-0000-000000000108}","Software Update Deployment Evaluation", this),
-				new CmClientAction( "UpdateScan", "{00000000-0000-0000-0000-000000000113}","Software Update Scan", this)
+				new CmClientAction( "AppDeployment", "{00000000-0000-0000-0000-000000000121}","Application Deployment Evaluation"),
+				new CmClientAction( "DiscoveryData", "{00000000-0000-0000-0000-000000000003}","Discovery Data Collection" ),
+				new CmClientAction( "FileCollection", "{00000000-0000-0000-0000-000000000010}","File Collection Cycle" ),
+				new CmClientAction( "HardwareInventory", "{00000000-0000-0000-0000-000000000001}","Hardware Inventory"),
+				//new CmClientAction( "MachinePolicyRetrieval", "{00000000-0000-0000-0000-000000000021}", "Machine Policy Retrieval"),
+				new CmClientAction( "MachinePolicyEvaluation", "{00000000-0000-0000-0000-000000000022}", "Machine Policy Evaluation"),
+				new CmClientAction( "SoftwareInventory", "{00000000-0000-0000-0000-000000000002}","Software Inventory"),
+				new CmClientAction( "SoftwareMetering", "{00000000-0000-0000-0000-000000000031}","Software Metering Usage Report"),
+				new CmClientAction( "ComplianceEvaluation", "{00000000-0000-0000-0000-000000000071}","Compliance Evaluation"),
+				new CmClientAction( "UpdateDeployment", "{00000000-0000-0000-0000-000000000108}","Software Update Deployment Evaluation"),
+				new CmClientAction( "UpdateScan", "{00000000-0000-0000-0000-000000000113}","Software Update Scan"),
+				new CmClientAction( "StateMessage", "{00000000-0000-0000-0000-000000000111}","State Message Refresh"),
+				//new CmClientAction( "UserPolicyRetrieval", "{00000000-0000-0000-0000-000000000026}","User Policy Retrieval"),
+				new CmClientAction( "UserPolicyEvaluation", "{00000000-0000-0000-0000-000000000027}","User Policy Evaluation"),
+				new CmClientAction( "WindowsInstallersSourceListUpdate", "{00000000-0000-0000-0000-000000000032}","Windows Installers Source List Update")
 			};
 		}
 
@@ -109,6 +116,33 @@ namespace ConfigMgrHelpers
 			catch (Exception e)
 			{
 				Log.Error(e, "Error opening " + path);
+			}
+		}
+
+		public void OpenSetupLogs()
+		{
+			string path = @"\\" + RemoteSystem.Current.ComputerName + @"\c$\Windows\ccmsetup\Logs";
+
+			try
+			{
+				Process.Start(path);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e, "Error opening " + path);
+			}
+		}
+
+		public async Task RepairClientAsync()
+		{
+			if (this.ClientInstalled)
+			{
+				Log.Info(Log.Highlight(@"Repairing ConfigMgr client. Please check c:\Windows\ccmsetup\Logs to monitor repair status"));
+				string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\CMRepairClient.ps1";
+				string script = await IOHelpers.ReadFileAsync(scriptPath);
+
+				var posh = PoshHandler.GetRunner(script, RemoteSystem.Current);
+				await PoshHandler.InvokeRunnerAsync(posh, true);
 			}
 		}
 	}

@@ -61,6 +61,7 @@
     <Compile Include="RemoteService.cs" />
     <Compile Include="LocalSystemConnector.cs" />
     <Compile Include="RemoteSystem.cs" />
+    <Compile Include="RepairTools.cs" />
     <Compile Include="UacHelpers.cs" />
     <Compile Include="WmiQuery.cs" />
   </ItemGroup>

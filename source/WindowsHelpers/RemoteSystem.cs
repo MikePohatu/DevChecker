@@ -238,6 +238,18 @@ namespace WindowsHelpers
             }
         }
 
+        public void OpenMstsc()
+        {
+            try
+            {
+                Process.Start("mstsc.exe", "/v:" + this.ComputerName);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error opening mstsc");
+            }
+        }
+
         public void OpenCompMgmt()
         {
             try
@@ -367,6 +379,40 @@ namespace WindowsHelpers
             catch (Exception e)
             {
                 Log.Error(e, "Error running gpupdate");
+            }
+        }
+
+        public async Task ShutdownAsync()
+        {
+            try
+            {
+                string script = "Stop-Computer -Force";
+
+                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
+                {
+                    await PoshHandler.InvokeRunnerAsync(posh);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error running shutdown");
+            }
+        }
+
+        public async Task RebootAsync()
+        {
+            try
+            {
+                string script = "Restart-Computer -Force";
+
+                using (PowerShell posh = PoshHandler.GetRunner(script, this.ComputerName, this.UseSSL, this.Credential))
+                {
+                    await PoshHandler.InvokeRunnerAsync(posh);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error running restart");
             }
         }
 

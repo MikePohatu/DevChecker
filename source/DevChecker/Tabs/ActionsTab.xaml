@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:DevChecker.Tabs"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="10" MinWidth="300">
+    <Grid Margin="10,5" MinWidth="300">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition />
@@ -15,7 +15,7 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <GroupBox Grid.Row="0" Grid.Column="0" x:Name="toolsGroup" Header="Tools" Margin="5" Padding="5" HorizontalAlignment="Left" Width="150">
             <StackPanel >
@@ -39,40 +39,67 @@
                         <TextBlock Text="PowerShell" Margin="0" />
                     </Hyperlink>
                 </TextBlock>
-            </StackPanel>
-        </GroupBox>
-
-        <GroupBox Grid.Row="0" Grid.Column="1" Header="Custom Actions" Margin="5" Padding="5" HorizontalAlignment="Left" Width="auto">
-            <StackPanel Orientation="Vertical">
-                <TextBlock Margin="0,0,0,3">
-                    <Hyperlink Click="onRefreshClicked" TextDecorations="none">
-                        <TextBlock Text="Refresh" />
+                <TextBlock>
+                    <Hyperlink Click="onMstscClicked" TextDecorations="None">
+                        <TextBlock Text="Remote Desktop" Margin="0" />
                     </Hyperlink>
                 </TextBlock>
-                <DataGrid VerticalAlignment="Top" HorizontalAlignment="Stretch" ItemsSource="{Binding CustomActions}"
-                  Width="Auto" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0" GridLinesVisibility="None" >
-
-                    <DataGrid.Resources>
-                        <Style TargetType="{x:Type DataGridCell}">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Foreground" Value="Black" />
-                            <Setter Property="BorderThickness" Value="0" />
-                        </Style>
-                    </DataGrid.Resources>
-
-                    <DataGrid.Columns>
-                        <!-- Action run -->
-                        <DataGridHyperlinkColumn Width="150" ContentBinding="{Binding DisplayName}">
-                            <DataGridHyperlinkColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <EventSetter Event="Hyperlink.Click" Handler="onRunActionClicked" />
-                                </Style>
-                            </DataGridHyperlinkColumn.ElementStyle>
-                        </DataGridHyperlinkColumn>
-                        <DataGridTextColumn Width="250" Binding="{Binding Settings.Description}" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                <Separator Margin="0,7,0,10" Background="LightGray"  />
+                <TextBlock>
+                    <Hyperlink Click="onCheckHealthClick" TextDecorations="None">
+                        <TextBlock Text="Check Health" Margin="0" ToolTip="Repair-WindowsImage command: https://docs.microsoft.com/en-us/powershell/module/dism/repair-windowsimage?view=windowsserver2019-ps" />
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Click="onScanHealthClick" TextDecorations="None">
+                        <TextBlock Text="Scan Health" Margin="0" ToolTip="Repair-WindowsImage command: https://docs.microsoft.com/en-us/powershell/module/dism/repair-windowsimage?view=windowsserver2019-ps" />
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Click="onRestoreHealthClick" TextDecorations="None">
+                        <TextBlock Text="Restore Health" Margin="0" ToolTip="Repair-WindowsImage command: https://docs.microsoft.com/en-us/powershell/module/dism/repair-windowsimage?view=windowsserver2019-ps" />
+                    </Hyperlink>
+                </TextBlock>
             </StackPanel>
         </GroupBox>
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Width="auto">
+            <GroupBox Header="Custom Actions" Margin="5" Padding="5" HorizontalAlignment="Left" Width="auto">
+                <StackPanel Orientation="Vertical">
+                    <DataGrid VerticalAlignment="Top" HorizontalAlignment="Stretch" ItemsSource="{Binding CustomActions}"
+                  Width="Auto" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0" GridLinesVisibility="None" >
+
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type DataGridCell}">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Foreground" Value="Black" />
+                                <Setter Property="BorderThickness" Value="0" />
+                            </Style>
+                        </DataGrid.Resources>
+
+                        <DataGrid.Columns>
+                            <!-- Action run -->
+                            <DataGridHyperlinkColumn Width="150" ContentBinding="{Binding DisplayName}">
+                                <DataGridHyperlinkColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <EventSetter Event="Hyperlink.Click" Handler="onRunActionClicked" />
+                                    </Style>
+                                </DataGridHyperlinkColumn.ElementStyle>
+                            </DataGridHyperlinkColumn>
+                            <DataGridTextColumn Width="250" Binding="{Binding Settings.Description}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <TextBlock Margin="0,0,10,0" HorizontalAlignment="Right">
+                        <Hyperlink Click="onRefreshClicked" TextDecorations="none">
+                            <TextBlock Text="Refresh" />
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </GroupBox>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+                <Button Content="Reboot" Click="onRebootClicked" HorizontalAlignment="Right" Width="75" Margin="40,10" Padding="10"/>
+                <Button Content="Shutdown" Click="onShutdownClicked"  HorizontalAlignment="Right" Width="75" Margin="40,10" Padding="10"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -8,16 +8,26 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <GroupBox Header="System Actions" Margin="5" Padding="5">
         <StackPanel Orientation="Vertical">
+            <TextBlock IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
+                <Hyperlink Click="onRestartClicked" TextDecorations="None">
+                    <TextBlock Text="Restart/start client" />
+                </Hyperlink>
+            </TextBlock>
             <TextBlock>
-            <Hyperlink Click="onRestartClicked" TextDecorations="None">
-                <TextBlock Text="Restart/start client" />
-            </Hyperlink>
-        </TextBlock>
+                <Hyperlink Click="onLogsClicked" TextDecorations="None">
+                    <TextBlock Text="Open ConfigMgr client logs folder" />
+                </Hyperlink>
+            </TextBlock>
             <TextBlock>
-            <Hyperlink Click="onLogsClicked" TextDecorations="None">
-                <TextBlock Text="Open ConfigMgr client logs folder" />
-            </Hyperlink>
-        </TextBlock>
+                <Hyperlink Click="onRepairClicked" TextDecorations="None">
+                    <TextBlock Text="Run ConfigMgr client repair" />
+                </Hyperlink>
+            </TextBlock>
+            <TextBlock>
+                <Hyperlink Click="onSetupLogsClicked" TextDecorations="None">
+                    <TextBlock Text="Open ConfigMgr client setup logs folder" />
+                </Hyperlink>
+            </TextBlock>
         </StackPanel>
     </GroupBox>
 </UserControl>

@@ -72,9 +72,45 @@ namespace DevChecker.Tabs
             RemoteSystem.Current?.OpenCompMgmt();
         }
 
+        public void onMstscClicked(object sender, RoutedEventArgs e)
+        {
+            RemoteSystem.Current?.OpenMstsc();
+        }
+
         public void onPoshClicked(object sender, RoutedEventArgs e)
         {
             RemoteSystem.Current?.OpenPosh();
+        }
+
+        private async void onCheckHealthClick(object sender, RoutedEventArgs e)
+        {
+            await RepairTools.RunCheckHealthAsync();
+        }
+
+        private async void onScanHealthClick(object sender, RoutedEventArgs e)
+        {
+            await RepairTools.RunScanHealthAsync();
+        }
+
+        private async void onRestoreHealthClick(object sender, RoutedEventArgs e)
+        {
+            await RepairTools.RunRestoreHealthAsync();
+        }
+
+        public async void onShutdownClicked(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want shutdown " + RemoteSystem.Current.ComputerName + "?", "Shutdown " + RemoteSystem.Current.ComputerName, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                await RemoteSystem.Current?.ShutdownAsync();
+            }
+        }
+
+        public async void onRebootClicked(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want reboot " + RemoteSystem.Current.ComputerName + "?", "Reboot " + RemoteSystem.Current.ComputerName, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                await RemoteSystem.Current?.RebootAsync();
+            }
         }
     }
 }

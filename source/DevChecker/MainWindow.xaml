@@ -7,7 +7,7 @@
         xmlns:tabs="clr-namespace:DevChecker.Tabs"
         xmlns:configmgr="clr-namespace:DevChecker.Tabs.ConfigMgr"
         mc:Ignorable="d"
-        Title="DevChecker" Height="600" Width="800" MinWidth="800" MinHeight="500"
+        Title="DevChecker" Height="600" Width="800" MinWidth="800" MinHeight="600"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Closing="onWindowClosing">
     <Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" >
@@ -89,8 +89,8 @@
                     <TabItem Header="Hotfixes" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
                         <tabs:HotfixesTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
                     </TabItem>
-                    <TabItem Header="ConfigMgr Client" DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
-                        <configmgr:CmClientTab IsEnabled="{Binding ClientInstalled, FallbackValue=false}"/>
+                    <TabItem Header="ConfigMgr Client" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
+                        <configmgr:CmClientTab DataContext="{Binding CmClient}"/>
                     </TabItem>
                     <TabItem Header="Software Center" IsEnabled="{Binding CmClient.ClientInstalled, FallbackValue=false}">
                         <configmgr:CmSoftwareCenterTab DataContext="{Binding CmClient.SoftwareCenter}"/>

@@ -33,7 +33,7 @@ namespace ConfigMgrHelpers
         public string Name { get; private set; }
         public string DisplayName { get; private set; }
 
-        public CmClientAction(string name, string id, string displayName, CmClient parent)
+        public CmClientAction(string name, string id, string displayName)
         {
             this.ID = id;
             this.Name = name;

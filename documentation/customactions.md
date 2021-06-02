@@ -11,6 +11,8 @@ Custom actions are simply PowerShell scripts that will be run on the remote devi
 
 To add a custom action, copy your custom script file to the **Scripts\Custom** folder. If DevChecker is already running, you can click *Refresh* on the Custom Actions tab.
 
+**Note:** Be aware of the WinRM [double hop](https://docs.microsoft.com/en-us/windows/win32/winrm/multi-hop-support) problem if your script needs to access network shares. 
+
 ## Output
 DevChecker will capture Write-Information, Write-Warning, Write-Error etc. from your script and output it to the *Output* pane.
 

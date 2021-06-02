@@ -257,6 +257,7 @@ md "%25ReleasePath%25"
 xcopy /I /H /E /Y "$(OutputDir)Scripts" "%25ReleasePath%25\Scripts"
 
 Copy /Y "$(SolutionDir)Release notes.txt" "%25ReleasePath%25"
+Copy /Y "$(SolutionDir)..\License.txt" "%25ReleasePath%25"
 Copy /Y "$(SolutionDir)Documentation and Source.url" "%25ReleasePath%25"
 Copy /Y "$(TargetDir)NLog.config" "%25ReleasePath%25"
 Copy /Y "$(TargetDir)NLog.dll" "%25ReleasePath%25"
