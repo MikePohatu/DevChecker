@@ -16,17 +16,60 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        
         <GroupBox Grid.Row="0" Grid.Column="0" x:Name="toolsGroup" Header="Tools" Margin="5" Padding="5" HorizontalAlignment="Left" Width="150">
-            <StackPanel >
-                <TextBlock IsEnabled="{Binding RemoteSystem.CDollarAccessible, FallbackValue=false}">
-                    <Hyperlink Click="onCDollorClicked" TextDecorations="None">
-                        <TextBlock Text="c$" Margin="0" />
-                    </Hyperlink>
-                </TextBlock>
+            <StackPanel Orientation="Vertical">
                 <TextBlock>
                     <Hyperlink Click="onGPUpdateClicked" TextDecorations="None">
                         <TextBlock Text="GPUpdate" Margin="0" />
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Click="onCheckHealthClick" TextDecorations="None">
+                        <TextBlock Text="Check Health" Margin="0" ToolTip="Repair-WindowsImage PowerShell command" />
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Click="onScanHealthClick" TextDecorations="None">
+                        <TextBlock Text="Scan Health" Margin="0" ToolTip="Repair-WindowsImage PowerShell command" />
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Click="onRestoreHealthClick" TextDecorations="None">
+                        <TextBlock Text="Restore Health" Margin="0" ToolTip="Repair-WindowsImage PowerShell command" />
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Click="onSfcScanNowClick" TextDecorations="None">
+                        <TextBlock Text="Run System File Checker" Margin="0" ToolTip="Run sfc /scannow"/>
+                    </Hyperlink>
+                </TextBlock>
+
+                <Separator Margin="0,7,0,10" Background="LightGray"  />
+
+                <TextBlock>
+                    <Hyperlink Click="onWmiVerifyClick" TextDecorations="None">
+                        <TextBlock Text="Verify WMI" ToolTip="Run winmgmt /verifyrepository"  Margin="0" />
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Click="onWmiSalvageClick" TextDecorations="None">
+                        <TextBlock Text="Salvage WMI" ToolTip="Run winmgmt /salvagerepository" Margin="0" />
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </GroupBox>
+        
+        
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Width="auto">
+            <GroupBox Grid.Row="0" Grid.Column="0" x:Name="connectGroup" Header="Connect" Margin="5" Padding="5" HorizontalAlignment="Left" Width="150">
+                <StackPanel >
+                    <TextBlock IsEnabled="{Binding RemoteSystem.CDollarAccessible, FallbackValue=false}">
+                    <Hyperlink Click="onCDollorClicked" TextDecorations="None">
+                        <TextBlock Text="c$" Margin="0" />
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>
@@ -34,77 +77,52 @@
                         <TextBlock Text="Computer Management" Margin="0" />
                     </Hyperlink>
                 </TextBlock>
-                <TextBlock>
+                    <TextBlock>
                     <Hyperlink Click="onPoshClicked" TextDecorations="None">
                         <TextBlock Text="PowerShell" Margin="0" />
                     </Hyperlink>
                 </TextBlock>
-                <TextBlock>
+                    <TextBlock>
                     <Hyperlink Click="onMstscClicked" TextDecorations="None">
                         <TextBlock Text="Remote Desktop" Margin="0" />
                     </Hyperlink>
                 </TextBlock>
-                <Separator Margin="0,7,0,10" Background="LightGray"  />
-                <TextBlock>
-                    <Hyperlink Click="onCheckHealthClick" TextDecorations="None">
-                        <TextBlock Text="Check Health" Margin="0" ToolTip="Repair-WindowsImage command: https://docs.microsoft.com/en-us/powershell/module/dism/repair-windowsimage?view=windowsserver2019-ps" />
-                    </Hyperlink>
-                </TextBlock>
-                <TextBlock>
-                    <Hyperlink Click="onScanHealthClick" TextDecorations="None">
-                        <TextBlock Text="Scan Health" Margin="0" ToolTip="Repair-WindowsImage command: https://docs.microsoft.com/en-us/powershell/module/dism/repair-windowsimage?view=windowsserver2019-ps" />
-                    </Hyperlink>
-                </TextBlock>
-                <TextBlock>
-                    <Hyperlink Click="onRestoreHealthClick" TextDecorations="None">
-                        <TextBlock Text="Restore Health" Margin="0" ToolTip="Repair-WindowsImage command: https://docs.microsoft.com/en-us/powershell/module/dism/repair-windowsimage?view=windowsserver2019-ps" />
-                    </Hyperlink>
-                </TextBlock>
-                <TextBlock>
-                    <Hyperlink Click="onSfcScanNowClick" TextDecorations="None">
-                        <TextBlock Text="Run sfc /scannow" Margin="0" />
-                    </Hyperlink>
-                </TextBlock>
-            </StackPanel>
-        </GroupBox>
-
-        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Width="auto">
-            <GroupBox Header="Custom Actions" Margin="5" Padding="5" HorizontalAlignment="Left" Width="auto">
-                <StackPanel Orientation="Vertical">
-                    <DataGrid VerticalAlignment="Top" HorizontalAlignment="Stretch" ItemsSource="{Binding CustomActions}"
+                </StackPanel>
+            </GroupBox>
+            <Button Content="Reboot" Click="onRebootClicked" HorizontalAlignment="Center" Width="70" Margin="10,5" Padding="10" FontSize="10"/>
+            <Button Content="Shutdown" Click="onShutdownClicked"  HorizontalAlignment="Center" Width="70" Margin="10,5" Padding="10" FontSize="10"/>
+        </StackPanel>
+        <GroupBox Grid.Row="0" Grid.Column="2" Header="Custom Actions" Margin="5" Padding="5" HorizontalAlignment="Left" Width="auto">
+            <StackPanel Orientation="Vertical">
+                <DataGrid VerticalAlignment="Top" HorizontalAlignment="Stretch" ItemsSource="{Binding CustomActions}"
                   Width="Auto" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0" GridLinesVisibility="None" >
 
-                        <DataGrid.Resources>
-                            <Style TargetType="{x:Type DataGridCell}">
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="Foreground" Value="Black" />
-                                <Setter Property="BorderThickness" Value="0" />
-                            </Style>
-                        </DataGrid.Resources>
+                    <DataGrid.Resources>
+                        <Style TargetType="{x:Type DataGridCell}">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="Black" />
+                            <Setter Property="BorderThickness" Value="0" />
+                        </Style>
+                    </DataGrid.Resources>
 
-                        <DataGrid.Columns>
-                            <!-- Action run -->
-                            <DataGridHyperlinkColumn Width="150" ContentBinding="{Binding DisplayName}">
-                                <DataGridHyperlinkColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <EventSetter Event="Hyperlink.Click" Handler="onRunActionClicked" />
-                                    </Style>
-                                </DataGridHyperlinkColumn.ElementStyle>
-                            </DataGridHyperlinkColumn>
-                            <DataGridTextColumn Width="250" Binding="{Binding Settings.Description}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <TextBlock Margin="0,0,10,0" HorizontalAlignment="Right">
+                    <DataGrid.Columns>
+                        <!-- Action run -->
+                        <DataGridHyperlinkColumn Width="150" ContentBinding="{Binding DisplayName}">
+                            <DataGridHyperlinkColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <EventSetter Event="Hyperlink.Click" Handler="onRunActionClicked" />
+                                </Style>
+                            </DataGridHyperlinkColumn.ElementStyle>
+                        </DataGridHyperlinkColumn>
+                        <DataGridTextColumn Width="250" Binding="{Binding Settings.Description}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock Margin="0,0,10,0" HorizontalAlignment="Right">
                         <Hyperlink Click="onRefreshClicked" TextDecorations="none">
                             <TextBlock Text="Refresh" />
                         </Hyperlink>
                     </TextBlock>
-                </StackPanel>
-            </GroupBox>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
-                <Button Content="Reboot" Click="onRebootClicked" HorizontalAlignment="Right" Width="75" Margin="40,10" Padding="10"/>
-                <Button Content="Shutdown" Click="onShutdownClicked"  HorizontalAlignment="Right" Width="75" Margin="40,10" Padding="10"/>
             </StackPanel>
-        </StackPanel>
+        </GroupBox>
     </Grid>
 </UserControl>

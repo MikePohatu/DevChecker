@@ -199,7 +199,7 @@ namespace DevChecker
             this._serverCred.Domain = Configuration.Instance.ServerDomain;
             this._serverCred.UseKerberos = Configuration.Instance.ServerKerberos;
             this._clientCred.UseKerberos = Configuration.Instance.ClientKerberos;
-            await ActionLibrary.RefreshAsync();
+            await ActionLibrary.LoadAsync();
         }
 
         private async void onConnectClick(object sender, RoutedEventArgs e)

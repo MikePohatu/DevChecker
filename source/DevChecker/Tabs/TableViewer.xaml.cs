@@ -34,51 +34,33 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WindowsHelpers;
+using System.Collections.ObjectModel;
 
-namespace DevChecker.Tabs.ConfigMgr
+namespace DevChecker.Tabs
 {
     /// <summary>
     /// Interaction logic for CmApplicationsTab.xaml
     /// </summary>
-    public partial class CmApplicationsTab : UserControl
+    public abstract partial class TableViewer : UserControl
     {
-        public CmApplicationsTab()
+        public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register("IsLoading", typeof(bool), typeof(TableViewer));
+        public bool IsLoading
+        {
+            get { return (bool)GetValue(IsLoadingProperty); }
+            set { SetValue(IsLoadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty TableSourceProperty = DependencyProperty.Register("TableSource", typeof(ObservableCollection<object>), typeof(TableViewer));
+        public ObservableCollection<object> TableSource
+        {
+            get { return (ObservableCollection<object>)GetValue(TableSourceProperty); }
+            set { SetValue(TableSourceProperty, value); }
+        }
+
+
+        public TableViewer()
         {
             InitializeComponent();
-        }
-
-        private async void onInstallClicked(object sender, RoutedEventArgs e)
-        {
-            var selected = (ConfigMgrHelpers.Deploy.Application)this.dataGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to install "+ selected.Name+"?", "Install application", MessageBoxButton.YesNo)== MessageBoxResult.Yes)
-            {
-                await selected.InstallAsync();
-            }
-        }
-
-        private async void onUninstallClicked(object sender, RoutedEventArgs e)
-        {
-            var selected = (ConfigMgrHelpers.Deploy.Application)this.dataGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to uninstall " + selected.Name + "?", "Uninstall application", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                await selected.UninstallAsync();
-            }
-        }
-
-        private async void onRefreshClicked(object sender, RoutedEventArgs e)
-        {
-            var sc = CmClient.Current.SoftwareCenter;
-            await sc.QueryApplicationsAsync();
-        }
-
-        private void onSearchFilter(object sender, FilterEventArgs e)
-        {
-            var obj = e.Item as ConfigMgrHelpers.Deploy.Application;
-            if (obj != null)
-            {
-                if (obj.Name != null && obj.Name.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
-                else { e.Accepted = false; }
-            }
         }
 
         private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
@@ -89,5 +71,8 @@ namespace DevChecker.Tabs.ConfigMgr
                 source.View.Refresh();
             }
         }
+
+        protected abstract void onSearchFilter(object sender, FilterEventArgs e);
+        protected abstract void onRefreshClicked(object sender, RoutedEventArgs e);
     }
 }

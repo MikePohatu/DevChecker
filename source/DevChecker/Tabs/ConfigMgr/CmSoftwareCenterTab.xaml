@@ -18,13 +18,13 @@
     <TabControl Grid.Row="1" MinHeight="200" TabStripPlacement="Left" BorderBrush="{x:Null}" 
                 Margin="3">
         <TabItem Header="Applications">
-            <local:CmApplicationsTab Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}"/>
+            <local:CmApplicatonsTableViewer TableSource="{Binding Applications}" IsLoading="{Binding ApplicationsLoading}" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}"/>
         </TabItem>
         <TabItem Header="Updates">
-            <local:CmUpdatesTab Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}"/>
+            <local:CmUpdatesTableViewer TableSource="{Binding SoftwareUpdates}" IsLoading="{Binding UpdatesLoading}" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}"/>
         </TabItem>
         <TabItem Header="Task Sequences">
-            <local:CmTaskSequencesTab Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}"/>
+            <local:CmTaskSequencesTableViewer TableSource="{Binding TaskSequences}" IsLoading="{Binding TaskSequencesLoading}" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}"/>
         </TabItem>
     </TabControl>
 </UserControl>

@@ -16,44 +16,40 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using ConfigMgrHelpers.Deploy;
 using ConfigMgrHelpers;
+using ConfigMgrHelpers.Deploy;
 using Core.Logging;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using WindowsHelpers;
 
 namespace DevChecker.Tabs.ConfigMgr
 {
-    /// <summary>
-    /// Interaction logic for CmUpdatesTab.xaml
-    /// </summary>
-    public partial class CmUpdatesTab : UserControl
+    public class CmUpdatesTableViewer: TableViewer
     {
-        public CmUpdatesTab()
+        public CmUpdatesTableViewer(): base()
         {
-            InitializeComponent();
+            MenuItem install = new MenuItem();
+            install.Click += this.onInstallClicked;
+            install.Header = "Install";
+
+            this.RightClickMenu.Items.Add(install);
         }
 
-        private async void onRefreshClicked(object sender, RoutedEventArgs e)
+
+        protected override async void onRefreshClicked(object sender, RoutedEventArgs e)
         {
             var sc = CmClient.Current.SoftwareCenter;
             await sc.QueryUpdatesAsync();
         }
 
-        private void onSearchFilter(object sender, FilterEventArgs e)
+        protected override void onSearchFilter(object sender, FilterEventArgs e)
         {
             var obj = e.Item as Update;
             if (obj != null)
@@ -63,16 +59,7 @@ namespace DevChecker.Tabs.ConfigMgr
             }
         }
 
-        private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            CollectionViewSource source = this.Resources["filtered"] as CollectionViewSource;
-            if (source?.View != null)
-            {
-                source.View.Refresh();
-            }
-        }
-
-        private async void onInstallClicked(object sender, RoutedEventArgs e)
+        protected async void onInstallClicked(object sender, RoutedEventArgs e)
         {
             var selected = (Update)this.dataGrid.SelectedItem;
             if (MessageBox.Show("Are you sure you want to install " + selected.Name + "?", "Install software update", MessageBoxButton.YesNo) == MessageBoxResult.Yes)

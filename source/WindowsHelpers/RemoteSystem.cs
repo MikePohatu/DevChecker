@@ -368,7 +368,8 @@ namespace WindowsHelpers
         {
             try
             {
-                string script = "Start-Process 'gpupdate.exe' '/force' -Wait";
+                //string script = "Start-Process 'gpupdate.exe' '/force' -Wait";
+                string script = "(gpupdate /force) | Foreach-Object { Write-Information $_ }";
 
                 using (PowerShell posh = PoshHandler.GetRunner(script, this))
                 {

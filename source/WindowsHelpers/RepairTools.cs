@@ -83,5 +83,39 @@ namespace WindowsHelpers
 				Log.Error(e, "Error running sfc /scannow");
 			}
 		}
+
+		public static async Task WmiVerifyRepository()
+        {
+			string command = "(winmgmt /verifyrepository) | Foreach-Object { Write-Information $_ }";
+			try
+			{
+				using (PowerShell posh = PoshHandler.GetRunner(command, RemoteSystem.Current))
+				{
+					await PoshHandler.InvokeRunnerAsync(posh);
+					Log.Info("Done");
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Error(e, "Error running winmgmt /verifyrepository");
+			}
+		}
+
+		public static async Task WmiSalvageRepository()
+		{
+			string command = "(winmgmt /salvagerepository) | Foreach-Object { Write-Information $_ }";
+			try
+			{
+				using (PowerShell posh = PoshHandler.GetRunner(command, RemoteSystem.Current))
+				{
+					await PoshHandler.InvokeRunnerAsync(posh);
+					Log.Info("Done");
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Error(e, "Error running winmgmt /salvagerepository");
+			}
+		}
 	}
 }

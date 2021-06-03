@@ -118,5 +118,14 @@ namespace DevChecker.Tabs
             await RepairTools.RunSfcScanNowAsync();
         }
         
+        public async void onWmiVerifyClick(object sender, RoutedEventArgs e)
+        {
+            await RepairTools.WmiVerifyRepository();
+        }
+
+        public async void onWmiSalvageClick(object sender, RoutedEventArgs e)
+        {
+            await RepairTools.WmiSalvageRepository();
+        }
     }
 }

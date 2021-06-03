@@ -20,7 +20,7 @@
             <ItemsControl Grid.Column="0" Grid.Row="0" ItemsSource="{Binding PropertyBlocks}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel MaxWidth="{Binding Path=InfoMaxWidth, RelativeSource={RelativeSource AncestorType={x:Type local:WindowsClientTab}}}"></WrapPanel>
+                        <WrapPanel ></WrapPanel>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>

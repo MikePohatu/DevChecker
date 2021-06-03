@@ -29,7 +29,7 @@ namespace CustomActions
     public class ActionLibrary
     {
         public static ObservableCollection<CustomActionScript> PoshScripts = new ObservableCollection<CustomActionScript>();
-        public static async Task RefreshAsync()
+        private static async Task UpdateAsync(bool isrefresh)
         { 
             PoshScripts.Clear();
             List<CustomActionScript> scripts = new List<CustomActionScript>();
@@ -46,7 +46,18 @@ namespace CustomActions
             {
                 PoshScripts.Add(script);
             }
-            Log.Info(Log.Highlight("Actions refreshed"));
+            if (isrefresh) { Log.Info(Log.Highlight("Actions refreshed")); }
+            else { Log.Info("Actions loaded"); }
+        }
+
+        public static async Task RefreshAsync()
+        {
+            await UpdateAsync(true);
+        }
+
+        public static async Task LoadAsync()
+        {
+            await UpdateAsync(false);
         }
     }
 }

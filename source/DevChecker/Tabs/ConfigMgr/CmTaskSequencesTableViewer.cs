@@ -16,41 +16,37 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using ConfigMgrHelpers.Deploy;
 using ConfigMgrHelpers;
+using ConfigMgrHelpers.Deploy;
 using Core.Logging;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using WindowsHelpers;
 
 namespace DevChecker.Tabs.ConfigMgr
 {
-    /// <summary>
-    /// Interaction logic for CmTaskSequencesTab.xaml
-    /// </summary>
-    public partial class CmTaskSequencesTab : UserControl
+    public class CmTaskSequencesTableViewer: TableViewer
     {
-        public CmTaskSequencesTab()
+        public CmTaskSequencesTableViewer(): base()
         {
-            InitializeComponent();
-        }
+            MenuItem run = new MenuItem();
+            run.Click += this.onRunClicked;
+            run.Header = "Run";
+
+            this.RightClickMenu.Items.Add(run);
+        }        
+
 
         private async void onRunClicked(object sender, RoutedEventArgs e)
         {
             var selected = (TaskSequence)this.dataGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to run "+ selected.Name+"?", "Run Task Sequence", MessageBoxButton.YesNo)== MessageBoxResult.Yes)
+            if (MessageBox.Show("Are you sure you want to run " + selected.Name + "?", "Run Task Sequence", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 Log.Info(Log.Highlight("Run task sequence " + selected.Name));
                 await selected.RunAsync();
@@ -58,28 +54,19 @@ namespace DevChecker.Tabs.ConfigMgr
             }
         }
 
-        private async void onRefreshClicked(object sender, RoutedEventArgs e)
+        protected override async void onRefreshClicked(object sender, RoutedEventArgs e)
         {
             var sc = CmClient.Current.SoftwareCenter;
             await sc.QueryTaskSequencesAsync();
         }
 
-        private void onSearchFilter(object sender, FilterEventArgs e)
+        protected override void onSearchFilter(object sender, FilterEventArgs e)
         {
             var obj = e.Item as TaskSequence;
             if (obj != null)
             {
                 if (obj.Name != null && obj.Name.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
                 else { e.Accepted = false; }
-            }
-        }
-
-        private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            CollectionViewSource source = this.Resources["filtered"] as CollectionViewSource;
-            if (source?.View != null)
-            {
-                source.View.Refresh();
             }
         }
     }

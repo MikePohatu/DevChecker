@@ -52,9 +52,9 @@ namespace ConfigMgrHelpers.Deploy
 			set { this._tasksequencesloading = value; this.OnPropertyChanged(this, "TaskSequencesLoading"); }
 		}
 
-		public ObservableCollection<Application> Applications { get; set; } = new ObservableCollection<Application>();
-		public ObservableCollection<Update> SoftwareUpdates { get; set; } = new ObservableCollection<Update>();
-		public ObservableCollection<TaskSequence> TaskSequences { get; set; } = new ObservableCollection<TaskSequence>();
+		public ObservableCollection<object> Applications { get; set; } = new ObservableCollection<object>();
+		public ObservableCollection<object> SoftwareUpdates { get; set; } = new ObservableCollection<object>();
+		public ObservableCollection<object> TaskSequences { get; set; } = new ObservableCollection<object>();
 
 		public async Task QueryApplicationsAsync()
 		{
