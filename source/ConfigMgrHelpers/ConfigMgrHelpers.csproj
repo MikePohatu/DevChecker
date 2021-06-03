@@ -62,6 +62,7 @@
     <Compile Include="CmClientAction.cs" />
     <Compile Include="CmCollection.cs" />
     <Compile Include="CmServer.cs" />
+    <Compile Include="CmServerSideClient.cs" />
     <Compile Include="Deploy\Application.cs" />
     <Compile Include="Deploy\Definitions.cs" />
     <Compile Include="Deploy\SoftwareCenter.cs" />
@@ -95,6 +96,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\CMRepairClient.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\CMGetServerSideInfo.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

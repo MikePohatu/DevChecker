@@ -13,47 +13,66 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="450"></ColumnDefinition>
-            <ColumnDefinition Width="320"></ColumnDefinition>
+            <ColumnDefinition Width="380"></ColumnDefinition>
+            <ColumnDefinition Width="380"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Collections" FontWeight="Bold" Margin="0,0,0,5" />
-        <DataGrid Grid.Row="1" Grid.Column="0" Width="450" VerticalAlignment="Top" HorizontalAlignment="Stretch" 
-                  ItemsSource="{Binding Collections}" AutoGenerateColumns="False" HeadersVisibility="Column" BorderThickness="0" 
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="0,3">
+            <TextBlock Text="Collections" FontWeight="Bold" Margin="0,0,0,5" />
+            <DataGrid Width="450" VerticalAlignment="Top" HorizontalAlignment="Stretch" 
+                  ItemsSource="{Binding Client.Collections}" AutoGenerateColumns="False" HeadersVisibility="Column" BorderThickness="0" 
                   GridLinesVisibility="None" IsReadOnly="True">
 
-            <DataGrid.Resources>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="Foreground" Value="Black" />
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-                    <Setter Property="Margin" Value="2,1" />
-                    <Style.Triggers>
-                        <Trigger Property="DataGridCell.IsSelected" Value="True">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Foreground" Value="Black" />
-                            <Setter Property="BorderThickness" Value="0" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.Resources>
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="Black" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        <Setter Property="Margin" Value="2,1" />
+                        <Style.Triggers>
+                            <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Foreground" Value="Black" />
+                                <Setter Property="BorderThickness" Value="0" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
 
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding DisplayName}" Width="250">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="Collection Name"/>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ID}" Width="200">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="Collection ID"/>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+        
+
+        <DataGrid Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" AutoGenerateColumns="False" Margin="5"
+                                HeadersVisibility="None" BorderThickness="0" GridLinesVisibility="None" ItemsSource="{Binding Client.Properties}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding DisplayName}" Width="250">
-                    <DataGridTextColumn.HeaderTemplate>
+                <DataGridTextColumn Binding="{Binding Key, StringFormat={}{0}:}" FontWeight="Bold" Width="140"/>
+                <DataGridTemplateColumn Width="auto">
+                    <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="Collection Name"/>
+                            <Viewbox StretchDirection="DownOnly" Stretch="Uniform" HorizontalAlignment="Left">
+                                <TextBlock Text="{Binding Value}" VerticalAlignment="Top" HorizontalAlignment="Stretch" />
+                            </Viewbox>
                         </DataTemplate>
-                    </DataGridTextColumn.HeaderTemplate>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding ID}" Width="200">
-                    <DataGridTextColumn.HeaderTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="Collection ID"/>
-                        </DataTemplate>
-                    </DataGridTextColumn.HeaderTemplate>
-                </DataGridTextColumn>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

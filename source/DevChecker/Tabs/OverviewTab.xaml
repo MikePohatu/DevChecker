@@ -30,8 +30,8 @@
         <GroupBox Grid.Column="0" Grid.Row="0" Header="Client Side" Margin="5" Padding="5" DataContext="{Binding RemoteSystem}" >
             <Grid Width="350" Height="auto">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"></ColumnDefinition>
-                    <ColumnDefinition Width="230" MinWidth="45"></ColumnDefinition>
+                    <ColumnDefinition Width="125"></ColumnDefinition>
+                    <ColumnDefinition Width="225" MinWidth="45"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 
                 <Grid.RowDefinitions>
@@ -85,21 +85,17 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Computer name:" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ClientName}" VerticalAlignment="Top" TextWrapping="Wrap" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Client.ClientName}" VerticalAlignment="Top" TextWrapping="Wrap" />
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="IP Address:" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
                 <Viewbox Grid.Row="1" Grid.Column="1" StretchDirection="DownOnly" Stretch="Uniform" HorizontalAlignment="Left">
-                    <TextBlock Text="{Binding ClientIPs}" VerticalAlignment="Top" />
+                    <TextBlock Text="{Binding Client.ClientIPs}" VerticalAlignment="Top" />
                 </Viewbox>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="OU:" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
                 <Viewbox Grid.Row="2" Grid.Column="1" StretchDirection="DownOnly" Stretch="Uniform" HorizontalAlignment="Left">
-                    <TextBlock Text="{Binding ClientOU}" VerticalAlignment="Top" />
+                    <TextBlock Text="{Binding Client.ClientOU}" VerticalAlignment="Top" />
                 </Viewbox>
-
-
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
-                <TextBlock Grid.Row="3" Grid.Column="1" Text="" VerticalAlignment="Top" TextWrapping="Wrap" />
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
                 <TextBlock Grid.Row="4" Grid.Column="1" Text="" VerticalAlignment="Top" TextWrapping="Wrap" />
