@@ -1,3 +1,12 @@
+Version 0.7.2
+Release date: 3 Jun 2021
+
+*Features
+    Added sfc /scannow 
+    Added WMI repair/salvage.
+*Fixes
+    Added proper output for gpupdate
+
 Version 0.7.1
 Release date: 3 Jun 2021
 
