@@ -17,11 +17,14 @@
 //
 #endregion
 using ConfigMgrHelpers.Deploy;
+using Core;
 using Core.Logging;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 using WindowsHelpers;
@@ -31,8 +34,15 @@ namespace ConfigMgrHelpers
 	/// <summary>
 	/// Client side information for the ConfigMgr client
 	/// </summary>
-    public class CmClient
-	{ 
+    public class CmClient: ViewModelBase
+	{
+		private bool _logonEventsLoading = false;
+		public bool LogonEventsLoading
+		{
+			get { return this._logonEventsLoading; }
+			set { this._logonEventsLoading = value; this.OnPropertyChanged(this, "LogonEventsLoading"); }
+		}
+
 		public bool ClientInstalled { get; set; } = false;
 
 		public string ClientVersion { get; private set; }
@@ -44,6 +54,8 @@ namespace ConfigMgrHelpers
 
 		public SoftwareCenter SoftwareCenter { get; private set; }
 		public List<CmClientAction> ClientActions { get; private set; }
+
+		public ObservableCollection<object> LogonEvents { get; } = new ObservableCollection<object>();
 
 		public static CmClient Current;
 		public static CmClient New()
@@ -83,6 +95,7 @@ namespace ConfigMgrHelpers
 			tasks.Add(this.SoftwareCenter.QueryApplicationsAsync());
 			tasks.Add(this.SoftwareCenter.QueryUpdatesAsync());
 			tasks.Add(this.SoftwareCenter.QueryTaskSequencesAsync());
+			tasks.Add(this.QueryLogonEventsAsync());
 			await Task.WhenAll(tasks);
 		}
 
@@ -102,6 +115,32 @@ namespace ConfigMgrHelpers
 					this.ReportedName = PoshHandler.GetFirstPropertyValue<string>(result, "PSComputerName");
 					Log.Info("Finished gathering ConfigMgr client info");
 				}
+			}
+		}
+
+		public async Task QueryLogonEventsAsync()
+		{
+			if (this.ClientInstalled)
+			{
+				this.LogonEventsLoading = true;
+				Log.Info("Gathering logon events from ConfigMgr client");
+				Log.Info(@"Get-WmiObject –Namespace ROOT\CCM –Class CCM_UserLogonEvents | select -First 50 | Sort-Object -Property LogonTime -Descending");
+				this.LogonEvents.Clear();
+				string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\CMGetLogonHistory.ps1";
+				string script = await IOHelpers.ReadFileAsync(scriptPath);
+
+				var posh = PoshHandler.GetRunner(script, RemoteSystem.Current);
+				var result = await PoshHandler.InvokeRunnerAsync(posh, true);
+
+				if (result.Count > 0)
+				{
+					foreach (PSObject obj in result)
+                    {
+						this.LogonEvents.Add(new LogonEvent(obj));
+                    }
+					Log.Info("Finished gathering logon events");
+				}
+				this.LogonEventsLoading = false;
 			}
 		}
 

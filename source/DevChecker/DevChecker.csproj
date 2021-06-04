@@ -80,6 +80,7 @@
       <DependentUpon>Spinner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tabs\ConfigMgr\CmApplicatonsTableViewer.cs" />
+    <Compile Include="Tabs\ConfigMgr\CmLogonEventsTableViewer.cs" />
     <Compile Include="Tabs\ConfigMgr\CmUpdatesTableViewer.cs" />
     <Compile Include="Tabs\ConfigMgr\CmTaskSequencesTableViewer.cs" />
     <Compile Include="Tabs\TableViewer.xaml.cs">

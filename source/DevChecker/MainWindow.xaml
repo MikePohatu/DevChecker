@@ -95,6 +95,9 @@
                     <TabItem Header="Software Center" IsEnabled="{Binding CmClient.ClientInstalled, FallbackValue=false}">
                         <configmgr:CmSoftwareCenterTab DataContext="{Binding CmClient.SoftwareCenter}"/>
                     </TabItem>
+                    <TabItem Header="Logon History" DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
+                        <configmgr:CmLogonEventsTableViewer TableSource="{Binding LogonEvents}" IsLoading="{Binding LogonEventsLoading}" />
+                    </TabItem>
                 </TabControl>
             </TabItem>
 

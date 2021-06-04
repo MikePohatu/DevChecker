@@ -68,6 +68,7 @@
     <Compile Include="Deploy\SoftwareCenter.cs" />
     <Compile Include="Deploy\TaskSequence.cs" />
     <Compile Include="Deploy\Update.cs" />
+    <Compile Include="LogonEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +100,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\CMGetServerSideInfo.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\CMGetLogonHistory.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
