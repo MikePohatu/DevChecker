@@ -94,7 +94,6 @@ $PackagePath = "$($ReleaseRootPath)\$($productName)_$($version).zip"
 $ProductReleasePath="$($ReleaseRootPath)\devchecker"
 $BuildFile = "$($repoRoot)\source\DevChecker\DevChecker.csproj"
 
-
 Write-Host "Updating $productName versions to $version"
 Set-ProjectVersion -ProjectPath "$($repoRoot)\source\ConfigMgrHelpers" -Version $version
 Set-ProjectVersion -ProjectPath "$($repoRoot)\source\Core" -Version $version
@@ -106,7 +105,8 @@ Set-ProjectVersion -ProjectPath "$($repoRoot)\source\WindowsHelpers" -Version $v
 
 
 Write-Host "Building $BuildSln"
-Start-Process -FilePath $cmd -ArgumentList "/k `"`"$devenv`" `"$BuildFile`" /rebuild Release`""
+if (!(Test-Path -Path $ProductReleasePath)) { md $ProductReleasePath }
+Start-Process -FilePath $cmd -ArgumentList "/c `"`"$devenv`" `"$BuildFile`" /rebuild Release`""
 
 Pause
 

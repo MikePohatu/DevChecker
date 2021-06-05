@@ -1,7 +1,8 @@
-Version 0.7.3
-Release date: 4 Jun 2021
+Version 0.7.5
+Release date: 5 Jun 2021
 
 *Features
+    Added version info to view
     Added server side query information
     Added logon events
 
