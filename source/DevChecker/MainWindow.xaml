@@ -7,10 +7,14 @@
         xmlns:tabs="clr-namespace:DevChecker.Tabs"
         xmlns:configmgr="clr-namespace:DevChecker.Tabs.ConfigMgr"
         mc:Ignorable="d"
-        Title="DevChecker" Height="600" Width="800" MinWidth="800" MinHeight="600"
+        Height="600" Width="800" MinWidth="800" MinHeight="600"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Closing="onWindowClosing">
     <Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="150*" MinHeight="150" />
@@ -18,9 +22,9 @@
             <RowDefinition Height="70*" MinHeight="70" />
             <RowDefinition Height="30" MinHeight="30" />
         </Grid.RowDefinitions>
-        
+
         <!-- Connections-->
-        <StackPanel Grid.Row="0" x:Name="_connectPane" Orientation="Horizontal" IsEnabled="{Binding ControlsEnabled}" Margin="5,2">
+        <StackPanel Grid.Row="0" x:Name="_connectPane" Orientation="Horizontal" IsEnabled="{Binding ControlsEnabled}" Margin="5,2" Grid.ColumnSpan="2">
             <GroupBox Header="Device" Width="340">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
@@ -66,9 +70,9 @@
                 </Button.Style>
             </Button>
         </StackPanel>
-        
+
         <!-- Tabs -->
-        <TabControl Grid.Row="1" MinHeight="200" BorderBrush="{x:Null}" >
+        <TabControl Grid.Row="1" MinHeight="200" BorderBrush="{x:Null}" Grid.ColumnSpan="2" >
             <TabItem Header="Overview">
                 <tabs:OverviewTab />
             </TabItem>
@@ -106,20 +110,20 @@
             </TabItem>
         </TabControl>
 
-        <Grid Grid.Row="1" Width="Auto" Height="Auto" Visibility="{Binding SpinnerVisibility}" >
+        <Grid Grid.Row="1" Width="Auto" Height="Auto" Visibility="{Binding SpinnerVisibility}" Grid.ColumnSpan="2" >
             <local:Spinner VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Grid>
-        
-        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="5,5,5,0" TextWrapping="Wrap" Text="Output" 
-                   FontSize="10" VerticalAlignment="Bottom"/>
-        
-        <Border Grid.Row="3" BorderBrush="LightGray" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Margin="5" >
+
+        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="5,0,0,142" TextWrapping="Wrap" Text="Output" 
+                   FontSize="10" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+
+        <Border Grid.Row="3" BorderBrush="LightGray" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Margin="5" Grid.ColumnSpan="2" >
             <ScrollViewer x:Name="outputScroll" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <TextBlock x:Name="outputTb" HorizontalAlignment="Stretch" Margin="5,1,2,5" FontSize="10" TextWrapping="Wrap" />
             </ScrollViewer>
         </Border>
 
-        <Grid Grid.Row="4">
+        <Grid Grid.Row="4" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
@@ -142,7 +146,7 @@
                     <TextBlock Text="Relaunch as admin" Margin="0" />
                 </Hyperlink>
             </TextBlock>
-            
+
             <TextBlock Grid.Column="2" Margin="10,0" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <Hyperlink Click="onSaveLogClicked" TextDecorations="None">
                     <TextBlock Text="Save log" Margin="0" />

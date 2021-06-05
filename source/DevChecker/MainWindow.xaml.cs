@@ -41,6 +41,7 @@ using CustomActions;
 using System.Collections.ObjectModel;
 using Microsoft.Win32;
 using Core;
+using System.Reflection;
 
 namespace DevChecker
 {
@@ -65,9 +66,12 @@ namespace DevChecker
 
         public MainWindow()
         {
+            string name = Assembly.GetEntryAssembly().GetName().Name;
+            string version = Assembly.GetEntryAssembly().GetName().Version.ToString();
+            this.Title = name + "  :  v" + version;
             InitializeComponent();
             LoggingHelpers.AddLoggingHandler(this.OnNewLogMessage);
-            Log.Debug("DevChecker started");
+            Log.Info(name + " " + version + " started");
             this._clientCred = new Credential();
             this._serverCred = new Credential();
 
