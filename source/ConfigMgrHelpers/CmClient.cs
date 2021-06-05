@@ -47,6 +47,8 @@ namespace ConfigMgrHelpers
 
 		public string ClientVersion { get; private set; }
 
+		public string ResourceID { get; private set; }
+
 		/// <summary>
 		/// The name reported by the ConfigMgrServer
 		/// </summary>
@@ -113,6 +115,7 @@ namespace ConfigMgrHelpers
 				{
 					this.ClientVersion = PoshHandler.GetFirstPropertyValue<string>(result, "ClientVersion");
 					this.ReportedName = PoshHandler.GetFirstPropertyValue<string>(result, "PSComputerName");
+					this.ResourceID = PoshHandler.GetFirstPropertyValue<string>(result, "ResourceId");
 					Log.Info("Finished gathering ConfigMgr client info");
 				}
 			}

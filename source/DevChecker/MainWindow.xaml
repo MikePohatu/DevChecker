@@ -17,7 +17,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="150*" MinHeight="150" />
+            <RowDefinition Height="120*" MinHeight="120" />
             <RowDefinition Height="20"/>
             <RowDefinition Height="70*" MinHeight="70" />
             <RowDefinition Height="30" MinHeight="30" />
@@ -106,7 +106,14 @@
             </TabItem>
 
             <TabItem Header="Server Side" DataContext="{Binding CmServer}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
-                <configmgr:CmServerTab />
+                <TabControl Grid.Row="1" BorderBrush="{x:Null}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                    <TabItem Header="Overview">
+                        <configmgr:CmServerTab />
+                    </TabItem>
+                    <TabItem Header="Scripts">
+                        <configmgr:CmScriptsTableViewer TableSource="{Binding Scripts}" IsLoading="{Binding ScriptsLoading}" />
+                    </TabItem>
+                </TabControl>
             </TabItem>
         </TabControl>
 

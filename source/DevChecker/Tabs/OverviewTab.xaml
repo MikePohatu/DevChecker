@@ -97,8 +97,8 @@
                     <TextBlock Text="{Binding Client.ClientOU}" VerticalAlignment="Top" />
                 </Viewbox>
 
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
-                <TextBlock Grid.Row="4" Grid.Column="1" Text="" VerticalAlignment="Top" TextWrapping="Wrap" />
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="ResourceID:" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Client.ResourceID}" VerticalAlignment="Top" TextWrapping="Wrap" />
             </Grid>
         </GroupBox>
     </Grid>

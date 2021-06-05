@@ -58,6 +58,10 @@ namespace ConfigMgrHelpers
         /// </summary>
         public bool IsLocalhostClient { get; private set; } = false;
 
+        /// <summary>
+        /// CM resource ID
+        /// </summary>
+        public string ResourceID { get; private set; }
 
         /// <summary>
         /// Properties dictionary from script
@@ -109,6 +113,7 @@ namespace ConfigMgrHelpers
                         {
                             this.ClientIPs = PoshHandler.GetFirstHashTableString(results, "IPAddresses");
                             this.ClientOU = PoshHandler.GetFirstHashTableString(results, "OU");
+                            this.ResourceID = PoshHandler.GetFirstHashTableString(results, "ResourceId");
                             this.Properties = PoshHandler.GetFromHashTableAsOrderedDictionary(results);
                             Log.Info("Finished gathering ConfigMgr server data for client");
                         }

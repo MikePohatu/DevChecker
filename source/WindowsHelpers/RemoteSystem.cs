@@ -41,6 +41,8 @@ namespace WindowsHelpers
         /// </summary>
         public static event EventHandler Connected;
 
+        public bool IsLocalhostClient { get; set; } = false;
+
         /// <summary>
         /// Is the current RemoteSystem connected
         /// </summary>
@@ -136,6 +138,10 @@ namespace WindowsHelpers
             this.ComputerName = ComputerName;
             this.UseSSL = useSSL;
             this.Credential = cred;
+            if (string.IsNullOrWhiteSpace(ComputerName) || ComputerName.ToLower() == "localhost" || ComputerName == "127.0.0.1")
+            {
+                this.IsLocalhostClient = true;
+            }
         }
 
         /// <summary>

@@ -27,13 +27,14 @@ using Core.Logging;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
 using Core;
+using ConfigMgrHelpers.Deploy;
 
 namespace ConfigMgrHelpers
 {
     /// <summary>
     /// Server side information for the device from ConfigMgr
     /// </summary>
-    public class CmServer
+    public class CmServer: ViewModelBase
     {
         //private Microsoft.ConfigurationManagement.Messaging.Framework. _connector;
         /// <summary>
@@ -43,6 +44,12 @@ namespace ConfigMgrHelpers
 
         public bool UseSSL { get; set; } = true;
 
+        private bool _scriptsLoading = false;
+        public bool ScriptsLoading
+        {
+            get { return this._scriptsLoading; }
+            set { this._scriptsLoading = value; this.OnPropertyChanged(this, "ScriptsLoading"); }
+        }
 
         /// <summary>
         /// The credentials used to connect to the ConfigMgr server
@@ -84,6 +91,11 @@ namespace ConfigMgrHelpers
         /// </summary>
         public string ReportedServerName { get; set; } = string.Empty;
 
+        /// <summary>
+        /// A list of ConfigMgr scripts
+        /// </summary>
+        public ObservableCollection<object> Scripts { get; } = new ObservableCollection<object>();
+
         public CmServerSideClient Client { get; private set; }
 
         public static CmServer Current { get; private set; }
@@ -119,6 +131,28 @@ namespace ConfigMgrHelpers
 
                 await this.Client.QueryClientAsync();
             }
+        }
+
+        public async Task QueryScripts()
+        {
+            Log.Info("Refreshing ConfigMgr scripts");
+            this.ScriptsLoading = true;
+            this.Scripts.Clear();
+            //string command = "Get-WmiObject -Namespace \"ROOT\\SMS\" -Query \"SELECT * FROM SMS_ProviderLocation\" -ComputerName " + this.ServerName;
+            string command = CmScript.GetterQuery();
+
+            var posh = PoshHandler.GetRunner(command);
+            var result = await PoshHandler.InvokeRunnerAsync(posh);
+
+            if (result != null)
+            {
+                foreach (var obj in result)
+                {
+                    this.Scripts.Add(new CmScript(obj));
+                }
+
+            }
+            this.ScriptsLoading = false;
         }
     }
 }

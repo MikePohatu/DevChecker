@@ -64,6 +64,7 @@
     <Compile Include="CmServer.cs" />
     <Compile Include="CmServerSideClient.cs" />
     <Compile Include="Deploy\Application.cs" />
+    <Compile Include="Deploy\CmScript.cs" />
     <Compile Include="Deploy\Definitions.cs" />
     <Compile Include="Deploy\SoftwareCenter.cs" />
     <Compile Include="Deploy\TaskSequence.cs" />
@@ -103,6 +104,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\CMGetLogonHistory.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\CMInvokeScript.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
