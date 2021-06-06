@@ -102,6 +102,9 @@
                     <TabItem Header="Logon History" DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
                         <configmgr:CmLogonEventsTableViewer TableSource="{Binding LogonEvents}" IsLoading="{Binding LogonEventsLoading}" />
                     </TabItem>
+                    <TabItem Header="Printers" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <tabs:PrintersTableViewer TableSource="{Binding Printers}" IsLoading="{Binding PrintersLoading}" />
+                    </TabItem>
                 </TabControl>
             </TabItem>
 

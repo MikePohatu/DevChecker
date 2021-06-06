@@ -79,6 +79,7 @@
     <Compile Include="Spinner.xaml.cs">
       <DependentUpon>Spinner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\PrintersTableViewer.cs" />
     <Compile Include="Tabs\ConfigMgr\CmApplicatonsTableViewer.cs" />
     <Compile Include="Tabs\ConfigMgr\CmLogonEventsTableViewer.cs" />
     <Compile Include="Tabs\ConfigMgr\CmScriptsTableViewer.cs" />

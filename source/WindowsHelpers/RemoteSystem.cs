@@ -62,6 +62,13 @@ namespace WindowsHelpers
             set { this._hotfixesLoading = value; this.OnPropertyChanged(this, "HotfixesLoading"); }
         }
 
+        private bool _printersLoading = false;
+        public bool PrintersLoading
+        {
+            get { return this._printersLoading; }
+            set { this._printersLoading = value; this.OnPropertyChanged(this, "PrintersLoading"); }
+        }
+
         private bool _servicesLoading = false;
         public bool ServicesLoading
         {
@@ -128,6 +135,7 @@ namespace WindowsHelpers
         }
 
         public ObservableCollection<Hotfix> Hotfixes { get; } = new ObservableCollection<Hotfix>();
+        public ObservableCollection<object> Printers { get; } = new ObservableCollection<object>();
 
         /// <summary>
         /// The current RemoteSystem instance. Behaves like a singleton
@@ -368,6 +376,31 @@ namespace WindowsHelpers
                 Log.Error(e, "Error getting hotfix information");
             }
             this.HotfixesLoading = false;
+        }
+
+        public async Task UpdatePrintersAsync()
+        {
+            this.PrintersLoading = true;
+            try
+            {
+                Log.Info("Refreshing printer information");
+                this.Printers.Clear();
+                string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\GetAllPrinters.ps1";
+                string script = await IOHelpers.ReadFileAsync(scriptPath);
+                using (PowerShell posh = PoshHandler.GetRunner(script, this))
+                {
+                    var results = await PoshHandler.InvokeRunnerAsync(posh, true);
+                    foreach (var result in results)
+                    {
+                        this.Printers.Add(new Printer(result));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error getting printer information");
+            }
+            this.PrintersLoading = false;
         }
 
         public async Task GpUpdateAsync()

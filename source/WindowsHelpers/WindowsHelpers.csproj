@@ -55,6 +55,7 @@
     <Compile Include="ImpersonationHelpers.cs" />
     <Compile Include="IOHelpers.cs" />
     <Compile Include="PoshHandler.cs" />
+    <Compile Include="Printer.cs" />
     <Compile Include="RemoteProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistryHelpers.cs" />
@@ -71,6 +72,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\ServiceControl.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\GetAllPrinters.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
