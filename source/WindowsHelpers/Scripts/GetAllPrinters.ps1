@@ -51,5 +51,6 @@
     $allPrinters
 }
 
-Get-AllPrinters 
+Get-AllPrinters | Sort-Object -Property Name 
+
  

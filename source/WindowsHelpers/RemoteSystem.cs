@@ -69,6 +69,13 @@ namespace WindowsHelpers
             set { this._printersLoading = value; this.OnPropertyChanged(this, "PrintersLoading"); }
         }
 
+        private bool _printDriversLoading = false;
+        public bool PrintDriversLoading
+        {
+            get { return this._printDriversLoading; }
+            set { this._printDriversLoading = value; this.OnPropertyChanged(this, "PrintDriversLoading"); }
+        }
+
         private bool _servicesLoading = false;
         public bool ServicesLoading
         {
@@ -136,6 +143,7 @@ namespace WindowsHelpers
 
         public ObservableCollection<Hotfix> Hotfixes { get; } = new ObservableCollection<Hotfix>();
         public ObservableCollection<object> Printers { get; } = new ObservableCollection<object>();
+        public ObservableCollection<object> PrintDrivers { get; } = new ObservableCollection<object>();
 
         /// <summary>
         /// The current RemoteSystem instance. Behaves like a singleton
@@ -401,6 +409,31 @@ namespace WindowsHelpers
                 Log.Error(e, "Error getting printer information");
             }
             this.PrintersLoading = false;
+        }
+
+        public async Task UpdatePrintDriversAsync()
+        {
+            this.PrintDriversLoading = true;
+            try
+            {
+                Log.Info("Refreshing print driver information");
+                this.Printers.Clear();
+                string command = " Get-PrinterDriver | Select-Object Name, Manufacturer, PrinterEnvironment, MajorVersion | Sort-Object -Property Name";
+
+                using (PowerShell posh = PoshHandler.GetRunner(command, this))
+                {
+                    var results = await PoshHandler.InvokeRunnerAsync(posh);
+                    foreach (var result in results)
+                    {
+                        this.PrintDrivers.Add(new PrintDriver(result));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error getting print driver information");
+            }
+            this.PrintDriversLoading = false;
         }
 
         public async Task GpUpdateAsync()

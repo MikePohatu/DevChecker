@@ -32,22 +32,20 @@ using WindowsHelpers;
 
 namespace DevChecker.Tabs
 {
-    public class PrintersTableViewer : TableViewer
+    public class PrintDriverTableViewer : TableViewer
     { 
         protected override async void onRefreshClicked(object sender, RoutedEventArgs e)
         {
-            await RemoteSystem.Current.UpdatePrintersAsync();
+            await RemoteSystem.Current.UpdatePrintDriversAsync();
         }
 
         protected override void onSearchFilter(object sender, FilterEventArgs e)
         {
-            var obj = e.Item as Printer;
+            var obj = e.Item as PrintDriver;
             if (obj != null)
             {
                 if (obj.Name != null && obj.Name.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
-                else if (obj.Server != null && obj.Server.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
-                else if (obj.Driver != null && obj.Driver.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
-                else if (obj.Username != null && obj.Username.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
+                else if (obj.Manufacturer != null && obj.Manufacturer.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
                 else { e.Accepted = false; }
             }
         }

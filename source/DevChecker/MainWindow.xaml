@@ -105,6 +105,9 @@
                     <TabItem Header="Printers" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
                         <tabs:PrintersTableViewer TableSource="{Binding Printers}" IsLoading="{Binding PrintersLoading}" />
                     </TabItem>
+                    <TabItem Header="Print Drivers" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <tabs:PrintDriverTableViewer TableSource="{Binding PrintDrivers}" IsLoading="{Binding PrintDriversLoading}" />
+                    </TabItem>
                 </TabControl>
             </TabItem>
 

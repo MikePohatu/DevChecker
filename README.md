@@ -23,12 +23,12 @@ This tool was created because existing tools either didn't do what I wanted, or 
 * See ConfigMgr collections
 * Shutdown & restart functions
 * 'Connect as' functionality
+* List printers and print drivers
+* Run ConfigMgr scripts
 
 ## Planned features
 
-* List printers and print drivers
 * Add custom tabs using PowerShell scripts
-* Run ConfigMgr scripts
 * Log off function
 
 [Documentation](/documentation/README.md)

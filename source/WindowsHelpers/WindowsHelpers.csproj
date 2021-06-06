@@ -55,6 +55,7 @@
     <Compile Include="ImpersonationHelpers.cs" />
     <Compile Include="IOHelpers.cs" />
     <Compile Include="PoshHandler.cs" />
+    <Compile Include="PrintDriver.cs" />
     <Compile Include="Printer.cs" />
     <Compile Include="RemoteProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
