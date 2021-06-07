@@ -88,6 +88,9 @@
     <Compile Include="Tabs\CustomActionsTab.xaml.cs">
       <DependentUpon>CustomActionsTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\ObjectViewer.xaml.cs">
+      <DependentUpon>ObjectViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\PrintDriverTableViewer.cs" />
     <Compile Include="Tabs\CustomScriptTableViewer.cs" />
     <Compile Include="Tabs\PrintersTableViewer.cs" />
@@ -158,6 +161,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Tabs\CustomActionsTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tabs\ObjectViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

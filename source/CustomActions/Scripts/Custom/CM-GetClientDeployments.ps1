@@ -14,6 +14,7 @@ foreach ($Collection in $Collections) {
 {
     "DisplayName": "ConfigMgr Deployments",
     "DisplayElement": "Tab",
+    "OutputType": "List",
     "Description": "List deployments for the connected client",
     "RunOnConnect": false,
     "RunOnClient": false,

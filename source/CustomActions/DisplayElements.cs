@@ -21,6 +21,7 @@ namespace CustomActions
 {
     public static class DisplayElements
     {
+        public static string None { get; } = "None";
         public static string Log { get; } = "Log";
         public static string Tab { get; } = "Tab";
         public static string Modal { get; } = "Modal";
@@ -38,6 +39,8 @@ namespace CustomActions
                     return Modal;
                 case "log":
                     return Log;
+                case "none":
+                    return None;
                 default:
                     Core.Logging.Log.Error("Invalid display element set");
                     return Log;

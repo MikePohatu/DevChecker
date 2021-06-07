@@ -40,6 +40,7 @@ To add metadata, copy and paste the following somewhere in your PowerShell scrip
     "FilterProperties": ["TargetName", "CollectionName"],
     "LogOutput": false,
     "LogScriptContent": false,
+    "MaxRowsPerColumn": 100,
     "OutputType": "List",
     "RequiresServerConnect": true,
     "RunOnClient": false,
@@ -50,12 +51,21 @@ ActionSettings#>
 
 Update the fields appropriately:
 * Description: The description to appear in DevChecker
-* DisplayElement: How to display the output i.e. new tab, separate modal window, only log. Valid options (case sensitive): **Tab, Modal, Log**
+* DisplayElement: How to display the output. Valid options (case sensitive): 
+  * Tab: create a tab for your output. This is only suitable with the **List** OutputType
+  * Modal: open a separate modal window
+  * Log: log output to the DevChecker output pane
+  * None: no display
 * DisplayName: The name to be shown in DevChecker. If this is empty the script name will be used
 * FilterProperties: When displaying in a table view, the search box will filter the view based on a match against the properties listed here
 * LogOutput: Will log the output of the script, even if DisplayElement is Tab or Modal
 * LogScriptContent: Set this to true to output the content of the script file to the logging pane in DevChecker
-* OutputType: *Not currently implemented. This will be used to change the output to a table view if desired
+* MaxRowsPerColumn: When outputting an object, you can split the list of properties into columns. A new column will be created per *MaxRowsPerColumn* properties
+* OutputType: Change the output view to suit the output of the script. Valid options (case sensitive): 
+  * List: output is a list of PSObjects
+  * Object: output is a single object or hashtable
+  * Text: output to text format 
+  * None: no output
 * RequiresServerConnect: If RunOnClient is false, this will prevent the action from running if the server has been connected
 * RunOnClient: Run the script on the connected client. If false, will run on the computer DevChecker is running on.
 * RunOnConnect: Automatically run the script on connect to a device

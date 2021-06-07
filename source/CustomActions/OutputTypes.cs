@@ -21,28 +21,28 @@ namespace CustomActions
 {
     public static class OutputTypes
     {
-        public static string Log { get; } = "Log";
+        public static string Text { get; } = "Text";
         public static string List { get; } = "List";
         public static string None { get; } = "None";
         public static string Object { get; } = "Object";
 
         public static string GetType(string outputtype)
         {
-            if (string.IsNullOrWhiteSpace(outputtype)) { return Log; }
+            if (string.IsNullOrWhiteSpace(outputtype)) { return Text; }
 
             switch (outputtype.Trim().ToLower())
             {
-                case "log":
-                    return Log;
+                case "text":
+                    return Text;
                 case "list":
                     return List;
                 case "object":
-                    return Log;
+                    return Object;
                 case "none":
                     return None;
                 default:
-                    Core.Logging.Log.Error("Invalid output type set");
-                    return Log;
+                    Core.Logging.Log.Error("Invalid output type set: " + outputtype);
+                    return Text;
             }
         }
     }

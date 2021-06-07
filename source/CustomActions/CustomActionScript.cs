@@ -26,12 +26,13 @@ using WindowsHelpers;
 using System.Collections.ObjectModel;
 using Core;
 using ConfigMgrHelpers;
+using System.Collections.Generic;
 
 namespace CustomActions
 {
     public class CustomActionScript: IComparable<CustomActionScript>, IDisposable
     {
-        public PSDataCollection<PSObject> _results;
+        
         private bool _loaded = false;
         private string _scriptpath = string.Empty;
         private string _script = string.Empty;
@@ -54,7 +55,12 @@ namespace CustomActions
         /// <summary>
         /// The data that can be used by a TableViewer control
         /// </summary>
-        public ObservableCollection<object> Data { get; } = new ObservableCollection<object>();
+        public ObservableCollection<object> TableData { get; } = new ObservableCollection<object>();
+
+        /// <summary>
+        /// The results from the action script
+        /// </summary>
+        public List<PSObject> ResultList { get; set; }
 
         public CustomActionScript()
         {
@@ -104,7 +110,7 @@ namespace CustomActions
 
         public void OnConnecting(object sender, EventArgs args)
         {
-            this.Data.Clear();
+            this.TableData.Clear();
         }
 
         /// <summary>
@@ -179,13 +185,13 @@ namespace CustomActions
                 }
                 
                 Log.Info("Running custom action: " + this.DisplayName);
-                this.Data.Clear();
+                this.TableData.Clear();
                 bool hidescript = this.Settings == null ? false : !this.Settings.LogScriptContent;
 
                 string sanitisedscript = this.SanitiseScript(this._script);
 
                 PoshHandler posh;
-                if (RemoteSystem.Current != null)
+                if (this.Settings.RunOnClient)
                 {
                     posh = new PoshHandler(sanitisedscript, RemoteSystem.Current);
                 }
@@ -194,23 +200,26 @@ namespace CustomActions
                     posh = new PoshHandler(sanitisedscript);
                 }
 
-                
-                if (this.Settings.OutputType == OutputTypes.Log || this.Settings.LogOutput)
+                PSDataCollection<PSObject> results;
+                if (this.Settings.OutputType == OutputTypes.Text || this.Settings.LogOutput)
                 {
-                    this._results = await posh.InvokeRunnerAsync(hidescript, true);
+                    results = await posh.InvokeRunnerAsync(hidescript, true);
                 }
                 else
                 {
-                    this._results = await posh.InvokeRunnerAsync(hidescript, false);
+                    results = await posh.InvokeRunnerAsync(hidescript, false);
                 }
 
-                if (this._results != null)
+                this.ResultList = new List<PSObject>();
+                foreach (var obj in results)
                 {
-                    foreach (PSObject obj in this._results)
-                    {
-                        this.Data.Add(obj);
-                    }
-                }                
+                    this.ResultList.Add(obj);
+                }
+
+                foreach (PSObject obj in this.ResultList)
+                {
+                    this.TableData.Add(obj);
+                }          
 
                 posh.Dispose();
                 return true;

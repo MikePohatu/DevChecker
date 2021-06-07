@@ -177,7 +177,8 @@ namespace WindowsHelpers
                 {
                     this.Results.DataAdded += delegate (object sender, DataAddedEventArgs e)
                     {
-                        Log.Info(this.Results[e.Index].ToString());
+                        string output = ToOutputString(this.Results[e.Index]);
+                        Log.Info(output);
                     };
                 }
                 
@@ -189,6 +190,23 @@ namespace WindowsHelpers
             }
             this.HasRun = true;
             return this.Results;
+        }
+
+        public static string ToOutputString(PSObject psobj)
+        {
+            Hashtable obj = psobj.BaseObject as Hashtable;
+            if (obj == null) { return psobj.ToString(); }
+            else
+            {
+                StringBuilder sb = new StringBuilder("Output:" + Environment.NewLine);
+                sb.AppendLine("@{");
+                foreach (var key in obj.Keys)
+                {
+                    sb.AppendLine("  " + key + " = " + obj[key]);
+                }
+                sb.Append("}");
+                return sb.ToString();
+            }
         }
 
         public static T GetPropertyValue<T>(PSObject obj, string valueName)
@@ -246,7 +264,7 @@ namespace WindowsHelpers
             return null;
         }
 
-        public static SortedDictionary<string, string> GetFromHashTableAsOrderedDictionary(PSDataCollection<PSObject> objList)
+        public static SortedDictionary<string, string> GetFromHashTableAsOrderedDictionary(IEnumerable<PSObject> objList)
         {
             SortedDictionary<string, string> vals = new SortedDictionary<string, string>();
             if (objList != null)

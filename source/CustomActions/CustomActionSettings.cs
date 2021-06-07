@@ -29,7 +29,7 @@ namespace CustomActions
 {
     public class CustomActionSettings
     {
-        private string _outputtype;
+        private string _outputtype = OutputTypes.Text;
         /// <summary>
         /// What the action will return. Valid values: Object, List, Log, None
         /// </summary>
@@ -54,6 +54,11 @@ namespace CustomActions
                 this._displayElement = DisplayElements.GetType(value);             
             }
         }
+
+        /// <summary>
+        /// The count of rows per column. Used for object view
+        /// </summary>
+        public int MaxRowsPerColumn { get; set; } = int.MaxValue;
 
         /// <summary>
         /// Log output, even if the display element is not Log

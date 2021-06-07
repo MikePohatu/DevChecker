@@ -21,36 +21,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
-namespace Core
+namespace DevChecker.Tabs
 {
     /// <summary>
-    /// Create lists of items based on a maximum count, overflowing into new 'columns' of data when max
-    /// is reached
+    /// Interaction logic for ObjectViewer.xaml
     /// </summary>
-    public class Overflow
+    public partial class ObjectViewer : UserControl
     {
-        public static List<IDictionary<T, N>> CreateFromDictionary<T,N>(IDictionary<T,N> dic, int maxRows)
-        {            
-            List<IDictionary<T, N>> columns = new List<IDictionary<T, N>>();
-            Dictionary<T, N> column = new Dictionary<T, N>();
-            int colcount = 0;
-            columns.Add(column);
-
-            foreach(var key in dic.Keys)
-            {
-                if (colcount == maxRows)
-                {
-                    column = new Dictionary<T, N>();
-                    columns.Add(column);
-                    colcount = 0;
-                }
-                column.Add(key, dic[key]);
-                colcount++;
-            }
-
-            return columns;
+        public static readonly DependencyProperty ObjectSourceProperty = DependencyProperty.Register("ObjectSource", typeof(List<IDictionary<string, string>>), typeof(ObjectViewer));
+        public List<IDictionary<string, string>> ObjectSource
+        {
+            get { return (List<IDictionary<string, string>>)GetValue(ObjectSourceProperty); }
+            set { SetValue(ObjectSourceProperty, value); }
         }
 
+        public ObjectViewer()
+        {
+            InitializeComponent();
+        }
     }
 }

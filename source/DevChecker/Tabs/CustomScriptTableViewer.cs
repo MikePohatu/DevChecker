@@ -40,7 +40,7 @@ namespace DevChecker.Tabs
         public CustomScriptTableViewer(CustomActionScript action) : base()
         {
             this._action = action;
-            this.TableSource = action.Data;
+            this.TableSource = action.TableData;
             this.IsSearchEnabled = action.Settings.FilterProperties.Count < 1 ? false : true;
         }
 

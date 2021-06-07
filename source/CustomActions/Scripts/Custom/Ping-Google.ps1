@@ -3,7 +3,7 @@
 <#ActionSettings
 {
     "DisplayName": "Ping Google",
-    "OutputType": "Log",
+    "OutputType": "Text",
     "Description": "Ping test to google.com",
     "RunOnConnect": false,
     "LogScriptContent": false,

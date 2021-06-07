@@ -41,6 +41,7 @@ Write-Information "Done"
 {
     "DisplayName": "Installed Applications",
     "DisplayElement": "Tab",
+    "OutputType": "List",
     "Description": "List installed applications recorded in registry",
     "RunOnConnect": false,
     "LogScriptContent": false,

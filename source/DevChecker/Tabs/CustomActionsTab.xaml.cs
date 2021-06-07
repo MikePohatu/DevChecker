@@ -16,6 +16,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using Core;
+using Core.Logging;
 using CustomActions;
 using System;
 using System.Collections.Generic;
@@ -31,6 +33,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WindowsHelpers;
 
 namespace DevChecker.Tabs
 {
@@ -58,13 +61,12 @@ namespace DevChecker.Tabs
             if (success && component.Settings.DisplayElement == DisplayElements.Modal)
             {
                 this.ShowModal(component);
-            }
+            }            
         }
 
         private void ShowModal(CustomActionScript actionScript)
         {
             var modal = new Modal();
-            var viewer = new CustomScriptTableViewer(actionScript);
 
             string header = actionScript.DisplayName;
             if (string.IsNullOrWhiteSpace(actionScript.Settings.Description) == false) { header = header + " : " + actionScript.Settings.Description; }
@@ -72,7 +74,7 @@ namespace DevChecker.Tabs
             group.Margin = new Thickness(5);
             group.Padding = new Thickness(5);
             group.Header = header;
-            group.Content = viewer;
+            group.Content = GetControl(actionScript);
 
             modal.Content = group;
             Application.Current.MainWindow.Closing += (o, args) => { modal.Close(); };
@@ -88,14 +90,49 @@ namespace DevChecker.Tabs
             this.tabs.Items.Add(this.actionsTabItem);
 
             //var dbg = ActionLibrary.Instance;
-            foreach (CustomActionScript script in ActionLibrary.Instance.Tabs)
+            foreach (CustomActionScript actionScript in ActionLibrary.Instance.Tabs)
             {
                 TabItem tab = new TabItem();
-                tab.Header = script.DisplayName;
-                if (string.IsNullOrWhiteSpace(script.Settings.Description) == false) { tab.ToolTip = script.Settings.Description; }
-                CustomScriptTableViewer viewer = new CustomScriptTableViewer(script);
+                tab.Header = actionScript.DisplayName;
+                if (string.IsNullOrWhiteSpace(actionScript.Settings.Description) == false) { tab.ToolTip = actionScript.Settings.Description; }
+                UIElement viewer = GetControl(actionScript);
                 tab.Content = viewer;
                 this.tabs.Items.Add(tab);
+            }
+        }
+
+        private UIElement GetControl(CustomActionScript actionScript)
+        {
+            if (actionScript.Settings.OutputType == OutputTypes.Text)
+            {
+                TextBlock tb = new TextBlock();
+                StringBuilder sb = new StringBuilder();
+                if (actionScript.ResultList != null)
+                {
+                    foreach (var obj in actionScript.ResultList)
+                    {
+                        sb.AppendLine(PoshHandler.ToOutputString(obj));
+                    }
+                }
+                
+                tb.Text = sb.ToString();
+                return tb;
+            }
+            else if (actionScript.Settings.OutputType == OutputTypes.Object)
+            {
+                ObjectViewer oviewer = new ObjectViewer();
+                var results = PoshHandler.GetFromHashTableAsOrderedDictionary(actionScript.ResultList);
+                oviewer.ObjectSource = Overflow.CreateFromDictionary(results, actionScript.Settings.MaxRowsPerColumn);
+                return oviewer;
+            }
+            else if (actionScript.Settings.OutputType == OutputTypes.List)
+            {
+                return new CustomScriptTableViewer(actionScript);
+            }
+            else
+            {
+                Log.Error("DisplayElement set to Tab or Modal but OutputType set to None. Script: " + actionScript.Name);
+                return null;
             }
         }
     }
