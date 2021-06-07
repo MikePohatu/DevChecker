@@ -88,6 +88,7 @@
     <Compile Include="Tabs\CustomActionsTab.xaml.cs">
       <DependentUpon>CustomActionsTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\ServicesTableViewer.cs" />
     <Compile Include="Tabs\ObjectViewer.xaml.cs">
       <DependentUpon>ObjectViewer.xaml</DependentUpon>
     </Compile>
@@ -99,11 +100,10 @@
     <Compile Include="Tabs\ConfigMgr\CmScriptsTableViewer.cs" />
     <Compile Include="Tabs\ConfigMgr\CmUpdatesTableViewer.cs" />
     <Compile Include="Tabs\ConfigMgr\CmTaskSequencesTableViewer.cs" />
+    <Compile Include="Tabs\HotfixesTableViewer.cs" />
+    <Compile Include="Tabs\ProcessesTableViewer.cs" />
     <Compile Include="Tabs\TableViewer.xaml.cs">
       <DependentUpon>TableViewer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Tabs\HotfixesTab.xaml.cs">
-      <DependentUpon>HotfixesTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tabs\ConfigMgr\CmActions.xaml.cs">
       <DependentUpon>CmActions.xaml</DependentUpon>
@@ -125,12 +125,6 @@
     </Compile>
     <Compile Include="Tabs\ClientActionsTab.xaml.cs">
       <DependentUpon>ClientActionsTab.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Tabs\ServicesTab.xaml.cs">
-      <DependentUpon>ServicesTab.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Tabs\ProcessesTab.xaml.cs">
-      <DependentUpon>ProcessesTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tabs\WindowsClientTab.xaml.cs">
       <DependentUpon>WindowsClientTab.xaml</DependentUpon>
@@ -172,10 +166,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Tabs\HotfixesTab.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Tabs\ConfigMgr\CmActions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -201,14 +191,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Tabs\ClientActionsTab.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Tabs\ServicesTab.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Tabs\ProcessesTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

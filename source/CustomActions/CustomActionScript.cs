@@ -30,7 +30,7 @@ using System.Collections.Generic;
 
 namespace CustomActions
 {
-    public class CustomActionScript: IComparable<CustomActionScript>, IDisposable
+    public class CustomActionScript: ViewModelBase, IComparable<CustomActionScript>, IDisposable
     {
         
         private bool _loaded = false;
@@ -42,6 +42,17 @@ namespace CustomActions
         /// The actual script name
         /// </summary>
         public string Name { get { return this._filename; } }
+
+
+        /// <summary>
+        /// Is the action currently running
+        /// </summary>
+        private bool _isrunning = false;
+        public bool IsRunning
+        {
+            get { return this._isrunning; }
+            set { this._isrunning = value; this.OnPropertyChanged(this, "IsRunning"); }
+        }
 
         /// <summary>
         /// The display name of the script. Will return the Name attribute if not set in the Settings
@@ -60,7 +71,7 @@ namespace CustomActions
         /// <summary>
         /// The results from the action script
         /// </summary>
-        public List<PSObject> ResultList { get; set; }
+        public ObservableCollection<PSObject> ResultList { get; set; }
 
         public CustomActionScript()
         {
@@ -185,6 +196,7 @@ namespace CustomActions
                 }
                 
                 Log.Info("Running custom action: " + this.DisplayName);
+                this.IsRunning = true;
                 this.TableData.Clear();
                 bool hidescript = this.Settings == null ? false : !this.Settings.LogScriptContent;
 
@@ -210,7 +222,7 @@ namespace CustomActions
                     results = await posh.InvokeRunnerAsync(hidescript, false);
                 }
 
-                this.ResultList = new List<PSObject>();
+                this.ResultList = new ObservableCollection<PSObject>();
                 foreach (var obj in results)
                 {
                     this.ResultList.Add(obj);
@@ -222,11 +234,13 @@ namespace CustomActions
                 }          
 
                 posh.Dispose();
+                this.IsRunning = false;
                 return true;
             }
             else
             {
                 Log.Warn("Script hasn't finished loading yet. Please try again soon. Script: " + this._scriptpath);
+                this.IsRunning = false;
                 return false;
             }
         }

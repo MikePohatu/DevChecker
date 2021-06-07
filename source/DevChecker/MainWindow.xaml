@@ -85,13 +85,13 @@
                         <tabs:ClientActionsTab IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}"/>
                     </TabItem>
                     <TabItem Header="Processes" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
-                        <tabs:ProcessesTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
+                        <tabs:ProcessesTableViewer TableSource="{Binding Processes}" IsLoading="{Binding ProcessesLoading}"/>
                     </TabItem>
                     <TabItem Header="Services" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
-                        <tabs:ServicesTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
+                        <tabs:ServicesTableViewer TableSource="{Binding Services}" IsLoading="{Binding ServicesLoading}"/>
                     </TabItem>
                     <TabItem Header="Hotfixes" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
-                        <tabs:HotfixesTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
+                        <tabs:HotfixesTableViewer TableSource="{Binding Hotfixes}" IsLoading="{Binding HotfixesLoading}"/>
                     </TabItem>
                     <TabItem Header="ConfigMgr Client" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
                         <configmgr:CmClientTab DataContext="{Binding CmClient}"/>

@@ -16,43 +16,32 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using ConfigMgrHelpers.Deploy;
-using ConfigMgrHelpers;
 using Core.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WindowsHelpers;
 
 namespace DevChecker.Tabs
 {
-    /// <summary>
-    /// Interaction logic for CmUpdatesTab.xaml
-    /// </summary>
-    public partial class HotfixesTab : UserControl
+    public class HotfixesTableViewer : TableViewer
     {
-        public HotfixesTab()
+        public HotfixesTableViewer(): base()
         {
-            InitializeComponent();
+            MenuItem unist = new MenuItem();
+            unist.Click += this.onUninstallClicked;
+            unist.Header = "Uninstall";
+            this.AddContextMenuItem(unist);
         }
 
-        private async void onRefreshClicked(object sender, RoutedEventArgs e)
+
+        protected override async void onRefreshClicked(object sender, RoutedEventArgs e)
         {
             await RemoteSystem.Current.UpdateHotfixesAsync();
         }
 
-        private void onSearchFilter(object sender, FilterEventArgs e)
+        protected override void onSearchFilter(object sender, FilterEventArgs e)
         {
             var obj = e.Item as Hotfix;
             if (obj != null)
@@ -61,19 +50,9 @@ namespace DevChecker.Tabs
                 else { e.Accepted = false; }
             }
         }
-
-        private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            CollectionViewSource source = this.Resources["filtered"] as CollectionViewSource;
-            if (source?.View != null)
-            {
-                source.View.Refresh();
-            }
-        }
-
         private async void onUninstallClicked(object sender, RoutedEventArgs e)
         {
-            var selected = (Hotfix)this.dataGrid.SelectedItem;
+            var selected = (Hotfix)this.DataGrid.SelectedItem;
             if (MessageBox.Show("Are you sure you want to uninstall " + selected.HotFixID + "?", "Uninstall hotfix", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 await selected.UninstallAsync();

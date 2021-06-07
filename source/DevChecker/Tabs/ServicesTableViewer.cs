@@ -18,37 +18,39 @@
 #endregion
 using Core.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WindowsHelpers;
 
 namespace DevChecker.Tabs
 {
-    /// <summary>
-    /// Interaction logic for ProcessesTab.xaml
-    /// </summary>
-    public partial class ServicesTab : UserControl
+    public class ServicesTableViewer : TableViewer
     {
-        public ServicesTab()
+        public ServicesTableViewer(): base()
         {
-            InitializeComponent();
+            MenuItem item = new MenuItem();
+            item.Click += this.onRestartClicked;
+            item.Header = "Restart";
+            this.AddContextMenuItem(item);
+
+            item = new MenuItem();
+            item.Click += this.onStartClicked;
+            item.Header = "Start";
+            this.AddContextMenuItem(item);
+
+            item = new MenuItem();
+            item.Click += this.onStopClicked;
+            item.Header = "Stop";
+            this.AddContextMenuItem(item);
+
+            
         }
 
         private async void onStartClicked(object sender, RoutedEventArgs e)
         {
-            RemoteService service = (RemoteService)this.serviceGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to start "+service.Name+"?", "Start service", MessageBoxButton.YesNo)== MessageBoxResult.Yes)
+            RemoteService service = (RemoteService)this.DataGrid.SelectedItem;
+            if (MessageBox.Show("Are you sure you want to start " + service.Name + "?", "Start service", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 Log.Info(Log.Highlight("Starting service " + service.Name));
                 await service.StartServiceAsync();
@@ -57,7 +59,7 @@ namespace DevChecker.Tabs
 
         private async void onRestartClicked(object sender, RoutedEventArgs e)
         {
-            RemoteService service = (RemoteService)this.serviceGrid.SelectedItem;
+            RemoteService service = (RemoteService)this.DataGrid.SelectedItem;
             if (MessageBox.Show("Are you sure you want to restart " + service.Name + "?", "Restart service", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 Log.Info(Log.Highlight("Restarting service " + service.Name));
@@ -67,7 +69,7 @@ namespace DevChecker.Tabs
 
         private async void onStopClicked(object sender, RoutedEventArgs e)
         {
-            RemoteService service = (RemoteService)this.serviceGrid.SelectedItem;
+            RemoteService service = (RemoteService)this.DataGrid.SelectedItem;
             if (MessageBox.Show("Are you sure you want to stop " + service.Name + "?", "Stop service", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 Log.Info(Log.Highlight("Stopping service " + service.Name));
@@ -75,11 +77,11 @@ namespace DevChecker.Tabs
             }
         }
 
-        private async void onRefreshClicked(object sender, RoutedEventArgs e)
+        protected override async void onRefreshClicked(object sender, RoutedEventArgs e)
         {
             await RemoteSystem.Current.UpdateServicesAsync();
         }
-        private void onSearchFilter(object sender, FilterEventArgs e)
+        protected override void onSearchFilter(object sender, FilterEventArgs e)
         {
             var obj = e.Item as RemoteService;
             if (obj != null)
@@ -87,15 +89,6 @@ namespace DevChecker.Tabs
                 if (obj.DisplayName != null && obj.DisplayName.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
                 else if (obj.Name != null && obj.Name.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
                 else { e.Accepted = false; }
-            }
-        }
-
-        private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            CollectionViewSource source = this.Resources["filteredServices"] as CollectionViewSource;
-            if (source != null)
-            {
-                source.View.Refresh();
             }
         }
     }

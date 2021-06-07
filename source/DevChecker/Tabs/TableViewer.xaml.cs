@@ -60,6 +60,11 @@ namespace DevChecker.Tabs
 
         private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
         {
+            this.RefreshSource();
+        }
+
+        protected void RefreshSource()
+        {
             CollectionViewSource source = this.Resources["filtered"] as CollectionViewSource;
             if (source?.View != null)
             {

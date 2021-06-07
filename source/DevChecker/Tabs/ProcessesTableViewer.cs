@@ -18,37 +18,28 @@
 #endregion
 using Core.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WindowsHelpers;
 
 namespace DevChecker.Tabs
 {
-    /// <summary>
-    /// Interaction logic for ProcessesTab.xaml
-    /// </summary>
-    public partial class ProcessesTab : UserControl
+    public class ProcessesTableViewer: TableViewer
     {
-        public ProcessesTab()
+        public ProcessesTableViewer(): base()
         {
-            InitializeComponent();
+            MenuItem kill = new MenuItem();
+            kill.Click += this.onKillClicked;
+            kill.Header = "Kill process";
+            this.AddContextMenuItem(kill);
         }
+
 
         private async void onKillClicked(object sender, RoutedEventArgs e)
         {
-            RemoteProcess proc = (RemoteProcess)this.procGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to kill "+proc.Name+"?", "Kill process", MessageBoxButton.YesNo)== MessageBoxResult.Yes)
+            RemoteProcess proc = (RemoteProcess)this.DataGrid.SelectedItem;
+            if (MessageBox.Show("Are you sure you want to kill " + proc.Name + "?", "Kill process", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 Log.Info(Log.Highlight("Killing process " + proc.Name));
                 await proc.KillAsync();
@@ -56,12 +47,12 @@ namespace DevChecker.Tabs
             }
         }
 
-        private async void onRefreshClicked(object sender, RoutedEventArgs e)
+        protected override async void onRefreshClicked(object sender, RoutedEventArgs e)
         {
             await RemoteSystem.Current.UpdateProcessesAsync();
         }
 
-        private void onSearchFilter(object sender, FilterEventArgs e)
+        protected override void onSearchFilter(object sender, FilterEventArgs e)
         {
             var obj = e.Item as RemoteProcess;
             if (obj != null)
@@ -69,15 +60,6 @@ namespace DevChecker.Tabs
                 if (obj.Name != null && obj.Name.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
                 else if (obj.Product != null && obj.Product.IndexOf(this.searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0) { e.Accepted = true; }
                 else { e.Accepted = false; }
-            }
-        }
-
-        private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            CollectionViewSource source = this.Resources["filtered"] as CollectionViewSource;
-            if (source != null)
-            {
-                source.View.Refresh();
             }
         }
     }

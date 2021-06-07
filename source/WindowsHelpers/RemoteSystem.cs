@@ -131,21 +131,10 @@ namespace WindowsHelpers
         /// </summary>
         public List<IDictionary<string, string>> PropertyBlocks { get; private set; }
 
-        private List<RemoteProcess> _processes;
-        public List<RemoteProcess> Processes
-        {
-            get { return this._processes; }
-            set { this._processes = value; this.OnPropertyChanged(this, "Processes"); }
-        }
+        public ObservableCollection<object> Processes { get; } = new ObservableCollection<object>();
 
-        private List<RemoteService> _services;
-        public List<RemoteService> Services
-        {
-            get { return this._services; }
-            set { this._services = value; this.OnPropertyChanged(this, "Services"); }
-        }
-
-        public ObservableCollection<Hotfix> Hotfixes { get; } = new ObservableCollection<Hotfix>();
+        public ObservableCollection<object> Services { get; } = new ObservableCollection<object>();
+        public ObservableCollection<object> Hotfixes { get; } = new ObservableCollection<object>();
         public ObservableCollection<object> Printers { get; } = new ObservableCollection<object>();
         public ObservableCollection<object> PrintDrivers { get; } = new ObservableCollection<object>();
 
@@ -317,7 +306,7 @@ namespace WindowsHelpers
         public async Task UpdateProcessesAsync()
         {
             this.ProcessesLoading = true;
-            this.Processes = null;
+            this.Processes.Clear();
             List<RemoteProcess> procs = new List<RemoteProcess>();
             string script = RemoteProcess.GetScript;
 
@@ -332,7 +321,10 @@ namespace WindowsHelpers
                     }
                 }
                 procs.Sort();
-                this.Processes = procs;
+                foreach (var proc in procs)
+                {
+                    this.Processes.Add(proc);
+                }
             }
             catch (Exception e)
             {
@@ -346,7 +338,7 @@ namespace WindowsHelpers
             this.ServicesLoading = true;
             try
             {
-                this.Services = null;
+                this.Services.Clear();
                 List<RemoteService> services = new List<RemoteService>();
                 string script = RemoteService.GetScript;
                 using (PoshHandler posh = new PoshHandler(script, this))
@@ -358,7 +350,10 @@ namespace WindowsHelpers
                     }
                 }
                 services.Sort();
-                this.Services = services;
+                foreach (var service in services)
+                {
+                    this.Services.Add(service);
+                }
             }
             catch (Exception e)
             {
