@@ -43,6 +43,13 @@ namespace DevChecker.Tabs
     /// </summary>
     public abstract partial class TableViewer : UserControl
     {
+        public static readonly DependencyProperty IsSearchEnabledProperty = DependencyProperty.Register("IsSearchEnabled", typeof(bool), typeof(TableViewer));
+        public bool IsSearchEnabled
+        {
+            get { return (bool)GetValue(IsSearchEnabledProperty); }
+            set { SetValue(IsSearchEnabledProperty, value); }
+        }
+
         public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register("IsLoading", typeof(bool), typeof(TableViewer));
         public bool IsLoading
         {

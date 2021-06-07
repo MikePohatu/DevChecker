@@ -147,9 +147,9 @@ namespace DevChecker
             set { this._cmserver = value; this.OnPropertyChanged(this, "CmServer"); }
         }
 
-        public ObservableCollection<CustomActionScript> CustomActions
+        public ActionLibrary ActionLibrary
         {
-            get { return ActionLibrary.PoshScripts; }
+            get { return ActionLibrary.Instance; }
         }
 
         private Visibility _spinnervisibility = Visibility.Collapsed;
@@ -203,7 +203,7 @@ namespace DevChecker
             this._serverCred.Domain = Configuration.Instance.ServerDomain;
             this._serverCred.UseKerberos = Configuration.Instance.ServerKerberos;
             this._clientCred.UseKerberos = Configuration.Instance.ClientKerberos;
-            await ActionLibrary.LoadAsync();
+            await this.customActionsTab.Refresh();
         }
 
         private async void onConnectClick(object sender, RoutedEventArgs e)

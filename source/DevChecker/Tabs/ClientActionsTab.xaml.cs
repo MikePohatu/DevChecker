@@ -38,9 +38,9 @@ namespace DevChecker.Tabs
     /// <summary>
     /// Interaction logic for CustomActionTab.xaml
     /// </summary>
-    public partial class ActionsTab : UserControl
+    public partial class ClientActionsTab : UserControl
     {
-        public ActionsTab()
+        public ClientActionsTab()
         {
             InitializeComponent();
         }
@@ -54,7 +54,7 @@ namespace DevChecker.Tabs
 
         public async void onRefreshClicked(object sender, RoutedEventArgs e)
         {
-            await ActionLibrary.RefreshAsync();
+            await ActionLibrary.Instance.RefreshAsync();
         }
 
         public void onCDollorClicked(object sender, RoutedEventArgs e)

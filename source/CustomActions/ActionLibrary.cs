@@ -28,10 +28,18 @@ namespace CustomActions
 {
     public class ActionLibrary
     {
-        public static ObservableCollection<CustomActionScript> PoshScripts = new ObservableCollection<CustomActionScript>();
-        private static async Task UpdateAsync(bool isrefresh)
-        { 
-            PoshScripts.Clear();
+        public static ActionLibrary Instance { get; } = new ActionLibrary();
+
+        private ActionLibrary() { }
+
+        public ObservableCollection<CustomActionScript> Scripts { get; } = new ObservableCollection<CustomActionScript>();
+        public ObservableCollection<CustomActionScript> Tabs { get; } = new ObservableCollection<CustomActionScript>();
+
+        private async Task UpdateAsync(bool isrefresh)
+        {
+            this.Scripts.Clear();
+            this.Tabs.Clear();
+
             List<CustomActionScript> scripts = new List<CustomActionScript>();
             var scriptpaths = Directory.EnumerateFiles(AppDomain.CurrentDomain.BaseDirectory + "Scripts\\Custom", "*.ps1");
             foreach (string path in scriptpaths)
@@ -44,18 +52,25 @@ namespace CustomActions
             scripts.Sort();
             foreach (CustomActionScript script in scripts)
             {
-                PoshScripts.Add(script);
+                if (script.Settings.DisplayElement == "Tab")
+                {
+                    this.Tabs.Add(script);
+                }
+                else
+                {
+                    this.Scripts.Add(script);
+                }
             }
             if (isrefresh) { Log.Info(Log.Highlight("Actions refreshed")); }
             else { Log.Info("Actions loaded"); }
         }
 
-        public static async Task RefreshAsync()
+        public async Task RefreshAsync()
         {
-            await UpdateAsync(true);
+            await this.UpdateAsync(true);
         }
 
-        public static async Task LoadAsync()
+        public async Task LoadAsync()
         {
             await UpdateAsync(false);
         }

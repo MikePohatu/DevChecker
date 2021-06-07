@@ -18,19 +18,19 @@
 #endregion
 using Core.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 using WindowsHelpers;
-using Newtonsoft.Json;
+using System.Collections.ObjectModel;
+using Core;
 
 namespace CustomActions
 {
-    public class CustomActionScript: IComparable<CustomActionScript>
+    public class CustomActionScript: ViewModelBase, IComparable<CustomActionScript>, IDisposable
     {
+        public PSDataCollection<PSObject> _results;
         private bool _loaded = false;
         private string _scriptpath = string.Empty;
         private string _script = string.Empty;
@@ -50,9 +50,19 @@ namespace CustomActions
         }
         public CustomActionSettings Settings { get; private set; }
 
+        /// <summary>
+        /// The data that can be used by a TableViewer control
+        /// </summary>
+        public ObservableCollection<object> Data { get; } = new ObservableCollection<object>();
+
         public CustomActionScript()
         {
             RemoteSystem.Connected += this.OnConnected;
+        }
+
+        public void Dispose()
+        {
+            RemoteSystem.Connected -= this.OnConnected;
         }
 
         public int CompareTo(CustomActionScript other)
@@ -124,11 +134,33 @@ namespace CustomActions
             if (this._loaded == true && string.IsNullOrWhiteSpace(this._script) == false)
             {
                 Log.Info("Running custom action: " + this.DisplayName);
-
-                PowerShell posh = PoshHandler.GetRunner(this._script, RemoteSystem.Current);
-
+                this.Data.Clear();
                 bool hidescript = this.Settings == null ? false : !this.Settings.LogScriptContent;
-                await PoshHandler.InvokeRunnerAsync(posh, hidescript);
+                
+                PowerShell posh;
+                if (RemoteSystem.Current != null)
+                {
+                    posh = PoshHandler.GetRunner(this._script, RemoteSystem.Current);
+                }
+                else
+                {
+                    posh = PoshHandler.GetRunner(this._script);
+                }
+
+                
+                if (this.Settings.OutputType == "Log")
+                {
+                    this._results = await PoshHandler.InvokeRunnerAsync(posh, hidescript, true);
+                }
+                else
+                {
+                    this._results = await PoshHandler.InvokeRunnerAsync(posh, hidescript, false);
+                }
+
+                foreach (PSObject obj in this._results)
+                {
+                    this.Data.Add(obj);
+                }
             }
             else
             {

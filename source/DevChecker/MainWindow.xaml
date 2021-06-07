@@ -82,7 +82,7 @@
                         <tabs:WindowsClientTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
                     </TabItem>
                     <TabItem Header="Actions" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
-                        <tabs:ActionsTab IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}"/>
+                        <tabs:ClientActionsTab IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}"/>
                     </TabItem>
                     <TabItem Header="Processes" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
                         <tabs:ProcessesTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
@@ -120,6 +120,10 @@
                         <configmgr:CmScriptsTableViewer TableSource="{Binding Scripts}" IsLoading="{Binding ScriptsLoading}" />
                     </TabItem>
                 </TabControl>
+            </TabItem>
+
+            <TabItem Header="Custom" DataContext="{Binding ActionLibrary}">
+                <tabs:CustomActionsTab x:Name="customActionsTab"/>
             </TabItem>
         </TabControl>
 

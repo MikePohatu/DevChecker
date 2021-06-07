@@ -95,12 +95,17 @@ namespace WindowsHelpers
 
         public async static Task<PSDataCollection<PSObject>> InvokeRunnerAsync(PowerShell posh)
         {
-            return await InvokeRunnerAsync(posh, false);
+            return await InvokeRunnerAsync(posh, false, false);
         }
 
         public async static Task<PSDataCollection<PSObject>> InvokeRunnerAsync(PowerShell posh, bool hideScript)
         {
-            PSDataCollection<PSObject> result = null;
+            return await InvokeRunnerAsync(posh, hideScript, false);
+        }
+
+        public async static Task<PSDataCollection<PSObject>> InvokeRunnerAsync(PowerShell posh, bool hideScript, bool logOutut)
+        {
+            var output = new PSDataCollection<PSObject>();
             try
             {
                 if (!hideScript) 
@@ -113,13 +118,22 @@ namespace WindowsHelpers
                     Log.Info(builder.ToString().Trim()); 
                 }
                 
-                result = await Task.Factory.FromAsync(posh.BeginInvoke(), asyncResult => posh.EndInvoke(asyncResult));
+
+                if (logOutut)
+                {
+                    output.DataAdded += delegate (object sender, DataAddedEventArgs e)
+                    {
+                        Log.Info(output[e.Index].ToString());
+                    };
+                }
+                
+                await Task.Factory.FromAsync(posh.BeginInvoke<PSObject, PSObject>(null, output), asyncResult => posh.EndInvoke(asyncResult));
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error running PowerShell script");
             }
-            return result;
+            return output;
         }
 
         public static PowerShell GetRunner(string script)

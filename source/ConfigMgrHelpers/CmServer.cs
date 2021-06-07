@@ -36,6 +36,11 @@ namespace ConfigMgrHelpers
     /// </summary>
     public class CmServer: ViewModelBase
     {
+        /// <summary>
+        /// Static event. Fired when server is connected
+        /// </summary>
+        public static event EventHandler Connected;
+
         //private Microsoft.ConfigurationManagement.Messaging.Framework. _connector;
         /// <summary>
         /// ** Not currently supported. Use WMI as opposed to Administration Service
@@ -128,7 +133,8 @@ namespace ConfigMgrHelpers
                 this.ReportedServerName = PoshHandler.GetFirstPropertyValue<string>(result, "Machine");
                 this.SiteWmiNamespace = @"root\sms\site_" + this.SiteCode;
                 Log.Info("Connected to ConfigMgr server " + this.ServerName + ", site code: " + this.SiteCode);
-
+                
+                Connected?.Invoke(this, new EventArgs());
                 await this.Client.QueryClientAsync();
             }
         }

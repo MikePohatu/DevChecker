@@ -19,7 +19,7 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" IsEnabled="{Binding Path=IsSearchEnabled,  ElementName=tableViewerRoot, FallbackValue=true}">
             <TextBox x:Name="searchBox" TextChanged="onSearchBoxTextChanged"  Width="150" Margin="0,5,5,5" HorizontalAlignment="Left"/>
             <TextBlock Text="Loading" Visibility="{Binding Path=IsLoading, ElementName=tableViewerRoot, Converter={StaticResource BoolToVis}}" Margin="10,5,5,5"  />
         </StackPanel>

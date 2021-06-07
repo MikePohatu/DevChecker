@@ -10,8 +10,8 @@ $InstalledSoftware32 | ForEach-Object {
 
     if ($displayName) {
         $AllInstalledSoftware += [pscustomobject]@{
-            Vendor = $vendor
             Name = $displayName
+            Vendor = $vendor
             Version = $version
             BitDepth = "32bit"
         }
@@ -25,26 +25,29 @@ $InstalledSoftware64 | ForEach-Object {
 
     if ($displayName) {
         $AllInstalledSoftware += [pscustomobject]@{
-            Vendor = $vendor
             Name = $displayName
+            Vendor = $vendor
             Version = $version
             BitDepth = "64bit"
         }
     }
 }
 
-[string]$output = "Applications found on $($env:ComputerName): `nVendor, Name, Version, BitDepth"
-$AllInstalledSoftware | Sort-Object -Property Vendor | Foreach-Object { $output += "`n$($_.Vendor), $($_.Name), $($_.Version), $($_.BitDepth)" }
+#[string]$output = "Applications found on $($env:ComputerName): `nVendor, Name, Version, BitDepth"
+#$AllInstalledSoftware | Sort-Object -Property Vendor | Foreach-Object { $output += "`n$($_.Vendor), $($_.Name), $($_.Version), $($_.BitDepth)" }
+#Write-Information $output
 
-Write-Information $output
+$AllInstalledSoftware | Sort-Object -Property Vendor
+
 Write-Information "Done"
 
 <#ActionSettings
 {
     "DisplayName": "Get Applications",
-    "OutputType": "None",
+    "DisplayElement": "Tab",
     "Description": "List installed applications recorded in registry",
     "RunOnConnect": false,
-    "LogScriptContent": false
+    "LogScriptContent": false,
+    "FilterProperties": ["Name", "Vendor"]
 }
 ActionSettings#>
