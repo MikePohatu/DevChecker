@@ -65,18 +65,21 @@ namespace ConfigMgrHelpers.Deploy
 
 				Log.Info("Gathering Software Center applications");
 				this.Applications.Clear();
-				var posh = PoshHandler.GetRunner(command, RemoteSystem.Current);
-				var result = await PoshHandler.InvokeRunnerAsync(posh);
+				using (var posh = new PoshHandler(command, RemoteSystem.Current))
+                {
+					var result = await posh.InvokeRunnerAsync();
 
-				if (result.Count > 0)
-				{
-					foreach (var poshObj in result)
+					if (result.Count > 0)
 					{
-						this.Applications.Add(Application.New(poshObj));
-					}
+						foreach (var poshObj in result)
+						{
+							this.Applications.Add(Application.New(poshObj));
+						}
 
-					Log.Info("Finished gathering applications");
+						Log.Info("Finished gathering applications");
+					}
 				}
+					
 				this.ApplicationsLoading = false;
 			}
 		}
@@ -90,18 +93,21 @@ namespace ConfigMgrHelpers.Deploy
 
 				Log.Info("Gathering Software Center updates");
 				this.SoftwareUpdates.Clear();
-				var posh = PoshHandler.GetRunner(command, RemoteSystem.Current);
-				var result = await PoshHandler.InvokeRunnerAsync(posh);
-
-				if (result.Count > 0)
+				using (var posh = new PoshHandler(command, RemoteSystem.Current))
 				{
-					foreach (var poshObj in result)
-					{
-						this.SoftwareUpdates.Add(Update.New(poshObj));
-					}
+					var result = await posh.InvokeRunnerAsync();
 
-					Log.Info("Finished gathering updates");
+					if (result.Count > 0)
+					{
+						foreach (var poshObj in result)
+						{
+							this.SoftwareUpdates.Add(Update.New(poshObj));
+						}
+
+						Log.Info("Finished gathering updates");
+					}
 				}
+				
 				this.UpdatesLoading = false;
 			}
 		}
@@ -114,18 +120,21 @@ namespace ConfigMgrHelpers.Deploy
 				string command = TaskSequence.GetterCommand;
 				Log.Info("Gathering Software Center Task Sequences");
 				this.TaskSequences.Clear();
-				var posh = PoshHandler.GetRunner(command, RemoteSystem.Current);
-				var result = await PoshHandler.InvokeRunnerAsync(posh);
+				using (var posh = new PoshHandler(command, RemoteSystem.Current))
+                {
+					var result = await posh.InvokeRunnerAsync();
 
-				if (result.Count > 0)
-				{
-					foreach (var poshObj in result)
+					if (result.Count > 0)
 					{
-						this.TaskSequences.Add(TaskSequence.New(poshObj));
-					}
+						foreach (var poshObj in result)
+						{
+							this.TaskSequences.Add(TaskSequence.New(poshObj));
+						}
 
-					Log.Info("Finished gathering task sequences");
+						Log.Info("Finished gathering task sequences");
+					}
 				}
+					
 				this.TaskSequencesLoading = false;
 			}
 		}

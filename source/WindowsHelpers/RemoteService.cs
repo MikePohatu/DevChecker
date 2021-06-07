@@ -82,10 +82,10 @@ namespace WindowsHelpers
             try
             {
                 string script = await IOHelpers.ReadFileAsync(scriptPath);
-                using (PowerShell posh = PoshHandler.GetRunner(script, RemoteSystem.Current))
+                using (PoshHandler posh = new PoshHandler(script, RemoteSystem.Current))
                 {
-                    posh.AddStatement().AddCommand("RestartService").AddParameter("ServiceName", this.Name);
-                    var result = await PoshHandler.InvokeRunnerAsync(posh, true);
+                    posh.Runner.AddStatement().AddCommand("RestartService").AddParameter("ServiceName", this.Name);
+                    var result = await posh.InvokeRunnerAsync(true);
                     this.Refresh(result.First());
                 }
             }
@@ -102,10 +102,10 @@ namespace WindowsHelpers
             try
             {
                 string script = await IOHelpers.ReadFileAsync(scriptPath);
-                using (PowerShell posh = PoshHandler.GetRunner(script, RemoteSystem.Current))
+                using (PoshHandler posh = new PoshHandler(script, RemoteSystem.Current))
                 {
-                    posh.AddStatement().AddCommand("StopService").AddParameter("ServiceName", this.Name);
-                    var result = await PoshHandler.InvokeRunnerAsync(posh, true);
+                    posh.Runner.AddStatement().AddCommand("StopService").AddParameter("ServiceName", this.Name);
+                    var result = await posh.InvokeRunnerAsync(true);
                     this.Refresh(result.First());
                 }
             }
@@ -122,10 +122,10 @@ namespace WindowsHelpers
             try
             {
                 string script = await IOHelpers.ReadFileAsync(scriptPath);
-                using (PowerShell posh = PoshHandler.GetRunner(script, RemoteSystem.Current))
+                using (PoshHandler posh = new PoshHandler(script, RemoteSystem.Current))
                 {
-                    posh.AddStatement().AddCommand("StartService").AddParameter("ServiceName", this.Name);
-                    var result = await PoshHandler.InvokeRunnerAsync(posh, true);
+                    posh.Runner.AddStatement().AddCommand("StartService").AddParameter("ServiceName", this.Name);
+                    var result = await posh.InvokeRunnerAsync(true);
                     this.Refresh(result.First());
                 }
             }

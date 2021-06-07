@@ -106,9 +106,9 @@ namespace ConfigMgrHelpers
                     sb.AppendLine("Get-ServerSideInfo -ComputerName " + this.ClientName + " -NameSpace " + CmServer.Current.SiteWmiNamespace + " -Server " + CmServer.Current.ServerName);
 
 
-                    using (PowerShell posh = PoshHandler.GetRunner(sb.ToString()))
+                    using (var posh = new PoshHandler(sb.ToString()))
                     {
-                        PSDataCollection<PSObject> results = await PoshHandler.InvokeRunnerAsync(posh, true);
+                        PSDataCollection<PSObject> results = await posh.InvokeRunnerAsync(true);
                         if (results != null)
                         {
                             this.ClientIPs = PoshHandler.GetFirstHashTableString(results, "IPAddresses");
@@ -137,23 +137,22 @@ namespace ConfigMgrHelpers
                 Log.Info("Gathering collections");
                 string command = "Get-WmiObject -ComputerName " + CmServer.Current.ServerName + " -Namespace \"" + CmServer.Current.SiteWmiNamespace + "\"  -Query \"SELECT DISTINCT SMS_Collection.* FROM SMS_FullCollectionMembership, SMS_Collection where name = '" + this.ClientName + "' and SMS_FullCollectionMembership.CollectionID = SMS_Collection.CollectionID\"";
 
-                var posh = PoshHandler.GetRunner(command);
-                var result = await PoshHandler.InvokeRunnerAsync(posh);
-
-                if (result.Count > 0)
+                using (var posh = new PoshHandler(command))
                 {
-                    foreach (PSObject obj in result)
+                    var result = await posh.InvokeRunnerAsync();
+
+                    if (result.Count > 0)
                     {
-                        string colname = PoshHandler.GetPropertyValue<string>(obj, "Name");
-                        string colid = PoshHandler.GetPropertyValue<string>(obj, "CollectionID");
-                        this.Collections.Add(new CmCollection(colname, colid));
+                        foreach (PSObject obj in result)
+                        {
+                            string colname = PoshHandler.GetPropertyValue<string>(obj, "Name");
+                            string colid = PoshHandler.GetPropertyValue<string>(obj, "CollectionID");
+                            this.Collections.Add(new CmCollection(colname, colid));
+                        }
+
+                        Log.Info("Finished gathering collections");
                     }
-
-                    //this.ClientIPs = string.Join(", ", PoshHandler.GetFirstPropertyValue<string[]>(result, "IPAddresses"));
-                    //this.ClientOU = PoshHandler.GetFirstPropertyValue<string[]>(result, "SystemOUName").Last();
-
-                    Log.Info("Finished gathering collections");
-                }
+                }                    
             }
         }
     }

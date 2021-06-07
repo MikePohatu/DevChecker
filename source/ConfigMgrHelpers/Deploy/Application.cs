@@ -56,8 +56,10 @@ namespace ConfigMgrHelpers.Deploy
                 builder.AppendLine(script).Append("Deploy-Application -AppID '").Append(this.Id).AppendLine("' -Action Install");
 
                 Log.Info("Installing application " + this.Name);
-                var posh = PoshHandler.GetRunner(builder.ToString(), RemoteSystem.Current);
-                await PoshHandler.InvokeRunnerAsync(posh,true);
+                using (var posh = new PoshHandler(builder.ToString(), RemoteSystem.Current))
+                {
+                    await posh.InvokeRunnerAsync(true);
+                }                    
             }
         }
 
@@ -71,8 +73,10 @@ namespace ConfigMgrHelpers.Deploy
                 builder.AppendLine(script).Append("Deploy-Application -AppID '").Append(this.Id).AppendLine("' -Action Uninstall");
 
                 Log.Info("Uninstalling application " + this.Name);
-                var posh = PoshHandler.GetRunner(builder.ToString(), RemoteSystem.Current);
-                await PoshHandler.InvokeRunnerAsync(posh, true);
+                using (var posh = new PoshHandler(builder.ToString(), RemoteSystem.Current))
+                {
+                    await posh.InvokeRunnerAsync(true);
+                }                    
             }
         }
     }

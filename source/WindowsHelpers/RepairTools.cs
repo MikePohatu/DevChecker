@@ -35,8 +35,11 @@ namespace WindowsHelpers
 				Log.Info(Log.Highlight("Initiating RestoreHealth. Note that this may take some time"));
 				string command = "Repair-WindowsImage -Online -RestoreHealth -LimitAccess -NoRestart | Foreach-Object { Write-Information \"**Image state: $($_.ImageHealthState)\" }";
 
-				var posh = PoshHandler.GetRunner(command, RemoteSystem.Current);
-				await PoshHandler.InvokeRunnerAsync(posh);
+				using (var posh = new PoshHandler(command, RemoteSystem.Current))
+                {
+					await posh.InvokeRunnerAsync();
+				}
+					
 				Log.Info("Finished RestoreHealth repair");
 			}
 		}
@@ -47,8 +50,10 @@ namespace WindowsHelpers
 			{
 				string command = "Repair-WindowsImage -Online -CheckHealth -NoRestart | Foreach-Object { Write-Information \"**Image state: $($_.ImageHealthState)\" }";
 
-				var posh = PoshHandler.GetRunner(command, RemoteSystem.Current);
-				await PoshHandler.InvokeRunnerAsync(posh);
+				using (var posh = new PoshHandler(command, RemoteSystem.Current))
+				{
+					await posh.InvokeRunnerAsync();
+				}
 				Log.Info("Finished CheckHealth");
 			}
 		}
@@ -60,8 +65,10 @@ namespace WindowsHelpers
 				Log.Info(Log.Highlight("Initiating ScanHealth. Note that this may take some time"));
 				string command = "Repair-WindowsImage -Online -ScanHealth -NoRestart | Foreach-Object { Write-Information \"**Image state: $($_.ImageHealthState)\" }";
 
-				var posh = PoshHandler.GetRunner(command, RemoteSystem.Current);
-				await PoshHandler.InvokeRunnerAsync(posh);
+				using (var posh = new PoshHandler(command, RemoteSystem.Current))
+				{
+					await posh.InvokeRunnerAsync();
+				}
 				Log.Info("Finished ScanHealth");
 			}
 		}
@@ -72,9 +79,9 @@ namespace WindowsHelpers
 			{
 				string script = "Start-Process 'sfc.exe' '/scannow' -Wait";
 
-				using (PowerShell posh = PoshHandler.GetRunner(script, RemoteSystem.Current))
+				using (var posh = new PoshHandler(script, RemoteSystem.Current))
 				{
-					await PoshHandler.InvokeRunnerAsync(posh);
+					await posh.InvokeRunnerAsync();
 					Log.Info("Done");
 				}
 			}
@@ -89,9 +96,9 @@ namespace WindowsHelpers
 			string command = "(winmgmt /verifyrepository) | Foreach-Object { Write-Information $_ }";
 			try
 			{
-				using (PowerShell posh = PoshHandler.GetRunner(command, RemoteSystem.Current))
+				using (var posh = new PoshHandler(command, RemoteSystem.Current))
 				{
-					await PoshHandler.InvokeRunnerAsync(posh);
+					await posh.InvokeRunnerAsync();
 					Log.Info("Done");
 				}
 			}
@@ -106,9 +113,9 @@ namespace WindowsHelpers
 			string command = "(winmgmt /salvagerepository) | Foreach-Object { Write-Information $_ }";
 			try
 			{
-				using (PowerShell posh = PoshHandler.GetRunner(command, RemoteSystem.Current))
+				using (var posh = new PoshHandler(command, RemoteSystem.Current))
 				{
-					await PoshHandler.InvokeRunnerAsync(posh);
+					await posh.InvokeRunnerAsync();
 					Log.Info("Done");
 				}
 			}

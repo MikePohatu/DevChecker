@@ -65,8 +65,10 @@ namespace ConfigMgrHelpers.Deploy
 
                 string command = @"get-wmiobject -query 'SELECT * FROM CCM_SoftwareUpdate' -namespace 'ROOT\ccm\ClientSDK' | Where-Object {$_.ArticleID -eq "+this.ArticleID+ @"} | ForEach-Object { Invoke-WmiMethod  -Namespace 'root\ccm\clientsdk' -Class CCM_SoftwareUpdatesManager -Name InstallUpdates -ArgumentList (,$_) }";
                 Log.Info("Installing update " + this.Name);
-                var posh = PoshHandler.GetRunner(command, RemoteSystem.Current);
-                await PoshHandler.InvokeRunnerAsync(posh);
+                using (var posh = new PoshHandler(command, RemoteSystem.Current))
+                {
+                    await posh.InvokeRunnerAsync();
+                }
             }
         }
     }

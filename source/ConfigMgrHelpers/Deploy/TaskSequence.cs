@@ -51,8 +51,10 @@ namespace ConfigMgrHelpers.Deploy
             {
                 string command = "Get-WmiObject -Query 'SELECT PackageID, ProgramID FROM CCM_Program WHERE PackageID=\""+this.PackageID+"\"' -Namespace 'root\\ccm\\clientsdk' | ForEach-Object { Invoke-WmiMethod -class CCM_ProgramsManager -Namespace 'root\\ccm\\clientsdk' -Name ExecutePrograms -argumentlist $_ }";
                 Log.Info("Running task sequence " + this.Name + ", ID:" + this.PackageID);
-                var posh = PoshHandler.GetRunner(command, RemoteSystem.Current);
-                await PoshHandler.InvokeRunnerAsync(posh);
+                using (var posh = new PoshHandler(command, RemoteSystem.Current))
+                {
+                    await posh.InvokeRunnerAsync();
+                }                    
             }
         }
     }

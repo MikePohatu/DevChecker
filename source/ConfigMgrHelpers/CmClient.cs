@@ -108,16 +108,17 @@ namespace ConfigMgrHelpers
 				Log.Info("Gathering ConfigMgr client info");
 				string command = @"Get-WmiObject -Namespace root\ccm -Query 'SELECT * FROM SMS_Client'"; 
 
-				var posh = PoshHandler.GetRunner(command, RemoteSystem.Current);
-				var result = await PoshHandler.InvokeRunnerAsync(posh);
-
-				if (result.Count > 0)
+				using (var posh = new PoshHandler(command, RemoteSystem.Current))
 				{
-					this.ClientVersion = PoshHandler.GetFirstPropertyValue<string>(result, "ClientVersion");
-					this.ReportedName = PoshHandler.GetFirstPropertyValue<string>(result, "PSComputerName");
-					this.ResourceID = PoshHandler.GetFirstPropertyValue<string>(result, "ResourceId");
-					Log.Info("Finished gathering ConfigMgr client info");
-				}
+					var result = await posh.InvokeRunnerAsync();
+					if (result.Count > 0)
+					{
+						this.ClientVersion = PoshHandler.GetFirstPropertyValue<string>(result, "ClientVersion");
+						this.ReportedName = PoshHandler.GetFirstPropertyValue<string>(result, "PSComputerName");
+						this.ResourceID = PoshHandler.GetFirstPropertyValue<string>(result, "ResourceId");
+						Log.Info("Finished gathering ConfigMgr client info");
+					}
+				}				
 			}
 		}
 
@@ -132,16 +133,18 @@ namespace ConfigMgrHelpers
 				string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\CMGetLogonHistory.ps1";
 				string script = await IOHelpers.ReadFileAsync(scriptPath);
 
-				var posh = PoshHandler.GetRunner(script, RemoteSystem.Current);
-				var result = await PoshHandler.InvokeRunnerAsync(posh, true);
-
-				if (result.Count > 0)
+				using (var posh = new PoshHandler(script, RemoteSystem.Current))
 				{
-					foreach (PSObject obj in result)
-                    {
-						this.LogonEvents.Add(new LogonEvent(obj));
-                    }
-					Log.Info("Finished gathering logon events");
+					var result = await posh.InvokeRunnerAsync(true);
+
+					if (result.Count > 0)
+					{
+						foreach (PSObject obj in result)
+						{
+							this.LogonEvents.Add(new LogonEvent(obj));
+						}
+						Log.Info("Finished gathering logon events");
+					}
 				}
 				this.LogonEventsLoading = false;
 			}
@@ -183,8 +186,11 @@ namespace ConfigMgrHelpers
 				string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\CMRepairClient.ps1";
 				string script = await IOHelpers.ReadFileAsync(scriptPath);
 
-				var posh = PoshHandler.GetRunner(script, RemoteSystem.Current);
-				await PoshHandler.InvokeRunnerAsync(posh, true);
+
+				using (var posh = new PoshHandler(script, RemoteSystem.Current))
+                {
+					await posh.InvokeRunnerAsync(true);
+				}					
 			}
 		}
 	}

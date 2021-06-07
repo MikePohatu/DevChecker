@@ -122,20 +122,22 @@ namespace ConfigMgrHelpers
         {
             string command = "Get-WmiObject -Namespace \"ROOT\\SMS\" -Query \"SELECT * FROM SMS_ProviderLocation\" -ComputerName " + this.ServerName;
 
-            var posh = PoshHandler.GetRunner(command);
-            var result = await PoshHandler.InvokeRunnerAsync(posh);
-
-            if (result != null)
+            using (var posh = new PoshHandler(command))
             {
-                this.IsConnected = true;
-                this.WmiNamespacePath = PoshHandler.GetFirstPropertyValue<string>(result, "NamespacePath");
-                this.SiteCode = PoshHandler.GetFirstPropertyValue<string>(result, "SiteCode");
-                this.ReportedServerName = PoshHandler.GetFirstPropertyValue<string>(result, "Machine");
-                this.SiteWmiNamespace = @"root\sms\site_" + this.SiteCode;
-                Log.Info("Connected to ConfigMgr server " + this.ServerName + ", site code: " + this.SiteCode);
-                
-                Connected?.Invoke(this, new EventArgs());
-                await this.Client.QueryClientAsync();
+                var result = await posh.InvokeRunnerAsync();
+
+                if (result != null)
+                {
+                    this.IsConnected = true;
+                    this.WmiNamespacePath = PoshHandler.GetFirstPropertyValue<string>(result, "NamespacePath");
+                    this.SiteCode = PoshHandler.GetFirstPropertyValue<string>(result, "SiteCode");
+                    this.ReportedServerName = PoshHandler.GetFirstPropertyValue<string>(result, "Machine");
+                    this.SiteWmiNamespace = @"root\sms\site_" + this.SiteCode;
+                    Log.Info("Connected to ConfigMgr server " + this.ServerName + ", site code: " + this.SiteCode);
+
+                    Connected?.Invoke(this, new EventArgs());
+                    await this.Client.QueryClientAsync();
+                }
             }
         }
 
@@ -147,17 +149,19 @@ namespace ConfigMgrHelpers
             //string command = "Get-WmiObject -Namespace \"ROOT\\SMS\" -Query \"SELECT * FROM SMS_ProviderLocation\" -ComputerName " + this.ServerName;
             string command = CmScript.GetterQuery();
 
-            var posh = PoshHandler.GetRunner(command);
-            var result = await PoshHandler.InvokeRunnerAsync(posh);
-
-            if (result != null)
+            using (var posh = new PoshHandler(command))
             {
-                foreach (var obj in result)
-                {
-                    this.Scripts.Add(new CmScript(obj));
-                }
+                var result = await posh.InvokeRunnerAsync();
 
+                if (result != null)
+                {
+                    foreach (var obj in result)
+                    {
+                        this.Scripts.Add(new CmScript(obj));
+                    }
+                }
             }
+                
             this.ScriptsLoading = false;
         }
     }

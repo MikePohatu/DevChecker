@@ -51,8 +51,10 @@ namespace WindowsHelpers
             {
                 string command = "Start-Process wusa.exe -ArgumentList \"/ uninstall / KB:"+this.HotFixID+" / quiet / norestart\"";
                 Log.Info("Uninstalling hotfix " + this.HotFixID);
-                var posh = PoshHandler.GetRunner(command, RemoteSystem.Current);
-                await PoshHandler.InvokeRunnerAsync(posh);
+                using (var posh = new PoshHandler(command, RemoteSystem.Current))
+                {
+                    await posh.InvokeRunnerAsync();
+                }                    
             }
         }
     }

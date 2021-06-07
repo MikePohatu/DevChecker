@@ -48,10 +48,12 @@ namespace ConfigMgrHelpers
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("ClientAction", this.Name);
 
-            PowerShell posh = PoshHandler.GetRunner(script, RemoteSystem.Current);
-            posh.AddStatement().AddCommand("Run-CMAction").AddParameter("ClientAction", this.ID);
-    
-            await PoshHandler.InvokeRunnerAsync(posh, true);
+            using (var posh = new PoshHandler(script, RemoteSystem.Current))
+            {
+                posh.Runner.AddStatement().AddCommand("Run-CMAction").AddParameter("ClientAction", this.ID);
+
+                await posh.InvokeRunnerAsync(true);
+            }                
         }
     }
 }

@@ -70,9 +70,9 @@ namespace ConfigMgrHelpers.Deploy
                 sb.Append(" -ScriptGuid ").Append(this.Guid).Append(" -TargetResourceIDs ").Append(CmServerSideClient.Current.ResourceID);
 
                 script = sb.ToString();
-                using (var posh = PoshHandler.GetRunner(script))
+                using (var posh = new PoshHandler(script))
                 {
-                    var result = await PoshHandler.InvokeRunnerAsync(posh, true);
+                    var result = await posh.InvokeRunnerAsync(true);
                 }
                 Log.Info("Initiated script " + this.Name + ". Check the ConfigMgr console for status.");
             }

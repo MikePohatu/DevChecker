@@ -136,31 +136,33 @@ namespace CustomActions
                 Log.Info("Running custom action: " + this.DisplayName);
                 this.Data.Clear();
                 bool hidescript = this.Settings == null ? false : !this.Settings.LogScriptContent;
-                
-                PowerShell posh;
+
+                PoshHandler posh;
                 if (RemoteSystem.Current != null)
                 {
-                    posh = PoshHandler.GetRunner(this._script, RemoteSystem.Current);
+                    posh = new PoshHandler(this._script, RemoteSystem.Current);
                 }
                 else
                 {
-                    posh = PoshHandler.GetRunner(this._script);
+                    posh = new PoshHandler(this._script);
                 }
 
                 
                 if (this.Settings.OutputType == "Log")
                 {
-                    this._results = await PoshHandler.InvokeRunnerAsync(posh, hidescript, true);
+                    this._results = await posh.InvokeRunnerAsync(hidescript, true);
                 }
                 else
                 {
-                    this._results = await PoshHandler.InvokeRunnerAsync(posh, hidescript, false);
+                    this._results = await posh.InvokeRunnerAsync(hidescript, false);
                 }
 
                 foreach (PSObject obj in this._results)
                 {
                     this.Data.Add(obj);
                 }
+
+                posh.Dispose();
             }
             else
             {

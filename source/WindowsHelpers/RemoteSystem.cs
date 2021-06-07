@@ -185,9 +185,9 @@ namespace WindowsHelpers
                 string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\GetSystemInfo.ps1";
                 string script = await IOHelpers.ReadFileAsync(scriptPath);
 
-                using (PowerShell posh = PoshHandler.GetRunner(script, this))
+                using (PoshHandler posh = new PoshHandler(script, this))
                 {
-                    PSDataCollection<PSObject> results = await PoshHandler.InvokeRunnerAsync(posh, true);
+                    PSDataCollection<PSObject> results = await posh.InvokeRunnerAsync(true);
                     if (results != null)
                     {
                         this.IsConnected = true;
@@ -318,9 +318,9 @@ namespace WindowsHelpers
 
             try
             {
-                using (PowerShell posh = PoshHandler.GetRunner(script, this))
+                using (PoshHandler posh = new PoshHandler(script, this))
                 {
-                    var results = await PoshHandler.InvokeRunnerAsync(posh);
+                    var results = await posh.InvokeRunnerAsync();
                     foreach (var result in results)
                     {
                         procs.Add(RemoteProcess.Create(result));
@@ -344,9 +344,9 @@ namespace WindowsHelpers
                 this.Services = null;
                 List<RemoteService> services = new List<RemoteService>();
                 string script = RemoteService.GetScript;
-                using (PowerShell posh = PoshHandler.GetRunner(script, this))
+                using (PoshHandler posh = new PoshHandler(script, this))
                 {
-                    var results = await PoshHandler.InvokeRunnerAsync(posh);
+                    var results = await posh.InvokeRunnerAsync();
                     foreach (var result in results)
                     {
                         services.Add(RemoteService.Create(result));
@@ -370,9 +370,9 @@ namespace WindowsHelpers
             {
                 this.Hotfixes.Clear();
                 string script = Hotfix.GetterCommand;
-                using (PowerShell posh = PoshHandler.GetRunner(script, this))
+                using (PoshHandler posh = new PoshHandler(script, this))
                 {
-                    var results = await PoshHandler.InvokeRunnerAsync(posh);
+                    var results = await posh.InvokeRunnerAsync();
                     foreach (var result in results)
                     {
                         this.Hotfixes.Add(Hotfix.New(result));
@@ -395,9 +395,9 @@ namespace WindowsHelpers
                 this.Printers.Clear();
                 string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\GetAllPrinters.ps1";
                 string script = await IOHelpers.ReadFileAsync(scriptPath);
-                using (PowerShell posh = PoshHandler.GetRunner(script, this))
+                using (PoshHandler posh = new PoshHandler(script, this))
                 {
-                    var results = await PoshHandler.InvokeRunnerAsync(posh, true);
+                    var results = await posh.InvokeRunnerAsync(true);
                     foreach (var result in results)
                     {
                         this.Printers.Add(new Printer(result));
@@ -420,9 +420,9 @@ namespace WindowsHelpers
                 this.Printers.Clear();
                 string command = " Get-PrinterDriver | Select-Object Name, Manufacturer, PrinterEnvironment, MajorVersion | Sort-Object -Property Name";
 
-                using (PowerShell posh = PoshHandler.GetRunner(command, this))
+                using (PoshHandler posh = new PoshHandler(command, this))
                 {
-                    var results = await PoshHandler.InvokeRunnerAsync(posh);
+                    var results = await posh.InvokeRunnerAsync();
                     foreach (var result in results)
                     {
                         this.PrintDrivers.Add(new PrintDriver(result));
@@ -443,9 +443,9 @@ namespace WindowsHelpers
                 //string script = "Start-Process 'gpupdate.exe' '/force' -Wait";
                 string script = "(gpupdate /force) | Foreach-Object { Write-Information $_ }";
 
-                using (PowerShell posh = PoshHandler.GetRunner(script, this))
+                using (PoshHandler posh = new PoshHandler(script, this))
                 {
-                    await PoshHandler.InvokeRunnerAsync(posh);
+                    await posh.InvokeRunnerAsync();
                     Log.Info("Done");
                 }
             }
@@ -461,9 +461,9 @@ namespace WindowsHelpers
             {
                 string script = "Stop-Computer -Force";
 
-                using (PowerShell posh = PoshHandler.GetRunner(script, this))
+                using (PoshHandler posh = new PoshHandler(script, this))
                 {
-                    await PoshHandler.InvokeRunnerAsync(posh);
+                    await posh.InvokeRunnerAsync();
                 }
             }
             catch (Exception e)
@@ -478,9 +478,9 @@ namespace WindowsHelpers
             {
                 string script = "Restart-Computer -Force";
 
-                using (PowerShell posh = PoshHandler.GetRunner(script, this))
+                using (PoshHandler posh = new PoshHandler(script, this))
                 {
-                    await PoshHandler.InvokeRunnerAsync(posh);
+                    await posh.InvokeRunnerAsync();
                 }
             }
             catch (Exception e)

@@ -30,12 +30,50 @@ using Core;
 
 namespace WindowsHelpers
 {
-    public static class PoshHandler
+    public class PoshHandler: IDisposable
     {
         public static bool LogVerbose { get; set; } = false;
         public static bool LogProgress { get; set; } = false;
 
-        private static PowerShell GetRunner(string script, string computerName, bool useSSL, int port, Credential cred)
+        public PowerShell Runner { get; set; }
+
+        public PoshHandler(string script, string computerName, bool useSSL, int port, Credential cred)
+        {
+            this.Create(script, computerName, useSSL, port, cred);
+        }
+
+        public PoshHandler(string script)
+        {
+            this.Create(script, "localhost", false, null);
+        }
+
+        public PoshHandler(string script, RemoteSystem remote)
+        {
+            this.Create(script, remote.ComputerName, remote.UseSSL, remote.Credential);
+        }
+
+        public PoshHandler(string script, Credential cred)
+        {
+            this.Create(script, "localhost", false, cred);
+        }
+
+        public PoshHandler(string computerName, bool useSSL, Credential cred)
+        {
+            this.Create(null, computerName, useSSL, cred);
+        }
+
+        public PoshHandler(string script, string computerName, bool useSSL, Credential cred)
+        {
+            this.Create(script, computerName, useSSL, cred);
+        }
+
+        private void Create(string script, string computerName, bool useSSL, Credential cred)
+        {
+            int port = useSSL ? 5986 : 5985;
+            this.Create(script, computerName, useSSL, port, cred);
+        }
+
+        private void Create(string script, string computerName, bool useSSL, int port, Credential cred)
         {
             bool credsSet = cred == null ? false : cred.CredentialsSet;
             Log.Trace($"PoshHandler.GetRunner called. computerName:{computerName}, useSSL:{useSSL}, port:{port}, cred:{credsSet}");
@@ -78,32 +116,32 @@ namespace WindowsHelpers
             runspace.Open();
 
             runspace.CreatePipeline();
-            PowerShell posh = PowerShell.Create();
-            posh.Streams.Warning.DataAdded += WarnEventHandler;
-            posh.Streams.Error.DataAdded += ErrorEventHandler;
-            posh.Streams.Information.DataAdded += InfoEventHandler;
-            posh.Streams.Verbose.DataAdded += VerboseEventHandler;
-            posh.Streams.Progress.DataAdded += ProgressEventHandler;
+            this.Runner = PowerShell.Create();
 
-            posh.Runspace = runspace;
+            this.Runner.Streams.Warning.DataAdded += this.WarnEventHandler;
+            this.Runner.Streams.Error.DataAdded += this.ErrorEventHandler;
+            this.Runner.Streams.Information.DataAdded += this.InfoEventHandler;
+            this.Runner.Streams.Verbose.DataAdded += this.VerboseEventHandler;
+            this.Runner.Streams.Progress.DataAdded += this.ProgressEventHandler;
+
+            this.Runner.Runspace = runspace;
             if (string.IsNullOrWhiteSpace(script) == false)
             {
-                posh.AddScript(script,false);
+                this.Runner.AddScript(script,false);
             }
-            return posh;
         }
 
-        public async static Task<PSDataCollection<PSObject>> InvokeRunnerAsync(PowerShell posh)
+        public async Task<PSDataCollection<PSObject>> InvokeRunnerAsync()
         {
-            return await InvokeRunnerAsync(posh, false, false);
+            return await InvokeRunnerAsync(false, false);
         }
 
-        public async static Task<PSDataCollection<PSObject>> InvokeRunnerAsync(PowerShell posh, bool hideScript)
+        public async Task<PSDataCollection<PSObject>> InvokeRunnerAsync(bool hideScript)
         {
-            return await InvokeRunnerAsync(posh, hideScript, false);
+            return await InvokeRunnerAsync(hideScript, false);
         }
 
-        public async static Task<PSDataCollection<PSObject>> InvokeRunnerAsync(PowerShell posh, bool hideScript, bool logOutut)
+        public async Task<PSDataCollection<PSObject>> InvokeRunnerAsync(bool hideScript, bool logOutut)
         {
             var output = new PSDataCollection<PSObject>();
             try
@@ -111,7 +149,7 @@ namespace WindowsHelpers
                 if (!hideScript) 
                 {
                     StringBuilder builder = new StringBuilder();
-                    foreach (Command command in posh.Commands.Commands)
+                    foreach (Command command in this.Runner.Commands.Commands)
                     {
                         builder.AppendLine(command.CommandText);
                     }
@@ -127,39 +165,13 @@ namespace WindowsHelpers
                     };
                 }
                 
-                await Task.Factory.FromAsync(posh.BeginInvoke<PSObject, PSObject>(null, output), asyncResult => posh.EndInvoke(asyncResult));
+                await Task.Factory.FromAsync(this.Runner.BeginInvoke<PSObject, PSObject>(null, output), asyncResult => this.Runner.EndInvoke(asyncResult));
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error running PowerShell script");
             }
             return output;
-        }
-
-        public static PowerShell GetRunner(string script)
-        {
-            return GetRunner(script, "localhost", false, null);
-        }
-
-        public static PowerShell GetRunner(string script, RemoteSystem remote)
-        {
-            return GetRunner(script, remote.ComputerName, remote.UseSSL, remote.Credential);
-        }
-
-        public static PowerShell GetRunner(string script, Credential cred)
-        {
-            return GetRunner(script, "localhost", false, cred);
-        }
-
-        public static PowerShell GetRunner(string computerName, bool useSSL, Credential cred)
-        {
-            return GetRunner(null, computerName, useSSL, cred);
-        }
-
-        public static PowerShell GetRunner(string script, string computerName, bool useSSL, Credential cred)
-        {
-            int port = useSSL ? 5986 : 5985;
-            return GetRunner(script, computerName, useSSL, port, cred);
         }
 
         public static T GetPropertyValue<T>(PSObject obj, string valueName)
@@ -299,19 +311,19 @@ namespace WindowsHelpers
             return newList;
         }
 
-        public static void InfoEventHandler(object sender, DataAddedEventArgs e)
+        public void InfoEventHandler(object sender, DataAddedEventArgs e)
         {
             InformationRecord newRecord = ((PSDataCollection<InformationRecord>)sender)[e.Index];
             Log.Info(newRecord.MessageData.ToString());
         }
 
-        public static void WarnEventHandler(object sender, DataAddedEventArgs e)
+        public void WarnEventHandler(object sender, DataAddedEventArgs e)
         {
             WarningRecord newRecord = ((PSDataCollection<WarningRecord>)sender)[e.Index];
             Log.Warn(newRecord.Message);
         }
 
-        public static void ProgressEventHandler(object sender, DataAddedEventArgs e)
+        public void ProgressEventHandler(object sender, DataAddedEventArgs e)
         {
             if (LogProgress)
             {
@@ -323,19 +335,19 @@ namespace WindowsHelpers
             }
         }
 
-        public static void ErrorEventHandler(object sender, DataAddedEventArgs e)
+        public void ErrorEventHandler(object sender, DataAddedEventArgs e)
         {
             ErrorRecord newRecord = ((PSDataCollection<ErrorRecord>)sender)[e.Index];
             Log.Error(newRecord.Exception, newRecord.Exception.Message);
         }
 
-        public static void DebugEventHandler(object sender, DataAddedEventArgs e)
+        public void DebugEventHandler(object sender, DataAddedEventArgs e)
         {
             DebugRecord newRecord = ((PSDataCollection<DebugRecord>)sender)[e.Index];
             Log.Debug(newRecord.Message);
         }
 
-        public static void VerboseEventHandler(object sender, DataAddedEventArgs e)
+        public void VerboseEventHandler(object sender, DataAddedEventArgs e)
         {
             if (LogVerbose)
             {
@@ -344,7 +356,7 @@ namespace WindowsHelpers
             }
         }
 
-        public async static Task<string> ReadResourceTextAsync(string scriptResource)
+        public async Task<string> ReadResourceTextAsync(string scriptResource)
         {
             var assembly = Assembly.GetExecutingAssembly();
 
@@ -368,20 +380,25 @@ namespace WindowsHelpers
             return script;
         }
 
-        public async static Task RunScriptAsync(string scriptPath, string computer, bool useSSL, Credential cred)
+        public static async Task RunScriptAsync(string scriptPath, string computer, bool useSSL, Credential cred)
         {
             string script = await IOHelpers.ReadFileAsync(scriptPath);
             try
             {
-                using (PowerShell posh = PoshHandler.GetRunner(script, computer, useSSL, cred))
+                using (PoshHandler handler = new PoshHandler(script, computer, useSSL, cred))
                 {
-                    PSDataCollection<PSObject> results = await PoshHandler.InvokeRunnerAsync(posh);
+                    PSDataCollection<PSObject> results = await handler.InvokeRunnerAsync();
                 }
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error running script: " + scriptPath);
             }
+        }
+
+        public void Dispose()
+        {
+            this.Runner?.Dispose();
         }
     }
 }
