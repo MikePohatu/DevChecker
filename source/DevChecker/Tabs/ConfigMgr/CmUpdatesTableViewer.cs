@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2021 20Road Limited
 //
 // This file is part of DevChecker.
@@ -39,7 +39,7 @@ namespace DevChecker.Tabs.ConfigMgr
             install.Click += this.onInstallClicked;
             install.Header = "Install";
 
-            this.RightClickMenu.Items.Add(install);
+            this.AddContextMenuItem(install);
         }
 
 

@@ -16,24 +16,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using ConfigMgrHelpers.Deploy;
-using ConfigMgrHelpers;
-using Core.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using WindowsHelpers;
 using System.Collections.ObjectModel;
 
 namespace DevChecker.Tabs
@@ -43,6 +29,8 @@ namespace DevChecker.Tabs
     /// </summary>
     public abstract partial class TableViewer : UserControl
     {
+        private bool _hasContextMenu = false;
+
         public static readonly DependencyProperty IsSearchEnabledProperty = DependencyProperty.Register("IsSearchEnabled", typeof(bool), typeof(TableViewer));
         public bool IsSearchEnabled
         {
@@ -81,5 +69,16 @@ namespace DevChecker.Tabs
 
         protected abstract void onSearchFilter(object sender, FilterEventArgs e);
         protected abstract void onRefreshClicked(object sender, RoutedEventArgs e);
+
+        protected void AddContextMenuItem(MenuItem item)
+        {
+            if (this._hasContextMenu == false)
+            {
+                this._hasContextMenu = true;
+                this.DataGrid.ContextMenu = new ContextMenu();
+            }
+
+            this.DataGrid.ContextMenu.Items.Add(item);
+        }
     }
 }

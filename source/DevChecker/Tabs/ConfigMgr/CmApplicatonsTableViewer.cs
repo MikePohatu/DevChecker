@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2021 20Road Limited
 //
 // This file is part of DevChecker.
@@ -41,8 +41,8 @@ namespace DevChecker.Tabs.ConfigMgr
             MenuItem uninstall = new MenuItem();
             uninstall.Click += this.onUninstallClicked;
             uninstall.Header = "Uninstall";
-            this.RightClickMenu.Items.Add(install);
-            this.RightClickMenu.Items.Add(uninstall);
+            this.AddContextMenuItem(install);
+            this.AddContextMenuItem(uninstall);
         }
 
 

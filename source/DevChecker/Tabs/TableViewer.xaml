@@ -1,4 +1,4 @@
-﻿<UserControl x:Name = "tableViewerRoot" x:Class="DevChecker.Tabs.TableViewer"
+<UserControl x:Name = "tableViewerRoot" x:Class="DevChecker.Tabs.TableViewer"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -31,12 +31,6 @@
         <DataGrid Grid.Row="1" Grid.ColumnSpan="2" x:Name="dataGrid" ItemsSource="{Binding Source={StaticResource filtered}}" AutoGenerateColumns="True" 
             BorderThickness="0" HeadersVisibility="Column" GridLinesVisibility="Horizontal" SelectionMode="Single" IsReadOnly="True"
             >
-            <DataGrid.ContextMenu>
-                <ContextMenu x:Name="RightClickMenu">
-                    <!--<MenuItem Header="Install" Click="onInstallClicked" />
-                    <MenuItem Header="Uninstall" Click="onUninstallClicked" />-->
-                </ContextMenu>
-            </DataGrid.ContextMenu>
         </DataGrid>
     </Grid>
 </UserControl>
