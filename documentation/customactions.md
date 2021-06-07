@@ -3,7 +3,14 @@
 
 Custom actions are simply PowerShell scripts that will be run on the remote device. They are available from DevChecker\Client Side\Actions\Custom Actions
 
+* [Adding a Custom Action](#adding-a-custom-action)
+* [Output](#output)
+* [Metadata](#metadata)
+  
+
 ![screenshot](images/customactions1.png)
+
+
 
 ---
 
@@ -18,8 +25,6 @@ DevChecker will capture Write-Information, Write-Warning, Write-Error etc. from 
 
 If you wish to highlight your text in the Output pane, add **\*\*** to the start of your message.
 
-Output to the pipeline e.g. custom objects, is not currently captured by Custom Actions, however this is planned for a future release for outputting to a table or list view.
-
 ## Metadata
 
 Additional metadata can be added to your script to control how your custom action is presented in the DevChecker UI.
@@ -29,20 +34,30 @@ To add metadata, copy and paste the following somewhere in your PowerShell scrip
 ```json
 <#ActionSettings
 {
-    "DisplayName": "Get Applications",
-    "OutputType": "None",
-    "Description": "List installed applications recorded in registry",
+    "Description": "List deployments for the connected client",
+    "DisplayElement": "Tab",
+    "DisplayName": "ConfigMgr Deployments",
+    "FilterProperties": ["TargetName", "CollectionName"],
+    "LogOutput": false,
+    "LogScriptContent": false,
+    "OutputType": "List",
+    "RequiresServerConnect": true,
+    "RunOnClient": false,
     "RunOnConnect": false,
-    "LogScriptContent": false
 }
 ActionSettings#>
 ```
 
 Update the fields appropriately:
-* DisplayName: The name to be shown in DevChecker. If this is empty the script name will be used
-* OutputType: *Not currently implemented. This will be used to change the output to a table view if desired
 * Description: The description to appear in DevChecker
-* RunOnConnect: *Not currently implemented. This will be used to set whether to automatically run the script on connect to the device
+* DisplayElement: How to display the output i.e. new tab, separate modal window, only log. Valid options (case sensitive): **Tab, Modal, Log**
+* DisplayName: The name to be shown in DevChecker. If this is empty the script name will be used
+* FilterProperties: When displaying in a table view, the search box will filter the view based on a match against the properties listed here
+* LogOutput: Will log the output of the script, even if DisplayElement is Tab or Modal
 * LogScriptContent: Set this to true to output the content of the script file to the logging pane in DevChecker
+* OutputType: *Not currently implemented. This will be used to change the output to a table view if desired
+* RequiresServerConnect: If RunOnClient is false, this will prevent the action from running if the server has been connected
+* RunOnClient: Run the script on the connected client. If false, will run on the computer DevChecker is running on.
+* RunOnConnect: Automatically run the script on connect to a device
 
 The json in the comment block will be parsed when the script is read to create the appropriate configuration.

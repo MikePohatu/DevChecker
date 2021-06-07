@@ -25,10 +25,11 @@ This tool was created because existing tools either didn't do what I wanted, or 
 * 'Connect as' functionality
 * List printers and print drivers
 * Run ConfigMgr scripts
+* Add custom tabs using PowerShell scripts
 
 ## Planned features
 
-* Add custom tabs using PowerShell scripts
+
 * Log off function
 
 [Documentation](/documentation/README.md)
