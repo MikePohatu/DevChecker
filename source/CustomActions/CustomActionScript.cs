@@ -25,10 +25,11 @@ using System.Threading.Tasks;
 using WindowsHelpers;
 using System.Collections.ObjectModel;
 using Core;
+using ConfigMgrHelpers;
 
 namespace CustomActions
 {
-    public class CustomActionScript: ViewModelBase, IComparable<CustomActionScript>, IDisposable
+    public class CustomActionScript: IComparable<CustomActionScript>, IDisposable
     {
         public PSDataCollection<PSObject> _results;
         private bool _loaded = false;
@@ -57,12 +58,34 @@ namespace CustomActions
 
         public CustomActionScript()
         {
-            RemoteSystem.Connected += this.OnConnected;
+            if (this.Settings == null || this.Settings.RunOnClient)
+            {
+                RemoteSystem.Connected += this.OnConnected;
+                RemoteSystem.Connecting += this.OnConnecting;
+            }
+            else
+            {
+                CmServer.Connected += this.OnConnected; 
+                CmServer.Connecting += this.OnConnecting;
+            }
         }
 
+        /// <summary>
+        /// Cleanup event registrations
+        /// </summary>
         public void Dispose()
         {
-            RemoteSystem.Connected -= this.OnConnected;
+
+            if (this.Settings == null || this.Settings.RunOnClient)
+            {
+                RemoteSystem.Connected -= this.OnConnected;
+                RemoteSystem.Connecting -= this.OnConnecting;
+            }
+            else
+            {
+                CmServer.Connected -= this.OnConnected;
+                CmServer.Connecting -= this.OnConnecting;
+            }
         }
 
         public int CompareTo(CustomActionScript other)
@@ -77,6 +100,11 @@ namespace CustomActions
             {
                 await this.RunActionAsync();
             }
+        }
+
+        public void OnConnecting(object sender, EventArgs args)
+        {
+            this.Data.Clear();
         }
 
         /// <summary>
@@ -129,22 +157,41 @@ namespace CustomActions
             }
         }
 
-        public async Task RunActionAsync()
+        /// <summary>
+        /// Run the action. Return false with error, otherwise true
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> RunActionAsync()
         {
             if (this._loaded == true && string.IsNullOrWhiteSpace(this._script) == false)
             {
+                // if runonclient and remote system isn't connected, bail out
+                if ((this.Settings == null || this.Settings.RunOnClient) && (RemoteSystem.Current == null || RemoteSystem.Current.IsConnected == false))
+                {
+                    Log.Warn("Remote system not connected. Please connect before running " + this.DisplayName);
+                    return false;
+                }
+
+                if (this.Settings.RequiresServerConnect && ( CmServer.Current == null || CmServer.Current.IsConnected == false))
+                {
+                    Log.Warn(this.DisplayName +" requires connect before it can be run");
+                    return false;
+                }
+                
                 Log.Info("Running custom action: " + this.DisplayName);
                 this.Data.Clear();
                 bool hidescript = this.Settings == null ? false : !this.Settings.LogScriptContent;
 
+                string sanitisedscript = this.SanitiseScript(this._script);
+
                 PoshHandler posh;
                 if (RemoteSystem.Current != null)
                 {
-                    posh = new PoshHandler(this._script, RemoteSystem.Current);
+                    posh = new PoshHandler(sanitisedscript, RemoteSystem.Current);
                 }
                 else
                 {
-                    posh = new PoshHandler(this._script);
+                    posh = new PoshHandler(sanitisedscript);
                 }
 
                 
@@ -157,17 +204,37 @@ namespace CustomActions
                     this._results = await posh.InvokeRunnerAsync(hidescript, false);
                 }
 
-                foreach (PSObject obj in this._results)
+                if (this._results != null)
                 {
-                    this.Data.Add(obj);
-                }
+                    foreach (PSObject obj in this._results)
+                    {
+                        this.Data.Add(obj);
+                    }
+                }                
 
                 posh.Dispose();
+                return true;
             }
             else
             {
                 Log.Warn("Script hasn't finished loading yet. Please try again soon. Script: " + this._scriptpath);
+                return false;
             }
+        }
+
+        private string SanitiseScript(string script)
+        {
+            if (string.IsNullOrWhiteSpace(script)) { return null; }
+            string sanitised = script;
+            if (RemoteSystem.Current != null && string.IsNullOrWhiteSpace(RemoteSystem.Current.ComputerName) == false) { sanitised = sanitised.Replace("{{CLIENT}}", RemoteSystem.Current.ComputerName); }
+            if (CmServer.Current != null && string.IsNullOrWhiteSpace(CmServer.Current.ServerName) == false)
+            {
+                sanitised = sanitised.Replace("{{CM_SERVER}}", CmServer.Current.ServerName);
+                sanitised = sanitised.Replace("{{CM_SITE}}", CmServer.Current.SiteCode);
+                sanitised = sanitised.Replace("{{CM_SITE_NAMESPACE}}", CmServer.Current.SiteWmiNamespace);
+            }                
+
+            return sanitised;
         }
     }
 }

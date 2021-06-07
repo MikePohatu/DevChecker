@@ -53,9 +53,9 @@ namespace DevChecker.Tabs
         {
             var uiElement = sender as FrameworkElement;
             var component = uiElement?.DataContext as CustomActionScript;
-            await component?.RunActionAsync();
+            bool success = await component?.RunActionAsync();
 
-            if (component.Settings.DisplayElement == DisplayElements.Modal)
+            if (success && component.Settings.DisplayElement == DisplayElements.Modal)
             {
                 this.ShowModal(component);
             }
@@ -63,10 +63,7 @@ namespace DevChecker.Tabs
 
         private void ShowModal(CustomActionScript actionScript)
         {
-            Window modal = new Window();
-            modal.Title = "Output";
-            modal.Background = SystemColors.MenuBrush;
-
+            var modal = new Modal();
             var viewer = new CustomScriptTableViewer(actionScript);
 
             string header = actionScript.DisplayName;
@@ -95,6 +92,7 @@ namespace DevChecker.Tabs
             {
                 TabItem tab = new TabItem();
                 tab.Header = script.DisplayName;
+                if (string.IsNullOrWhiteSpace(script.Settings.Description) == false) { tab.ToolTip = script.Settings.Description; }
                 CustomScriptTableViewer viewer = new CustomScriptTableViewer(script);
                 tab.Content = viewer;
                 this.tabs.Items.Add(tab);

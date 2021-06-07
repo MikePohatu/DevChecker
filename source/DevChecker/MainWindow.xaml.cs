@@ -203,6 +203,7 @@ namespace DevChecker
             this._serverCred.Domain = Configuration.Instance.ServerDomain;
             this._serverCred.UseKerberos = Configuration.Instance.ServerKerberos;
             this._clientCred.UseKerberos = Configuration.Instance.ClientKerberos;
+
             await this.customActionsTab.Refresh();
         }
 
@@ -278,6 +279,7 @@ namespace DevChecker
                 }
 
                 await Task.WhenAll(postconnectTasks);
+                Log.Info(Log.Highlight("Finished loading data"));
             }
         }
 

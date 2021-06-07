@@ -81,6 +81,11 @@ namespace CustomActions
         public bool RunOnClient { get; set; } = true;
 
         /// <summary>
+        /// Requires connect before run. Set to true if RunOnClient is false and you're passing client name etc
+        /// </summary>
+        public bool RequiresServerConnect { get; set; } = true;
+
+        /// <summary>
         /// Log the contents of the script file/command
         /// </summary>
         public bool LogScriptContent { get; set; } = false;

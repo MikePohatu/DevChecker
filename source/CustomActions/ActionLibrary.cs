@@ -32,13 +32,13 @@ namespace CustomActions
 
         private ActionLibrary() { }
 
+        public ObservableCollection<CustomActionScript> AllActions { get; } = new ObservableCollection<CustomActionScript>();
         public ObservableCollection<CustomActionScript> Scripts { get; } = new ObservableCollection<CustomActionScript>();
         public ObservableCollection<CustomActionScript> Tabs { get; } = new ObservableCollection<CustomActionScript>();
 
         private async Task UpdateAsync(bool isrefresh)
         {
-            this.Scripts.Clear();
-            this.Tabs.Clear();
+            this.Clear();
 
             List<CustomActionScript> scripts = new List<CustomActionScript>();
             var scriptpaths = Directory.EnumerateFiles(AppDomain.CurrentDomain.BaseDirectory + "Scripts\\Custom", "*.ps1");
@@ -52,6 +52,7 @@ namespace CustomActions
             scripts.Sort();
             foreach (CustomActionScript script in scripts)
             {
+                this.AllActions.Add(script);
                 if (script.Settings.DisplayElement == DisplayElements.Tab)
                 {
                     this.Tabs.Add(script);
@@ -73,6 +74,15 @@ namespace CustomActions
         public async Task LoadAsync()
         {
             await UpdateAsync(false);
+        }
+
+        private void Clear()
+        {
+            foreach(var action in this.AllActions) { action.Dispose(); }
+
+            this.AllActions.Clear();
+            this.Scripts.Clear();
+            this.Tabs.Clear();
         }
     }
 }

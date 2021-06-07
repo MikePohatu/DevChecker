@@ -41,6 +41,10 @@ namespace WindowsHelpers
         /// </summary>
         public static event EventHandler Connected;
 
+        /// <summary>
+        /// Static event. Fired when any RemoteSystem object starts connecting
+        /// </summary>
+        public static event EventHandler Connecting;
         public bool IsLocalhostClient { get; set; } = false;
 
         /// <summary>
@@ -182,6 +186,7 @@ namespace WindowsHelpers
             try
             {
                 Log.Info("Connecting to " + this.ComputerName);
+                Connecting?.Invoke(this, new EventArgs());
                 string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\GetSystemInfo.ps1";
                 string script = await IOHelpers.ReadFileAsync(scriptPath);
 

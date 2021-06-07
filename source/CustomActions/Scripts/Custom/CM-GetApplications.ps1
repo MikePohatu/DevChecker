@@ -33,13 +33,13 @@ $InstalledSoftware64 | ForEach-Object {
     }
 }
 
-$AllInstalledSoftware | Sort-Object -Property Vendor
+$AllInstalledSoftware | Sort-Object -Property Name
 
 Write-Information "Done"
 
 <#ActionSettings
 {
-    "DisplayName": "Get Applications",
+    "DisplayName": "Installed Applications",
     "DisplayElement": "Tab",
     "Description": "List installed applications recorded in registry",
     "RunOnConnect": false,

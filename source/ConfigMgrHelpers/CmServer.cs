@@ -41,6 +41,11 @@ namespace ConfigMgrHelpers
         /// </summary>
         public static event EventHandler Connected;
 
+        /// <summary>
+        /// Static event. Fired when any server starts connecting
+        /// </summary>
+        public static event EventHandler Connecting;
+
         //private Microsoft.ConfigurationManagement.Messaging.Framework. _connector;
         /// <summary>
         /// ** Not currently supported. Use WMI as opposed to Administration Service
@@ -120,6 +125,7 @@ namespace ConfigMgrHelpers
 
         public async Task ConnectAsync()
         {
+            Connecting?.Invoke(this, new EventArgs());
             string command = "Get-WmiObject -Namespace \"ROOT\\SMS\" -Query \"SELECT * FROM SMS_ProviderLocation\" -ComputerName " + this.ServerName;
 
             using (var posh = new PoshHandler(command))

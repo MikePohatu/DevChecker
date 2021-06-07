@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="Scripts\Custom\Get-Applications.ps1">
+    <Content Include="Scripts\Custom\CM-GetApplications.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\Custom\Ping-Google.ps1">
@@ -65,8 +65,15 @@
     <Content Include="Scripts\Custom\Get-Disks.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\Custom\CM-GetClientDeployments.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConfigMgrHelpers\ConfigMgrHelpers.csproj">
+      <Project>{fddcdcf7-35d0-4efd-b300-3fae9e10147b}</Project>
+      <Name>ConfigMgrHelpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{b0ad195b-b60a-4083-9d62-6907381ddcb9}</Project>
       <Name>Core</Name>
