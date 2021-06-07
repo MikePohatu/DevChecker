@@ -54,6 +54,32 @@ namespace DevChecker.Tabs
             var uiElement = sender as FrameworkElement;
             var component = uiElement?.DataContext as CustomActionScript;
             await component?.RunActionAsync();
+
+            if (component.Settings.DisplayElement == DisplayElements.Modal)
+            {
+                this.ShowModal(component);
+            }
+        }
+
+        private void ShowModal(CustomActionScript actionScript)
+        {
+            Window modal = new Window();
+            modal.Title = "Output";
+            modal.Background = SystemColors.MenuBrush;
+
+            var viewer = new CustomScriptTableViewer(actionScript);
+
+            string header = actionScript.DisplayName;
+            if (string.IsNullOrWhiteSpace(actionScript.Settings.Description) == false) { header = header + " : " + actionScript.Settings.Description; }
+            var group = new GroupBox();
+            group.Margin = new Thickness(5);
+            group.Padding = new Thickness(5);
+            group.Header = header;
+            group.Content = viewer;
+
+            modal.Content = group;
+            Application.Current.MainWindow.Closing += (o, args) => { modal.Close(); };
+            modal.Show();
         }
 
         public async Task Refresh()

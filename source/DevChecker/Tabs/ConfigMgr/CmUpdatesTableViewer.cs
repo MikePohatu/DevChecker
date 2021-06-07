@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2021 20Road Limited
 //
 // This file is part of DevChecker.
@@ -61,7 +61,7 @@ namespace DevChecker.Tabs.ConfigMgr
 
         protected async void onInstallClicked(object sender, RoutedEventArgs e)
         {
-            var selected = (Update)this.dataGrid.SelectedItem;
+            var selected = (Update)this.DataGrid.SelectedItem;
             if (MessageBox.Show("Are you sure you want to install " + selected.Name + "?", "Install software update", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 await selected.InstallAsync();

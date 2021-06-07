@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2021 20Road Limited
 //
 // This file is part of DevChecker.
@@ -45,7 +45,7 @@ namespace DevChecker.Tabs.ConfigMgr
 
         private async void onRunClicked(object sender, RoutedEventArgs e)
         {
-            var selected = (TaskSequence)this.dataGrid.SelectedItem;
+            var selected = (TaskSequence)this.DataGrid.SelectedItem;
             if (MessageBox.Show("Are you sure you want to run " + selected.Name + "?", "Run Task Sequence", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 Log.Info(Log.Highlight("Run task sequence " + selected.Name));

@@ -16,7 +16,7 @@
         </Style>
     </UserControl.Resources>
     <TabControl Grid.Row="1" MinHeight="200" TabStripPlacement="Left" BorderBrush="{x:Null}" 
-                Margin="3">
+                Margin="3" Padding="0 ">
         <TabItem Header="Applications">
             <local:CmApplicatonsTableViewer TableSource="{Binding Applications}" IsLoading="{Binding ApplicationsLoading}" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}"/>
         </TabItem>
@@ -24,7 +24,7 @@
             <local:CmUpdatesTableViewer TableSource="{Binding SoftwareUpdates}" IsLoading="{Binding UpdatesLoading}" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}"/>
         </TabItem>
         <TabItem Header="Task Sequences">
-            <local:CmTaskSequencesTableViewer TableSource="{Binding TaskSequences}" IsLoading="{Binding TaskSequencesLoading}" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}"/>
+            <local:CmTaskSequencesTableViewer TableSource="{Binding TaskSequences}" IsLoading="{Binding TaskSequencesLoading}" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" />
         </TabItem>
     </TabControl>
 </UserControl>

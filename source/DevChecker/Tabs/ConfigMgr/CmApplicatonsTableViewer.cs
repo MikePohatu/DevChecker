@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2021 20Road Limited
 //
 // This file is part of DevChecker.
@@ -48,7 +48,7 @@ namespace DevChecker.Tabs.ConfigMgr
 
         private async void onInstallClicked(object sender, RoutedEventArgs e)
         {
-            var selected = (ConfigMgrHelpers.Deploy.Application)this.dataGrid.SelectedItem;
+            var selected = (ConfigMgrHelpers.Deploy.Application)this.DataGrid.SelectedItem;
             if (MessageBox.Show("Are you sure you want to install " + selected.Name + "?", "Install application", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 await selected.InstallAsync();
@@ -57,7 +57,7 @@ namespace DevChecker.Tabs.ConfigMgr
 
         private async void onUninstallClicked(object sender, RoutedEventArgs e)
         {
-            var selected = (ConfigMgrHelpers.Deploy.Application)this.dataGrid.SelectedItem;
+            var selected = (ConfigMgrHelpers.Deploy.Application)this.DataGrid.SelectedItem;
             if (MessageBox.Show("Are you sure you want to uninstall " + selected.Name + "?", "Uninstall application", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 await selected.UninstallAsync();
