@@ -51,10 +51,10 @@
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding IPv4Address}" VerticalAlignment="Top" TextWrapping="Wrap" />
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Last boot:" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Properties[lastBoot]}" VerticalAlignment="Top" TextWrapping="Wrap" />
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Properties[LastBoot]}" VerticalAlignment="Top" TextWrapping="Wrap" />
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="OS:" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
-                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Properties[os]}" VerticalAlignment="Top" TextWrapping="Wrap" />
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Properties[OS]}" VerticalAlignment="Top" TextWrapping="Wrap" />
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="ConfigMgr Client:" FontWeight="Bold" VerticalAlignment="Top" TextWrapping="Wrap" />
                 <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding ConfigMgrClientStatus}" VerticalAlignment="Top" TextWrapping="Wrap" />
