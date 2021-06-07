@@ -35,21 +35,23 @@ namespace Tests
         [TestCase("sccm01.home.local", true, ExpectedResult = "1.0.0.0")]
         public async Task<string> PoshConnectionTest(string Computer, bool useSSL)
         {
-            PowerShell posh = PoshHandler.GetRunner("Get-Host", Computer, useSSL, null);
-            PSDataCollection<PSObject> result = await PoshHandler.InvokeRunnerAsync(posh);
-
             string version = "0";
-
-            foreach (PSObject obj in result)
+            using (var posh = new PoshHandler("Get-Host", Computer, useSSL, null))
             {
-                foreach (var prop in obj.Properties)
+                PSDataCollection<PSObject> result = await posh.InvokeRunnerAsync();
+
+                foreach (PSObject obj in result)
                 {
-                    if (prop.Name == "Version")
+                    foreach (var prop in obj.Properties)
                     {
-                        version = prop.Value.ToString();
+                        if (prop.Name == "Version")
+                        {
+                            version = prop.Value.ToString();
+                        }
                     }
                 }
             }
+                
 
             return version;
         }
@@ -60,10 +62,12 @@ namespace Tests
         [TestCase("sccm01.home.local", true, ExpectedResult = "3")]
         public async Task<string> OSTypeTest(string Computer, bool useSSL)
         {
-            PowerShell posh = PoshHandler.GetRunner("Get-WmiObject -Query 'SELECT ProductType FROM Win32_OperatingSystem'", Computer, useSSL, null);
-
-            PSDataCollection<PSObject> results = await PoshHandler.InvokeRunnerAsync(posh);
-            string type = PoshHandler.GetPropertyValues<string>(results, "ProductType").First();
+            string type = string.Empty;
+            using (var posh = new PoshHandler("Get-WmiObject -Query 'SELECT ProductType FROM Win32_OperatingSystem'", Computer, useSSL, null))
+            {
+                PSDataCollection<PSObject> results = await posh.InvokeRunnerAsync();
+                type = PoshHandler.GetPropertyValues<string>(results, "ProductType").First();
+            }
 
             return type;
         }
