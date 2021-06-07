@@ -32,8 +32,23 @@ namespace WindowsHelpers
 {
     public class PoshHandler: IDisposable
     {
+        /// <summary>
+        /// Static LogVerbose property to decide how to deal with the Verbose/Debug stream
+        /// </summary>
         public static bool LogVerbose { get; set; } = false;
+
+        /// <summary>
+        /// Static LogProgress property to decide whether to log progress messages
+        /// </summary>
         public static bool LogProgress { get; set; } = false;
+
+        /// <summary>
+        /// Has the PowerShell been run. The script/command should only be run once
+        /// </summary>
+        public bool HasRun { get; private set; } = false;
+
+
+        public PSDataCollection<PSObject> Results { get; private set; }
 
         public PowerShell Runner { get; set; }
 
@@ -143,7 +158,8 @@ namespace WindowsHelpers
 
         public async Task<PSDataCollection<PSObject>> InvokeRunnerAsync(bool hideScript, bool logOutut)
         {
-            var output = new PSDataCollection<PSObject>();
+            if (this.HasRun) { throw new InvalidOperationException("PoshHandler should only be invoked once"); }
+            this.Results = new PSDataCollection<PSObject>();
             try
             {
                 if (!hideScript) 
@@ -159,19 +175,20 @@ namespace WindowsHelpers
 
                 if (logOutut)
                 {
-                    output.DataAdded += delegate (object sender, DataAddedEventArgs e)
+                    this.Results.DataAdded += delegate (object sender, DataAddedEventArgs e)
                     {
-                        Log.Info(output[e.Index].ToString());
+                        Log.Info(this.Results[e.Index].ToString());
                     };
                 }
                 
-                await Task.Factory.FromAsync(this.Runner.BeginInvoke<PSObject, PSObject>(null, output), asyncResult => this.Runner.EndInvoke(asyncResult));
+                await Task.Factory.FromAsync(this.Runner.BeginInvoke<PSObject, PSObject>(null, this.Results), asyncResult => this.Runner.EndInvoke(asyncResult));
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error running PowerShell script");
             }
-            return output;
+            this.HasRun = true;
+            return this.Results;
         }
 
         public static T GetPropertyValue<T>(PSObject obj, string valueName)
@@ -380,7 +397,7 @@ namespace WindowsHelpers
             return script;
         }
 
-        public static async Task RunScriptAsync(string scriptPath, string computer, bool useSSL, Credential cred)
+        public static async Task<PSDataCollection<PSObject>> RunScriptAsync(string scriptPath, string computer, bool useSSL, Credential cred)
         {
             string script = await IOHelpers.ReadFileAsync(scriptPath);
             try
@@ -388,17 +405,20 @@ namespace WindowsHelpers
                 using (PoshHandler handler = new PoshHandler(script, computer, useSSL, cred))
                 {
                     PSDataCollection<PSObject> results = await handler.InvokeRunnerAsync();
+                    return results;
                 }
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error running script: " + scriptPath);
             }
+            return null;
         }
 
         public void Dispose()
         {
             this.Runner?.Dispose();
+            this.Results?.Dispose();
         }
     }
 }
