@@ -52,7 +52,7 @@ namespace CustomActions
             scripts.Sort();
             foreach (CustomActionScript script in scripts)
             {
-                if (script.Settings.DisplayElement == "Tab")
+                if (script.Settings.DisplayElement == DisplayElements.Tab)
                 {
                     this.Tabs.Add(script);
                 }

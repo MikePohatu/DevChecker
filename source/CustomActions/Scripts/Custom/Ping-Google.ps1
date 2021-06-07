@@ -6,6 +6,7 @@
     "OutputType": "Log",
     "Description": "Ping test to google.com",
     "RunOnConnect": false,
-    "LogScriptContent": false
+    "LogScriptContent": false,
+    "LogOutput": false
 }
 ActionSettings#>

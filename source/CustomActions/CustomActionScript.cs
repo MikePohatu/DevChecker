@@ -148,7 +148,7 @@ namespace CustomActions
                 }
 
                 
-                if (this.Settings.OutputType == "Log")
+                if (this.Settings.OutputType == OutputTypes.Log || this.Settings.LogOutput)
                 {
                     this._results = await posh.InvokeRunnerAsync(hidescript, true);
                 }

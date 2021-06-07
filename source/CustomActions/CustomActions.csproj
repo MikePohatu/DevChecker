@@ -50,6 +50,8 @@
     <Compile Include="ActionLibrary.cs" />
     <Compile Include="CustomActionScript.cs" />
     <Compile Include="CustomActionSettings.cs" />
+    <Compile Include="DisplayElements.cs" />
+    <Compile Include="OutputTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

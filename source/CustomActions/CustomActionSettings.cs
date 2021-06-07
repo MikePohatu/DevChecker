@@ -38,27 +38,7 @@ namespace CustomActions
             get { return this._outputtype; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value)) { this._outputtype = "Log"; }
-                string val = value.Trim().ToLower();
-                switch (val)
-                {
-                    case "log":
-                        this._outputtype = "Log";
-                        break;
-                    case "list":
-                        this._outputtype = "List";
-                        break;
-                    case "object":
-                        this._outputtype = "Object";
-                        break;
-                    case "none":
-                        this._outputtype = "None";
-                        break;
-                    default:
-                        Log.Error("Invalid output type set");
-                        this._outputtype = "Log";
-                        break;
-                }
+                this._outputtype = OutputTypes.GetType(value);
             }
         }
 
@@ -71,39 +51,50 @@ namespace CustomActions
             get { return this._displayElement; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value)) { this._displayElement = "Log"; }
-                else
-                {
-                    string val = value.Trim().ToLower();
-                    switch (val)
-                    {
-                        case "tab":
-                            this._displayElement = "Tab";
-                            break;
-                        case "modal":
-                            this._displayElement = "Modal";
-                            break;
-                        case "log":
-                            this._displayElement = "Log";
-                            break;
-                        default:
-                            Log.Error("Invalid display element set");
-                            break;
-                    }
-                }                
+                this._displayElement = DisplayElements.GetType(value);             
             }
         }
+
+        /// <summary>
+        /// Log output, even if the display element is not Log
+        /// </summary>
+        public bool LogOutput { get; set; } = false;
+
+        /// <summary>
+        /// Override the name to display in the console
+        /// </summary>
         public string DisplayName { get; set; }
+
+        /// <summary>
+        /// The description to display in the console
+        /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Run the action automatically on connection
+        /// </summary>
         public bool RunOnConnect { get; set; } = false;
 
         /// <summary>
         /// Whether to run on the client. Otherwise will be run on local computer
         /// </summary>
         public bool RunOnClient { get; set; } = true;
+
+        /// <summary>
+        /// Log the contents of the script file/command
+        /// </summary>
         public bool LogScriptContent { get; set; } = false;
+
+        /// <summary>
+        /// Which properties to filter on in a table viewer
+        /// </summary>
         public List<string> FilterProperties { get; set; } = new List<string>();
 
+        /// <summary>
+        /// Create a new CustomActionSettings with the specified json text
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
         public static CustomActionSettings Create(string json)
         {
             try
