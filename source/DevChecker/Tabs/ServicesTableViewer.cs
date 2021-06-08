@@ -49,31 +49,31 @@ namespace DevChecker.Tabs
 
         private async void onStartClicked(object sender, RoutedEventArgs e)
         {
-            RemoteService service = (RemoteService)this.DataGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to start " + service.Name + "?", "Start service", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            RemoteService selected = (RemoteService)this.DataGrid.SelectedItem;
+            if (selected != null && MessageBox.Show("Are you sure you want to start " + selected.Name + "?", "Start service", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                Log.Info(Log.Highlight("Starting service " + service.Name));
-                await service.StartServiceAsync();
+                Log.Info(Log.Highlight("Starting service " + selected.Name));
+                await selected.StartServiceAsync();
             }
         }
 
         private async void onRestartClicked(object sender, RoutedEventArgs e)
         {
-            RemoteService service = (RemoteService)this.DataGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to restart " + service.Name + "?", "Restart service", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            RemoteService selected = (RemoteService)this.DataGrid.SelectedItem;
+            if (selected != null && MessageBox.Show("Are you sure you want to restart " + selected.Name + "?", "Restart service", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                Log.Info(Log.Highlight("Restarting service " + service.Name));
-                await service.RestartServiceAsync();
+                Log.Info(Log.Highlight("Restarting service " + selected.Name));
+                await selected.RestartServiceAsync();
             }
         }
 
         private async void onStopClicked(object sender, RoutedEventArgs e)
         {
-            RemoteService service = (RemoteService)this.DataGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to stop " + service.Name + "?", "Stop service", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            RemoteService selected = (RemoteService)this.DataGrid.SelectedItem;
+            if (selected != null && MessageBox.Show("Are you sure you want to stop " + selected.Name + "?", "Stop service", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                Log.Info(Log.Highlight("Stopping service " + service.Name));
-                await service.StopServiceAsync();
+                Log.Info(Log.Highlight("Stopping service " + selected.Name));
+                await selected.StopServiceAsync();
             }
         }
 

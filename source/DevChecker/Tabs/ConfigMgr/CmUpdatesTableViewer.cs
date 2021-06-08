@@ -62,7 +62,7 @@ namespace DevChecker.Tabs.ConfigMgr
         protected async void onInstallClicked(object sender, RoutedEventArgs e)
         {
             var selected = (Update)this.DataGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to install " + selected.Name + "?", "Install software update", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (selected != null && MessageBox.Show("Are you sure you want to install " + selected.Name + "?", "Install software update", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 await selected.InstallAsync();
             }

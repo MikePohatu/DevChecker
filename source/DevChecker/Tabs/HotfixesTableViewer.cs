@@ -53,7 +53,7 @@ namespace DevChecker.Tabs
         private async void onUninstallClicked(object sender, RoutedEventArgs e)
         {
             var selected = (Hotfix)this.DataGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to uninstall " + selected.HotFixID + "?", "Uninstall hotfix", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (selected != null && MessageBox.Show("Are you sure you want to uninstall " + selected.HotFixID + "?", "Uninstall hotfix", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 await selected.UninstallAsync();
             }

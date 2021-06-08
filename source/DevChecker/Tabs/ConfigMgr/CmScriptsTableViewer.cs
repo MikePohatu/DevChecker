@@ -61,7 +61,7 @@ namespace DevChecker.Tabs.ConfigMgr
         protected async void onRunClicked(object sender, RoutedEventArgs e)
         {
             var selected = (CmScript)this.DataGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to run " + selected.Name + "?", "Run script", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (selected != null && MessageBox.Show("Are you sure you want to run " + selected.Name + "?", "Run script", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 await selected.RunAsync();
             }

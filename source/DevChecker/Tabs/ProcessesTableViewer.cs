@@ -38,11 +38,11 @@ namespace DevChecker.Tabs
 
         private async void onKillClicked(object sender, RoutedEventArgs e)
         {
-            RemoteProcess proc = (RemoteProcess)this.DataGrid.SelectedItem;
-            if (MessageBox.Show("Are you sure you want to kill " + proc.Name + "?", "Kill process", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            RemoteProcess selected = (RemoteProcess)this.DataGrid.SelectedItem;
+            if (selected != null && MessageBox.Show("Are you sure you want to kill " + selected.Name + "?", "Kill process", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                Log.Info(Log.Highlight("Killing process " + proc.Name));
-                await proc.KillAsync();
+                Log.Info(Log.Highlight("Killing process " + selected.Name));
+                await selected.KillAsync();
                 await RemoteSystem.Current.UpdateProcessesAsync();
             }
         }
