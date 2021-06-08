@@ -83,7 +83,7 @@ Function pause ()
 }
 
 #run builds
-$version = '0.9.3.0'
+$version = '0.9.4.0'
 $repoRoot = 'C:\Source\repos\DevChecker'
 $devenv = 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\devenv.exe'
 $dotnet = 'dotnet.exe'
