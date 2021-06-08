@@ -73,7 +73,7 @@ namespace ConfigMgrHelpers.Deploy
 					{
 						foreach (var poshObj in result)
 						{
-							this.Applications.Add(Application.New(poshObj));
+							this.Applications.Add(new Application(poshObj));
 						}
 
 						Log.Info("Finished gathering applications");

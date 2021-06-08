@@ -28,22 +28,22 @@ namespace ConfigMgrHelpers.Deploy
 {
     public class Application
     {
-        public static string GetterCommand { get; } = @"get-wmiobject -query 'SELECT * FROM CCM_Application' -namespace 'ROOT\ccm\ClientSDK' | Select Name, Id, InstallState, ResolvedState, Revision";
+        public static string GetterCommand { get; } = @"get-wmiobject -query 'SELECT * FROM CCM_Application' -namespace 'ROOT\ccm\ClientSDK' | Select Name, Id, InstallState, ResolvedState, Revision, SoftwareVersion";
         public string Name { get; set; }
+        public string Version { get; set; }
         public string InstallState { get; set; }
         public string ResolvedState { get; set; }
         public int Revision { get; set; }
         public string Id { get; set; }
 
-        public static Application New(PSObject poshObj)
+        public Application (PSObject poshObj)
         {
-            var cmobj = new Application();
-            cmobj.Name = PoshHandler.GetPropertyValue<string>(poshObj, "Name");
-            cmobj.Id = PoshHandler.GetPropertyValue<string>(poshObj, "Id");
-            cmobj.InstallState = PoshHandler.GetPropertyValue<string>(poshObj, "InstallState");
-            cmobj.ResolvedState = PoshHandler.GetPropertyValue<string>(poshObj, "ResolvedState");
-            cmobj.Revision = PoshHandler.GetPropertyValue<int>(poshObj, "Revision");
-            return cmobj;
+            this.Name = PoshHandler.GetPropertyValue<string>(poshObj, "Name");
+            this.Version = PoshHandler.GetPropertyValue<string>(poshObj, "SoftwareVersion");
+            this.Id = PoshHandler.GetPropertyValue<string>(poshObj, "Id");
+            this.InstallState = PoshHandler.GetPropertyValue<string>(poshObj, "InstallState");
+            this.ResolvedState = PoshHandler.GetPropertyValue<string>(poshObj, "ResolvedState");
+            this.Revision = PoshHandler.GetPropertyValue<int>(poshObj, "Revision");
         }
 
         public async Task InstallAsync()

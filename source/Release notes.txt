@@ -1,8 +1,9 @@
-Version 0.9.4
+Version 0.9.5
 Release date: 9 Jun 2021
 
 *Features
     Added applications list with uninstall option
+    Added Software Center application version
 
 Version 0.9.3
 Release date: 8 Jun 2021
