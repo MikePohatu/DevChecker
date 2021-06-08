@@ -36,15 +36,13 @@ namespace WindowsHelpers
         public string InstalledBy { get; set; }
         public string Caption { get; set; }
 
-        public static Hotfix New(PSObject poshObj)
+        public Hotfix(PSObject poshObj)
         {
-            var obj = new Hotfix();
-            obj.Description = PoshHandler.GetPropertyValue<string>(poshObj, "Description");
-            obj.InstalledOn = PoshHandler.GetPropertyValue<string>(poshObj, "InstalledOn");
-            obj.HotFixID = PoshHandler.GetPropertyValue<string>(poshObj, "HotFixID");
-            obj.InstalledBy = PoshHandler.GetPropertyValue<string>(poshObj, "InstalledBy");
-            obj.Caption = PoshHandler.GetPropertyValue<string>(poshObj, "Caption");
-            return obj;
+            this.Description = PoshHandler.GetPropertyValue<string>(poshObj, "Description");
+            this.InstalledOn = PoshHandler.GetPropertyValue<string>(poshObj, "InstalledOn");
+            this.HotFixID = PoshHandler.GetPropertyValue<string>(poshObj, "HotFixID");
+            this.InstalledBy = PoshHandler.GetPropertyValue<string>(poshObj, "InstalledBy");
+            this.Caption = PoshHandler.GetPropertyValue<string>(poshObj, "Caption");
         }
 
         public async Task UninstallAsync()

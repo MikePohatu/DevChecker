@@ -6,14 +6,16 @@ $AllInstalledSoftware = @()
 $InstalledSoftware32 | ForEach-Object {
     $displayName = $_.GetValue('DisplayName')
     $version = $_.GetValue('DisplayVersion')
-    $vendor = $_.GetValue('Publisher')
+    $publisher = $_.GetValue('Publisher')
+    $uninstall = $_.GetValue('UninstallString')
 
     if ($displayName) {
         $AllInstalledSoftware += [pscustomobject]@{
             Name = $displayName
-            Vendor = $vendor
+            Publisher = $publisher
             Version = $version
             BitDepth = "32bit"
+            UninstallString = $uninstall
         }
     }
 }
@@ -21,31 +23,18 @@ $InstalledSoftware32 | ForEach-Object {
 $InstalledSoftware64 | ForEach-Object {
     $displayName = $_.GetValue('DisplayName')
     $version = $_.GetValue('DisplayVersion')
-    $vendor = $_.GetValue('Publisher')
+    $publisher = $_.GetValue('Publisher')
+    $uninstall = $_.GetValue('UninstallString')
 
     if ($displayName) {
         $AllInstalledSoftware += [pscustomobject]@{
             Name = $displayName
-            Vendor = $vendor
+            Publisher = $publisher
             Version = $version
             BitDepth = "64bit"
+            UninstallString = $uninstall
         }
     }
 }
 
 $AllInstalledSoftware | Sort-Object -Property Name
-
-Write-Information "Done"
-
-<#ActionSettings
-{
-    "DisplayName": "Installed Applications",
-    "DisplayElement": "Tab",
-    "OutputType": "List",
-    "Description": "List installed applications recorded in registry",
-    "RunOnConnect": false,
-    "LogScriptContent": false,
-    "LogOutput": false,
-    "FilterProperties": ["Name", "Vendor"]
-}
-ActionSettings#>

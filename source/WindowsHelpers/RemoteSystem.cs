@@ -52,48 +52,6 @@ namespace WindowsHelpers
         /// </summary>
         public bool IsConnected { get; set; } = false;
 
-        private bool _processesLoading = false;
-        public bool ProcessesLoading
-        {
-            get { return this._processesLoading; }
-            set { this._processesLoading = value; this.OnPropertyChanged(this, "ProcessesLoading"); }
-        }
-
-        private bool _hotfixesLoading = false;
-        public bool HotfixesLoading
-        {
-            get { return this._hotfixesLoading; }
-            set { this._hotfixesLoading = value; this.OnPropertyChanged(this, "HotfixesLoading"); }
-        }
-
-        private bool _printersLoading = false;
-        public bool PrintersLoading
-        {
-            get { return this._printersLoading; }
-            set { this._printersLoading = value; this.OnPropertyChanged(this, "PrintersLoading"); }
-        }
-
-        private bool _printDriversLoading = false;
-        public bool PrintDriversLoading
-        {
-            get { return this._printDriversLoading; }
-            set { this._printDriversLoading = value; this.OnPropertyChanged(this, "PrintDriversLoading"); }
-        }
-
-        private bool _servicesLoading = false;
-        public bool ServicesLoading
-        {
-            get { return this._servicesLoading; }
-            set { this._servicesLoading = value; this.OnPropertyChanged(this, "ServicesLoading"); }
-        }
-
-        private bool _loggedOnUsersLoading = false;
-        public bool LoggedOnUsersLoading
-        {
-            get { return this._loggedOnUsersLoading; }
-            set { this._loggedOnUsersLoading = value; this.OnPropertyChanged(this, "LoggedOnUsersLoading"); }
-        }
-
         /// <summary>
         /// The credentials used to connect to the client device
         /// </summary>
@@ -137,13 +95,6 @@ namespace WindowsHelpers
         /// PropertyBlocks is the properties dictionary split into blocks of 15
         /// </summary>
         public List<IDictionary<string, string>> PropertyBlocks { get; private set; }
-
-        public ObservableCollection<object> Processes { get; } = new ObservableCollection<object>();
-        public ObservableCollection<object> LoggedOnUsers { get; } = new ObservableCollection<object>();
-        public ObservableCollection<object> Services { get; } = new ObservableCollection<object>();
-        public ObservableCollection<object> Hotfixes { get; } = new ObservableCollection<object>();
-        public ObservableCollection<object> Printers { get; } = new ObservableCollection<object>();
-        public ObservableCollection<object> PrintDrivers { get; } = new ObservableCollection<object>();
 
         /// <summary>
         /// The current RemoteSystem instance. Behaves like a singleton
@@ -310,6 +261,15 @@ namespace WindowsHelpers
             }
         }
 
+
+        //** processes
+        private bool _processesLoading = false;
+        public bool ProcessesLoading
+        {
+            get { return this._processesLoading; }
+            set { this._processesLoading = value; this.OnPropertyChanged(this, "ProcessesLoading"); }
+        }
+        public ObservableCollection<object> Processes { get; } = new ObservableCollection<object>();
         public async Task UpdateProcessesAsync()
         {
             this.ProcessesLoading = true;
@@ -340,6 +300,15 @@ namespace WindowsHelpers
             this.ProcessesLoading = false;
         }
 
+        //** services
+
+        private bool _servicesLoading = false;
+        public bool ServicesLoading
+        {
+            get { return this._servicesLoading; }
+            set { this._servicesLoading = value; this.OnPropertyChanged(this, "ServicesLoading"); }
+        }
+        public ObservableCollection<object> Services { get; } = new ObservableCollection<object>();
         public async Task UpdateServicesAsync()
         {
             this.ServicesLoading = true;
@@ -370,6 +339,15 @@ namespace WindowsHelpers
             this.ServicesLoading = false;
         }
 
+
+        //** hotfixes
+        private bool _hotfixesLoading = false;
+        public bool HotfixesLoading
+        {
+            get { return this._hotfixesLoading; }
+            set { this._hotfixesLoading = value; this.OnPropertyChanged(this, "HotfixesLoading"); }
+        }
+        public ObservableCollection<object> Hotfixes { get; } = new ObservableCollection<object>();
         public async Task UpdateHotfixesAsync()
         {
             this.HotfixesLoading = true;
@@ -382,7 +360,7 @@ namespace WindowsHelpers
                     var results = await posh.InvokeRunnerAsync();
                     foreach (var result in results)
                     {
-                        this.Hotfixes.Add(Hotfix.New(result));
+                        this.Hotfixes.Add(new Hotfix(result));
                     }
                 }
             }
@@ -393,6 +371,49 @@ namespace WindowsHelpers
             this.HotfixesLoading = false;
         }
 
+        //** installed applications
+        private bool _installedAppsLoading = false;
+        public bool InstalledApplicationsLoading
+        {
+            get { return this._installedAppsLoading; }
+            set { this._installedAppsLoading = value; this.OnPropertyChanged(this, "InstalledApplicationsLoading"); }
+        }
+
+        public ObservableCollection<object> InstalledApplications { get; } = new ObservableCollection<object>();
+        public async Task UpdateInstalledApplicationsAsync()
+        {
+            this.InstalledApplicationsLoading = true;
+            try
+            {
+                this.InstalledApplications.Clear();
+                string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\GetApplications.ps1";
+                string script = await IOHelpers.ReadFileAsync(scriptPath);
+
+                using (PoshHandler posh = new PoshHandler(script, this))
+                {
+                    var results = await posh.InvokeRunnerAsync(true);
+                    foreach (var result in results)
+                    {
+                        this.InstalledApplications.Add(new InstalledApplication(result));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error getting hotfix information");
+            }
+            this.InstalledApplicationsLoading = false;
+        }
+
+
+        //**logged on users
+        private bool _loggedOnUsersLoading = false;
+        public bool LoggedOnUsersLoading
+        {
+            get { return this._loggedOnUsersLoading; }
+            set { this._loggedOnUsersLoading = value; this.OnPropertyChanged(this, "LoggedOnUsersLoading"); }
+        }
+        public ObservableCollection<object> LoggedOnUsers { get; } = new ObservableCollection<object>();
         public async Task UpdateLoggedOnUsersAsync()
         {
             this.LoggedOnUsersLoading = true;
@@ -417,6 +438,15 @@ namespace WindowsHelpers
             this.LoggedOnUsersLoading = false;
         }
 
+
+        //**Printers
+        private bool _printersLoading = false;
+        public bool PrintersLoading
+        {
+            get { return this._printersLoading; }
+            set { this._printersLoading = value; this.OnPropertyChanged(this, "PrintersLoading"); }
+        }
+        public ObservableCollection<object> Printers { get; } = new ObservableCollection<object>();
         public async Task UpdatePrintersAsync()
         {
             this.PrintersLoading = true;
@@ -442,6 +472,15 @@ namespace WindowsHelpers
             this.PrintersLoading = false;
         }
 
+        //**print drivers
+        private bool _printDriversLoading = false;
+        public bool PrintDriversLoading
+        {
+            get { return this._printDriversLoading; }
+            set { this._printDriversLoading = value; this.OnPropertyChanged(this, "PrintDriversLoading"); }
+        }
+
+        public ObservableCollection<object> PrintDrivers { get; } = new ObservableCollection<object>();
         public async Task UpdatePrintDriversAsync()
         {
             this.PrintDriversLoading = true;

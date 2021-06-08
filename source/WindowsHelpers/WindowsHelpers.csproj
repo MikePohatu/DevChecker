@@ -53,6 +53,7 @@
     <Compile Include="AsyncHelpers.cs" />
     <Compile Include="Hotfix.cs" />
     <Compile Include="ImpersonationHelpers.cs" />
+    <Compile Include="InstalledApplication.cs" />
     <Compile Include="IOHelpers.cs" />
     <Compile Include="LoggedOnUser.cs" />
     <Compile Include="PoshHandler.cs" />
@@ -83,6 +84,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\Remove-Hotfix.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\GetApplications.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -56,9 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="Scripts\Custom\CM-GetApplications.ps1">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\Custom\Ping-Google.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

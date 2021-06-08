@@ -111,6 +111,12 @@
                         </TabItem.Header>
                         <tabs:HotfixesTableViewer TableSource="{Binding Hotfixes}" IsLoading="{Binding HotfixesLoading}"/>
                     </TabItem>
+                    <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="Installed Applications" ToolTip="List installed applications recorded in registry"/>
+                        </TabItem.Header>
+                        <tabs:InstalledApplicationsTableViewer TableSource="{Binding InstalledApplications}" IsLoading="{Binding InstalledApplicationsLoading}"/>
+                    </TabItem>
                     <TabItem DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
                         <TabItem.Header>
                             <TextBlock Text="Logon History" ToolTip="Logon history gathered by the ConfigMgr client"/>

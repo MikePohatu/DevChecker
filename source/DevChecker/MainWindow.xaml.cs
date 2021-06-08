@@ -271,6 +271,7 @@ namespace DevChecker
                     postconnectTasks.Add(this.RemoteSystem.UpdateHotfixesAsync());
                     postconnectTasks.Add(this.RemoteSystem.UpdatePrintersAsync());
                     postconnectTasks.Add(this.RemoteSystem.UpdatePrintDriversAsync());
+                    postconnectTasks.Add(this.RemoteSystem.UpdateInstalledApplicationsAsync());
                 }
                 
                 if (CmServer.Current.IsConnected) 
