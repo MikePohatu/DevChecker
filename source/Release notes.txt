@@ -1,10 +1,11 @@
-Version 0.9.2
+Version 0.9.3
 Release date: 8 Jun 2021
 
 *Features
     Added custom action/script output to table view, modal windows etc
     Added running ConfigMgr scripts
     Added printer and print driver list
+    Added user log off functionality
     Added more tooltips and documentation
 
 *Fixes

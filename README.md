@@ -26,11 +26,7 @@ This tool was created because existing tools either didn't do what I wanted, or 
 * List printers and print drivers
 * Run ConfigMgr scripts
 * Add custom tabs using PowerShell scripts
-
-## Planned features
-
-
-* Log off function
+* Log off users
 
 [Documentation](/documentation/README.md)
 
