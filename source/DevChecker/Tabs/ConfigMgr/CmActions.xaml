@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <GroupBox Header="Client Actions" Margin="5" Padding="5">
+    <GroupBox Header="Client Actions" Margin="5" Padding="5,2">
         <DataGrid VerticalAlignment="Top" HorizontalAlignment="Stretch" ItemsSource="{Binding ClientActions}"
                   Width="Auto" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0" GridLinesVisibility="None" >
 
@@ -16,7 +16,7 @@
                     <Setter Property="Background" Value="Transparent" />
                     <Setter Property="Foreground" Value="Black" />
                     <Setter Property="BorderThickness" Value="0" />
-                    <!--<Setter Property="FontSize" Value="10" />-->
+                    <Setter Property="FontSize" Value="11" />                 
                 </Style>
             </DataGrid.Resources>
 
