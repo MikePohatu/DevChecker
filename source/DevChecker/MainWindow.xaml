@@ -76,53 +76,98 @@
             <TabItem Header="Overview">
                 <tabs:OverviewTab />
             </TabItem>
-            <TabItem Header="Client Side" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
+            <TabItem IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
+                <TabItem.Header>
+                    <TextBlock Text="Client Side" ToolTip="Access to information and actions available from the client device"/>
+                </TabItem.Header>
                 <TabControl Grid.Row="1" BorderBrush="{x:Null}" >
-                    <TabItem Header="Client Info" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                    <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="Client Info" ToolTip="An overview of information gathered from the client device"/>
+                        </TabItem.Header>
                         <tabs:WindowsClientTab IsEnabled="{Binding IsConnected, FallbackValue=false}"/>
                     </TabItem>
-                    <TabItem Header="Actions" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
+                    <TabItem IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="Actions" ToolTip="Connect and run actions on the device"/>
+                        </TabItem.Header>
                         <tabs:ClientActionsTab IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}"/>
                     </TabItem>
-                    <TabItem Header="Processes" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                    <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="Processes" ToolTip="List and kill running processes"/>
+                        </TabItem.Header>
                         <tabs:ProcessesTableViewer TableSource="{Binding Processes}" IsLoading="{Binding ProcessesLoading}"/>
                     </TabItem>
-                    <TabItem Header="Services" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                    <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="Services" ToolTip="List and control services running on the device"/>
+                        </TabItem.Header>
                         <tabs:ServicesTableViewer TableSource="{Binding Services}" IsLoading="{Binding ServicesLoading}"/>
                     </TabItem>
-                    <TabItem Header="Hotfixes" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                    <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="Hotfixes" ToolTip="Hotfixes installed on the device"/>
+                        </TabItem.Header>
                         <tabs:HotfixesTableViewer TableSource="{Binding Hotfixes}" IsLoading="{Binding HotfixesLoading}"/>
                     </TabItem>
-                    <TabItem Header="ConfigMgr Client" IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
+                    <TabItem IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="ConfigMgr Client" ToolTip="Access to client actions and information for the ConfigMgr agent"/>
+                        </TabItem.Header>
                         <configmgr:CmClientTab DataContext="{Binding CmClient}"/>
                     </TabItem>
-                    <TabItem Header="Software Center" IsEnabled="{Binding CmClient.ClientInstalled, FallbackValue=false}">
+                    <TabItem IsEnabled="{Binding CmClient.ClientInstalled, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="Software Center" ToolTip="ConfigMgr Software Center (items deployed to device only)"/>
+                        </TabItem.Header>
                         <configmgr:CmSoftwareCenterTab DataContext="{Binding CmClient.SoftwareCenter}"/>
                     </TabItem>
-                    <TabItem Header="Logon History" DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
+                    <TabItem DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="Logon History" ToolTip="Logon history gathered by the ConfigMgr client"/>
+                        </TabItem.Header>
                         <configmgr:CmLogonEventsTableViewer TableSource="{Binding LogonEvents}" IsLoading="{Binding LogonEventsLoading}" />
                     </TabItem>
-                    <TabItem Header="Printers" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                    <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="Printers" ToolTip="List printers found on device by querying the registry"/>
+                        </TabItem.Header>
                         <tabs:PrintersTableViewer TableSource="{Binding Printers}" IsLoading="{Binding PrintersLoading}" />
                     </TabItem>
-                    <TabItem Header="Print Drivers" DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                    <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="Print Drivers" ToolTip="List print drivers installed on the client device"/>
+                        </TabItem.Header>
                         <tabs:PrintDriverTableViewer TableSource="{Binding PrintDrivers}" IsLoading="{Binding PrintDriversLoading}" />
                     </TabItem>
                 </TabControl>
             </TabItem>
 
-            <TabItem Header="Server Side" DataContext="{Binding CmServer}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+            <TabItem DataContext="{Binding CmServer}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                <TabItem.Header>
+                    <TextBlock Text="Server Side" ToolTip="Access to information and actions available from the ConfigMgr server"/>
+                </TabItem.Header>
                 <TabControl Grid.Row="1" BorderBrush="{x:Null}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
-                    <TabItem Header="Overview">
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Overview" ToolTip="An overview of information gathered from the server relating to the client"/>
+                        </TabItem.Header>
                         <configmgr:CmServerTab />
                     </TabItem>
-                    <TabItem Header="Scripts">
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Scripts" ToolTip="List and run ConfigMgr scripts"/>
+                        </TabItem.Header>
                         <configmgr:CmScriptsTableViewer TableSource="{Binding Scripts}" IsLoading="{Binding ScriptsLoading}" />
                     </TabItem>
                 </TabControl>
             </TabItem>
 
-            <TabItem Header="Custom" DataContext="{Binding ActionLibrary}">
+            <TabItem DataContext="{Binding ActionLibrary}">
+                <TabItem.Header>
+                    <TextBlock Text="Custom" ToolTip="Access actions and data from custom scripts"/>
+                </TabItem.Header>
                 <tabs:CustomActionsTab x:Name="customActionsTab"/>
             </TabItem>
         </TabControl>
