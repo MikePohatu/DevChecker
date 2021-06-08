@@ -62,9 +62,9 @@ Update the fields appropriately:
   * [Modal](#displayelement-modal)
   * [Log](#displayelement-log)
   * [None](#displayelement-none)
-* **DisplayName**: The name to be shown in DevChecker. If this is empty the script name will be used
+* **DisplayName**: The name to be shown in DevChecker. If this is empty the script file name will be used
 * **FilterProperties**: When displaying in a table view, the search box will filter the view based on a match against the properties listed here
-* **LogOutput**: Will log the output of the script, even if DisplayElement is Tab or Modal
+* **LogOutput**: Will log the output of the script to the output pane, even if DisplayElement is Tab or Modal
 * **LogScriptContent**: Set this to true to output the content of the script file to the logging pane in DevChecker
 * **MaxRowsPerColumn**: When outputting an object, you can split the list of properties into columns. A new column will be created per *MaxRowsPerColumn* properties
 * **OutputType**: Define the expected output of the script. Valid options (case sensitive): 
@@ -72,7 +72,7 @@ Update the fields appropriately:
   * [Object](#outputtype-object)
   * [Text](#outputtype-text)
   * [None](#outputtype-none)
-* **RequiresServerConnect**: If RunOnClient is false, this will prevent the action from running if the server has been connected
+* **RequiresServerConnect**: If RunOnClient is false, this will prevent the action from running until the server has been connected
 * **RunOnClient**: Run the script on the connected client. If false, will run on the computer DevChecker is running on.
 * **RunOnConnect**: Automatically run the script on connect to a device
 
