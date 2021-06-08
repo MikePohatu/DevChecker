@@ -60,6 +60,7 @@
     <Compile Include="Overflower.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Diagnostics\KnownException.cs" />
+    <Compile Include="StringHelpers.cs" />
     <Compile Include="ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>

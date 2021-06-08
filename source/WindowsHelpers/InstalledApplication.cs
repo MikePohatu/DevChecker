@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using Core;
 using Core.Logging;
 using System;
 using System.Collections.Generic;
@@ -62,15 +63,11 @@ namespace WindowsHelpers
                 {
                     if (loweruninstall.Contains("/qb"))
                     {
-                        installargs = installargs.Replace("/qb", "/qn");
+                        installargs = installargs.Replace("/qb", "/qn", StringComparison.OrdinalIgnoreCase);
                     }
-                    else if (loweruninstall.Contains(" /q "))
+                    else if (loweruninstall.Contains("/q ") || loweruninstall.EndsWith("/q"))
                     {
-                        installargs = installargs.Replace("/q", "/qn");
-                    }
-                    else if (loweruninstall.EndsWith("/q"))
-                    {
-                        installargs = installargs.Replace("/q", "/qn");
+                        installargs = installargs.Replace("/q", "/qn", StringComparison.OrdinalIgnoreCase);
                     }
                     else if (!loweruninstall.Contains("/q"))
                     {
