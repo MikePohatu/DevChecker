@@ -21,6 +21,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Collections.ObjectModel;
+using Core.Logging;
 
 namespace DevChecker.Tabs
 {
@@ -63,9 +64,11 @@ namespace DevChecker.Tabs
         /// </summary>
         protected void EnableSorting()
         {
+            Log.Trace("Enabling CanUserSort on columns");
             foreach (var col in this.DataGrid.Columns)
             {
                 col.CanUserSort = true;
+                Log.Trace("Enabled CanUserSort on column: " + col.Header.ToString());
             }
         }
 

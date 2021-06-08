@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Threading;
 using WindowsHelpers;
 
 namespace DevChecker.Tabs
@@ -51,12 +52,30 @@ namespace DevChecker.Tabs
             this.SetBinding(TableViewer.IsLoadingProperty, runningbinding);
 
             this.IsSearchEnabled = action.Settings.FilterProperties.Count < 1 ? false : true;
+
+            this._action.RunCompleted += onFirstActionRun;
         }
+
+        //onFirstActionRun and onFirstFocus are to work around an issue where the column sort doesn't work.
+        //The EnableSorting method only works after the DataGrid is focused. Before that it doesn't seem like
+        //the columns are built yet, so you can't enable sorting on them. This waits for first action run, the sets
+        //up the first focus to run the enable sorting.
+        private void onFirstActionRun(object sender, EventArgs e)
+        {
+            this._action.RunCompleted -= onFirstActionRun;
+            this.MouseMove += this.onFirstFocus;
+        }
+
+        private void onFirstFocus(object sender, RoutedEventArgs e)
+        {
+            this.MouseMove -= this.onFirstFocus;
+            this.EnableSorting();
+        }
+
 
         protected override async void onRefreshClicked(object sender, RoutedEventArgs e)
         {
             await this._action.RunActionAsync();
-            this.EnableSorting();
         }
 
         protected override void onSearchFilter(object sender, FilterEventArgs e)

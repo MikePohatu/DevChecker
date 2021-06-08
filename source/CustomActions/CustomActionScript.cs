@@ -32,7 +32,11 @@ namespace CustomActions
 {
     public class CustomActionScript: ViewModelBase, IComparable<CustomActionScript>, IDisposable
     {
-        
+        /// <summary>
+        /// Action script has been run successfully
+        /// </summary>
+        public event EventHandler RunCompleted;
+
         private bool _loaded = false;
         private string _scriptpath = string.Empty;
         private string _script = string.Empty;
@@ -231,6 +235,7 @@ namespace CustomActions
 
                 posh.Dispose();
                 this.IsRunning = false;
+                RunCompleted?.Invoke(this, new EventArgs());
                 return true;
             }
             else
