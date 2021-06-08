@@ -217,7 +217,7 @@ namespace CustomActions
                 }
 
                 PSDataCollection<PSObject> results;
-                if (this.Settings.OutputType == OutputTypes.Text || this.Settings.LogOutput)
+                if (this.Settings.LogOutput|| this.Settings.DisplayElement == DisplayElements.Log)
                 {
                     results = await posh.InvokeRunnerAsync(hidescript, true);
                 }

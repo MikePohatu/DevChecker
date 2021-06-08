@@ -176,8 +176,8 @@
             <local:Spinner VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Grid>
 
-        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="5,0,0,142" TextWrapping="Wrap" Text="Output" 
-                   FontSize="10" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="7,0,0,2" TextWrapping="Wrap" Text="Output" 
+                   FontSize="10" VerticalAlignment="Bottom" Grid.ColumnSpan="2" />
 
         <Border Grid.Row="3" BorderBrush="LightGray" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Margin="5" Grid.ColumnSpan="2" >
             <ScrollViewer x:Name="outputScroll" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">

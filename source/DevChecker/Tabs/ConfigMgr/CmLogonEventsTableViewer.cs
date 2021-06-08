@@ -33,9 +33,6 @@ namespace DevChecker.Tabs.ConfigMgr
 {
     public class CmLogonEventsTableViewer : TableViewer
     {
-        public CmLogonEventsTableViewer() : base() { }
-
-
         protected override async void onRefreshClicked(object sender, RoutedEventArgs e)
         {
             await CmClient.Current.QueryLogonEventsAsync();

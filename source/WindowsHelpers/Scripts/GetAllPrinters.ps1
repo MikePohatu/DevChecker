@@ -9,30 +9,32 @@
             $Server = $Reg.PSChildName
             $RegPath = "Registry::$($_)"
         
-            Get-ChildItem "$($RegPath)\Printers" | ForEach-Object { 
-                $RegSubPath = "Registry::$($_)"
-                $UNC = Get-ItemPropertyValue -Path $RegSubPath -Name "Description"
-                $Location = Get-ItemPropertyValue -Path $RegSubPath -Name "Location"
-                $Driver = Get-ItemPropertyValue -Path $RegSubPath -Name "Printer Driver"
-                $UserName = ""
+            if (Test-Path "$($RegPath)\Printers") {
+                Get-ChildItem "$($RegPath)\Printers" | ForEach-Object { 
+                    $RegSubPath = "Registry::$($_)"
+                    $UNC = Get-ItemPropertyValue -Path $RegSubPath -Name "Description"
+                    $Location = Get-ItemPropertyValue -Path $RegSubPath -Name "Location"
+                    $Driver = Get-ItemPropertyValue -Path $RegSubPath -Name "Printer Driver"
+                    $UserName = ""
 
             
 
-                try {
-                    if ($Location.StartsWith('\Users\')){
-                        $sid = $Location.Split('\')[2]
-                        $Username = (New-Object System.Security.Principal.SecurityIdentifier($sid)).Translate([System.Security.Principal.NTAccount]).Value
+                    try {
+                        if ($Location.StartsWith('\Users\')){
+                            $sid = $Location.Split('\')[2]
+                            $Username = (New-Object System.Security.Principal.SecurityIdentifier($sid)).Translate([System.Security.Principal.NTAccount]).Value
+                        }
+                    } catch {
+                        Write-Warning "Unable to translate SID to username. The account may have been deleted. SID: $($_)"
                     }
-                } catch {
-                    Write-Warning "Unable to translate SID to username. The account may have been deleted. SID: $($_)"
-                }
             
-                $allPrinters += [PSCustomObject]@{
-                    Name = $Location.Split('\')[-1]
-                    Username = $Username
-                    Path = $UNC
-                    Driver = $Driver
-                    Server = $Server
+                    $allPrinters += [PSCustomObject]@{
+                        Name = $Location.Split('\')[-1]
+                        Username = $Username
+                        Path = $UNC
+                        Driver = $Driver
+                        Server = $Server
+                    }
                 }
             }
         }        
@@ -52,5 +54,3 @@
 }
 
 Get-AllPrinters | Sort-Object -Property Name 
-
- 
