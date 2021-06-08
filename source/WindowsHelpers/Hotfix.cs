@@ -28,12 +28,13 @@ namespace WindowsHelpers
 {
     public class Hotfix
     {
-        public static string GetterCommand { get; } = "Get-Hotfix";
-
+        public static string GetterCommand { get; } = "Get-HotFix | Select-Object HotFixID, Caption, InstalledOn, InstalledBy, Description";
+        
         public string HotFixID { get; set; }
         public string Description { get; set; }
         public string InstalledOn { get; set; }
         public string InstalledBy { get; set; }
+        public string Caption { get; set; }
 
         public static Hotfix New(PSObject poshObj)
         {
@@ -42,6 +43,7 @@ namespace WindowsHelpers
             obj.InstalledOn = PoshHandler.GetPropertyValue<string>(poshObj, "InstalledOn");
             obj.HotFixID = PoshHandler.GetPropertyValue<string>(poshObj, "HotFixID");
             obj.InstalledBy = PoshHandler.GetPropertyValue<string>(poshObj, "InstalledBy");
+            obj.Caption = PoshHandler.GetPropertyValue<string>(poshObj, "Caption");
             return obj;
         }
 
@@ -49,11 +51,14 @@ namespace WindowsHelpers
         {
             if (string.IsNullOrWhiteSpace(this.HotFixID) == false)
             {
-                string command = "Start-Process wusa.exe -ArgumentList \"/ uninstall / KB:"+this.HotFixID+" / quiet / norestart\"";
+                //string command = "Start-Process wusa.exe -ArgumentList \"/uninstall /kb:"+this.HotFixID+" /quiet /norestart\"";
+                string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\Remove-Hotfix.ps1";
+                string script = await IOHelpers.ReadFileAsync(scriptPath) + "Remove-Hotfix -KB " + this.HotFixID;
+
                 Log.Info("Uninstalling hotfix " + this.HotFixID);
-                using (var posh = new PoshHandler(command, RemoteSystem.Current))
+                using (var posh = new PoshHandler(script, RemoteSystem.Current))
                 {
-                    await posh.InvokeRunnerAsync();
+                    await posh.InvokeRunnerAsync(true, true);
                 }                    
             }
         }

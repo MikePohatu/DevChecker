@@ -58,7 +58,7 @@ namespace WindowsHelpers
             try
             {
                 string script = "Stop-Process -Force -ID " + this.Id;
-                using (var posh = new PoshHandler(script, RemoteSystem.Current.ComputerName, RemoteSystem.Current.UseSSL, RemoteSystem.Current.Credential))
+                using (var posh = new PoshHandler(script, RemoteSystem.Current))
                 {
                     await posh.InvokeRunnerAsync();
                 }
