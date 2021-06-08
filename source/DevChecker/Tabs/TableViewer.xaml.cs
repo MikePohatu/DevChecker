@@ -32,14 +32,14 @@ namespace DevChecker.Tabs
     {
         private bool _hasContextMenu = false;
 
-        public static readonly DependencyProperty IsSearchEnabledProperty = DependencyProperty.Register("IsSearchEnabled", typeof(bool), typeof(TableViewer));
+        public static readonly DependencyProperty IsSearchEnabledProperty = DependencyProperty.Register("IsSearchEnabled", typeof(bool), typeof(TableViewer), new PropertyMetadata(true));
         public bool IsSearchEnabled
         {
             get { return (bool)GetValue(IsSearchEnabledProperty); }
             set { SetValue(IsSearchEnabledProperty, value); }
         }
 
-        public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register("IsLoading", typeof(bool), typeof(TableViewer));
+        public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register("IsLoading", typeof(bool), typeof(TableViewer), new PropertyMetadata(false));
         public bool IsLoading
         {
             get { return (bool)GetValue(IsLoadingProperty); }
