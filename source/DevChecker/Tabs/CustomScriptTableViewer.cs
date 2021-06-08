@@ -23,6 +23,7 @@ using CustomActions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Management.Automation;
 using System.Text;
@@ -37,18 +38,25 @@ namespace DevChecker.Tabs
     public class CustomScriptTableViewer : TableViewer
     {
         private CustomActionScript _action;
-        public CustomScriptTableViewer(CustomActionScript action) : base()
+        public CustomScriptTableViewer(CustomActionScript action): base()
         {
             this._action = action;
-            this.TableSource = action.TableData;
+
+            Binding databinding = new Binding("TableData");
+            databinding.Source = action;
+            this.SetBinding(TableViewer.TableSourceProperty, databinding);
+
+            Binding runningbinding = new Binding("IsRunning");
+            runningbinding.Source = action;
+            this.SetBinding(TableViewer.IsLoadingProperty, runningbinding);
+
             this.IsSearchEnabled = action.Settings.FilterProperties.Count < 1 ? false : true;
         }
 
         protected override async void onRefreshClicked(object sender, RoutedEventArgs e)
         {
-            this.IsLoading = true;
             await this._action.RunActionAsync();
-            this.IsLoading = false;
+            this.EnableSorting();
         }
 
         protected override void onSearchFilter(object sender, FilterEventArgs e)

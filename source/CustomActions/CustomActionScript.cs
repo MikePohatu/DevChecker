@@ -200,7 +200,7 @@ namespace CustomActions
                 this.TableData.Clear();
                 bool hidescript = this.Settings == null ? false : !this.Settings.LogScriptContent;
 
-                string sanitisedscript = this.SanitiseScript(this._script);
+                string sanitisedscript = this.ReplaceScriptTokens(this._script);
 
                 PoshHandler posh;
                 if (this.Settings.RunOnClient)
@@ -226,12 +226,8 @@ namespace CustomActions
                 foreach (var obj in results)
                 {
                     this.ResultList.Add(obj);
-                }
-
-                foreach (PSObject obj in this.ResultList)
-                {
                     this.TableData.Add(obj);
-                }          
+                }
 
                 posh.Dispose();
                 this.IsRunning = false;
@@ -245,7 +241,7 @@ namespace CustomActions
             }
         }
 
-        private string SanitiseScript(string script)
+        private string ReplaceScriptTokens(string script)
         {
             if (string.IsNullOrWhiteSpace(script)) { return null; }
             string sanitised = script;

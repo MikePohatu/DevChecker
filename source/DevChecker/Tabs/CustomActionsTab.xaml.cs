@@ -95,7 +95,7 @@ namespace DevChecker.Tabs
                 TabItem tab = new TabItem();
                 tab.Header = actionScript.DisplayName;
                 if (string.IsNullOrWhiteSpace(actionScript.Settings.Description) == false) { tab.ToolTip = actionScript.Settings.Description; }
-                UIElement viewer = GetControl(actionScript);
+                var viewer = GetControl(actionScript);
                 tab.Content = viewer;
                 this.tabs.Items.Add(tab);
             }
@@ -127,7 +127,8 @@ namespace DevChecker.Tabs
             }
             else if (actionScript.Settings.OutputType == OutputTypes.List)
             {
-                return new CustomScriptTableViewer(actionScript);
+                var viewer = new CustomScriptTableViewer(actionScript);
+                return viewer;
             }
             else
             {

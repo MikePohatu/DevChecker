@@ -58,6 +58,17 @@ namespace DevChecker.Tabs
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Method to enable sorting on columns if for some reason it gets turned off after adding data
+        /// </summary>
+        protected void EnableSorting()
+        {
+            foreach (var col in this.DataGrid.Columns)
+            {
+                col.CanUserSort = true;
+            }
+        }
+
         private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             this.RefreshSource();
