@@ -42,7 +42,7 @@ namespace CustomActions
             }
         }
 
-        private string _displayElement;
+        private string _displayElement = DisplayElements.Log;
         /// <summary>
         /// How the returned data will be displayed. Valid values: Tab, Modal, Log
         /// </summary>
