@@ -88,6 +88,7 @@
     <Compile Include="Tabs\CustomActionsTab.xaml.cs">
       <DependentUpon>CustomActionsTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\LoggedOnUsersTableViewer.cs" />
     <Compile Include="Tabs\ServicesTableViewer.cs" />
     <Compile Include="Tabs\ObjectViewer.xaml.cs">
       <DependentUpon>ObjectViewer.xaml</DependentUpon>

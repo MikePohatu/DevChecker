@@ -54,6 +54,7 @@
     <Compile Include="Hotfix.cs" />
     <Compile Include="ImpersonationHelpers.cs" />
     <Compile Include="IOHelpers.cs" />
+    <Compile Include="LoggedOnUser.cs" />
     <Compile Include="PoshHandler.cs" />
     <Compile Include="PrintDriver.cs" />
     <Compile Include="Printer.cs" />
@@ -76,6 +77,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\GetAllPrinters.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\GetAllLoggedOnUsers.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\Remove-Hotfix.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

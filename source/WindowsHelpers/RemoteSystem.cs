@@ -87,6 +87,13 @@ namespace WindowsHelpers
             set { this._servicesLoading = value; this.OnPropertyChanged(this, "ServicesLoading"); }
         }
 
+        private bool _loggedOnUsersLoading = false;
+        public bool LoggedOnUsersLoading
+        {
+            get { return this._loggedOnUsersLoading; }
+            set { this._loggedOnUsersLoading = value; this.OnPropertyChanged(this, "LoggedOnUsersLoading"); }
+        }
+
         /// <summary>
         /// The credentials used to connect to the client device
         /// </summary>
@@ -132,7 +139,7 @@ namespace WindowsHelpers
         public List<IDictionary<string, string>> PropertyBlocks { get; private set; }
 
         public ObservableCollection<object> Processes { get; } = new ObservableCollection<object>();
-
+        public ObservableCollection<object> LoggedOnUsers { get; } = new ObservableCollection<object>();
         public ObservableCollection<object> Services { get; } = new ObservableCollection<object>();
         public ObservableCollection<object> Hotfixes { get; } = new ObservableCollection<object>();
         public ObservableCollection<object> Printers { get; } = new ObservableCollection<object>();
@@ -384,6 +391,30 @@ namespace WindowsHelpers
                 Log.Error(e, "Error getting hotfix information");
             }
             this.HotfixesLoading = false;
+        }
+
+        public async Task UpdateLoggedOnUsersAsync()
+        {
+            this.LoggedOnUsersLoading = true;
+            try
+            {
+                this.LoggedOnUsers.Clear();
+                string scriptPath = AppDomain.CurrentDomain.BaseDirectory + "Scripts\\GetAllLoggedOnUsers.ps1";
+                string script = await IOHelpers.ReadFileAsync(scriptPath);
+                using (PoshHandler posh = new PoshHandler(script, this))
+                {
+                    var results = await posh.InvokeRunnerAsync(true);
+                    foreach (var result in results)
+                    {
+                        this.LoggedOnUsers.Add(new LoggedOnUser(result));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error getting logged on users");
+            }
+            this.LoggedOnUsersLoading = false;
         }
 
         public async Task UpdatePrintersAsync()

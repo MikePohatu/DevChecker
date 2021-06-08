@@ -19,7 +19,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="120*" MinHeight="120" />
             <RowDefinition Height="20"/>
-            <RowDefinition Height="70*" MinHeight="70" />
+            <RowDefinition Height="50*" MinHeight="70" />
             <RowDefinition Height="30" MinHeight="30" />
         </Grid.RowDefinitions>
 
@@ -93,24 +93,6 @@
                         </TabItem.Header>
                         <tabs:ClientActionsTab IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}"/>
                     </TabItem>
-                    <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
-                        <TabItem.Header>
-                            <TextBlock Text="Processes" ToolTip="List and kill running processes"/>
-                        </TabItem.Header>
-                        <tabs:ProcessesTableViewer TableSource="{Binding Processes}" IsLoading="{Binding ProcessesLoading}"/>
-                    </TabItem>
-                    <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
-                        <TabItem.Header>
-                            <TextBlock Text="Services" ToolTip="List and control services running on the device"/>
-                        </TabItem.Header>
-                        <tabs:ServicesTableViewer TableSource="{Binding Services}" IsLoading="{Binding ServicesLoading}"/>
-                    </TabItem>
-                    <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
-                        <TabItem.Header>
-                            <TextBlock Text="Hotfixes" ToolTip="Hotfixes installed on the device"/>
-                        </TabItem.Header>
-                        <tabs:HotfixesTableViewer TableSource="{Binding Hotfixes}" IsLoading="{Binding HotfixesLoading}"/>
-                    </TabItem>
                     <TabItem IsEnabled="{Binding RemoteSystem.IsConnected, FallbackValue=false}">
                         <TabItem.Header>
                             <TextBlock Text="ConfigMgr Client" ToolTip="Access to client actions and information for the ConfigMgr agent"/>
@@ -123,11 +105,35 @@
                         </TabItem.Header>
                         <configmgr:CmSoftwareCenterTab DataContext="{Binding CmClient.SoftwareCenter}"/>
                     </TabItem>
+                    <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="Hotfixes" ToolTip="Hotfixes installed on the device"/>
+                        </TabItem.Header>
+                        <tabs:HotfixesTableViewer TableSource="{Binding Hotfixes}" IsLoading="{Binding HotfixesLoading}"/>
+                    </TabItem>
                     <TabItem DataContext="{Binding CmClient}" IsEnabled="{Binding ClientInstalled, FallbackValue=false}">
                         <TabItem.Header>
                             <TextBlock Text="Logon History" ToolTip="Logon history gathered by the ConfigMgr client"/>
                         </TabItem.Header>
                         <configmgr:CmLogonEventsTableViewer TableSource="{Binding LogonEvents}" IsLoading="{Binding LogonEventsLoading}" />
+                    </TabItem>
+                    <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="Logged on users" ToolTip="List and logoff users"/>
+                        </TabItem.Header>
+                        <tabs:LoggedOnUsersTableViewer TableSource="{Binding LoggedOnUsers}" IsLoading="{Binding LoggedOnUsersLoading}" />
+                    </TabItem>
+                    <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="Processes" ToolTip="List and kill running processes"/>
+                        </TabItem.Header>
+                        <tabs:ProcessesTableViewer TableSource="{Binding Processes}" IsLoading="{Binding ProcessesLoading}"/>
+                    </TabItem>
+                    <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
+                        <TabItem.Header>
+                            <TextBlock Text="Services" ToolTip="List and control services running on the device"/>
+                        </TabItem.Header>
+                        <tabs:ServicesTableViewer TableSource="{Binding Services}" IsLoading="{Binding ServicesLoading}"/>
                     </TabItem>
                     <TabItem DataContext="{Binding RemoteSystem}" IsEnabled="{Binding IsConnected, FallbackValue=false}">
                         <TabItem.Header>
