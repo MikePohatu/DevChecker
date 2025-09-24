@@ -30,3 +30,5 @@ This tool was created because existing tools either didn't do what I wanted, or 
 
 [Documentation](/documentation/README.md)
 
+
+<a href="https://buymeacoffee.com/mikepohatu" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>

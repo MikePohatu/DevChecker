@@ -47,7 +47,7 @@ namespace Core
             set { this._domain = value; this.OnPropertyChanged(this, "Domain"); }
         }
 
-        private bool _useKerberos;
+        private bool _useKerberos = true;
         public bool UseKerberos
         {
             get { return this._useKerberos; }
